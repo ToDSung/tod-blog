@@ -1,13 +1,18 @@
 import React from 'react';
 import type { NextPage } from 'next';
-import Link from 'next/link';
+import { GetStaticProps } from 'next';
 
+import { getAllPosts, getAllPostsStaticProps } from '@/lib/api';
+import Post from '@/types/post';
 import LandingPage from './landingPage';
 
-const Home: NextPage = () => {
+type Props = {
+  allPosts: Post[];
+};
+
+const Home: NextPage<Props> = ({ allPosts }) => {
   return (
     <>
-      {/* <Head></Head> */}
       <link
         rel='preload'
         href='/fonts/JasonHandwriting/JasonHandwriting1.ttf'
@@ -20,9 +25,11 @@ const Home: NextPage = () => {
         as='font'
         crossOrigin=''
       />
-      <LandingPage />
+      <LandingPage allPosts={allPosts} />
     </>
   );
 };
 
 export default Home;
+
+export const getStaticProps: GetStaticProps = getAllPostsStaticProps;

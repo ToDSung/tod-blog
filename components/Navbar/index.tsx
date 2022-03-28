@@ -46,9 +46,7 @@ const Navbar = () => {
               <div className='tab__items flex gap-4'>
                 {tabs.map(({ name, link }) => (
                   <Link key={name} href={link} passHref>
-                    <a className='tab__item' cursor-pointer>
-                      {name}
-                    </a>
+                    <a className='tab__item cursor-pointer'>{name}</a>
                   </Link>
                 ))}
               </div>

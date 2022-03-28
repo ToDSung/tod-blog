@@ -1,5 +1,6 @@
 ---
 title: '洗澡隨筆001：人生所求何物'
+image: 'https://picsum.photos/id/525/900/1200'
 excerpt: '洗澡時胡思亂想系列第一集'
 date: '2022-03-27T00:12:46.000Z'
 author:
