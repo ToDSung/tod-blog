@@ -8,12 +8,10 @@ type Props = {
 
 const PostDetail: FC<Props> = ({ content }) => {
   return (
-    <div className='mx-auto max-w-5xl'>
-      <div
-        className={markdownStyles['markdown-body']}
-        dangerouslySetInnerHTML={{ __html: content }}
-      />
-    </div>
+    <div
+      className={markdownStyles['markdown-body']}
+      dangerouslySetInnerHTML={{ __html: content }}
+    />
   );
 };
 

@@ -2,7 +2,7 @@ import React from 'react';
 import type { NextPage } from 'next';
 import { GetStaticProps } from 'next';
 
-import { getAllPosts, getAllPostsStaticProps } from '@/lib/api';
+import { getAllPostsStaticProps } from '@/lib/api';
 import Post from '@/types/post';
 import LandingPage from './landingPage';
 

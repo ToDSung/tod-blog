@@ -5,13 +5,16 @@ import { useRouter } from 'next/router';
 
 import { join } from 'path';
 
-import PostDetail from '@/components/Post/Detail';
+import Painting from '@/components/painting';
+import MarkdownDetail from '@/components/Post/MarkdownDetail';
 import { getAllPosts, getPostByPath, POSTS_ROOT_NAME } from '@/lib/api';
+import { getRandomImageUrl } from '@/lib/image';
 import markdownToHtml from '@/lib/markdownToHtml';
 
 type Props = {
   post: {
     slug?: string;
+    image: string;
     title: string;
     content: string;
   };
@@ -19,19 +22,24 @@ type Props = {
 
 const Post: FC<Props> = ({ post }) => {
   const router = useRouter();
+
   if (!router.isFallback && !post?.slug) {
     return <ErrorPage statusCode={404} />;
   }
+
   return router.isFallback ? (
     // <PostTitle>Loading…</PostTitle>
     <></>
   ) : (
     <>
-      <article className='mt-4 mb-8'>
+      <article className='mx-auto mt-4 mb-8 max-w-5xl'>
         <Head>
           <title>{post.title}</title>
         </Head>
-        <PostDetail content={post.content} />
+        <div className='aspect-h-9 aspect-w-16 mb-4'>
+          <Painting src={post.image ?? getRandomImageUrl(0)} />
+        </div>
+        <MarkdownDetail content={post.content} />
       </article>
     </>
   );
@@ -49,6 +57,7 @@ export const getStaticProps = async ({ params }: Params) => {
   const path = join(POSTS_ROOT_NAME, ...params.slug) + '.md';
   const post = getPostByPath(path, [
     'title',
+    'image',
     'date',
     'slug',
     'author',

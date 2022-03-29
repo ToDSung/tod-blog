@@ -13,7 +13,7 @@ const Painting: FC<Props> = ({
   borderColor = 'green',
 }) => {
   return (
-    <div className='aspect-h-4 aspect-w-3 rounded-lg'>
+    <div className='rounded-lg'>
       <div className='focus-ring w-full rounded-lg object-cover object-center backdrop-blur-xl transition' />
       {src && (
         <Image
