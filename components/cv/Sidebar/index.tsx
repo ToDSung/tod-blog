@@ -23,7 +23,7 @@ const Sidebar: FC<Props> = ({ skills = [] }) => {
       id='cv-sidebar'
       className='cv-sidebar flex flex-col items-center bg-teal-800 px-8 text-white'
     >
-      <span className='cv-sidebar__title mt-8 text-3xl'>宋明謙</span>
+      <span className='cv-sidebar__title mt-4 text-3xl sm:mt-8'>宋明謙</span>
       <span>Tod Sung</span>
       <span>前端工程師</span>
       <ul className='details mt-8 flex w-full list-disc flex-col items-start	'>
@@ -38,7 +38,7 @@ const Sidebar: FC<Props> = ({ skills = [] }) => {
           </p>
         ))}
       </div>
-      <div className='skills flex flex-col self-start'>
+      <div className='skills mb-4 flex flex-col self-start'>
         <span className='skills__title text-3xl'>skills</span>
         <div className='skills__content mt-4 grid grid-cols-2 gap-4'>
           {skills.map(({ name, icon }) => (

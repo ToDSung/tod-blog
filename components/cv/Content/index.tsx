@@ -4,7 +4,7 @@ const Content = () => {
   return (
     <div
       id='cv-content'
-      className='cv-content mx-4 mt-2 w-full overflow-y-auto pr-4'
+      className='cv-content mx-0 mt-2 w-full overflow-y-auto md:mx-4 md:pr-4'
     >
       <section className='cv-content__section article mb-2 flex flex-col'>
         <h1 className='cv-content__title relative flex items-center justify-between text-3xl'>
@@ -24,7 +24,8 @@ const Content = () => {
           Employment History
         </h1>
         <Article
-          title='資拓宏宇氣象部門 - 前、全端工程師 － Apr 2019 ~ Aug 2021'
+          title='資拓宏宇氣象部門 - 前、全端工程師'
+          date='Apr 2019 ~ Aug 2021'
           paragraph='擔任全端工程師，負責氣象局專案業務，解決客戶需求議題、設計網頁架構、實作系統程式、串接即時資料，提供實時資料查詢、各式不同氣象參數整合的地圖互動網站。'
           ulContents={[
             {
@@ -56,7 +57,8 @@ const Content = () => {
           ]}
         />
         <Article
-          title='治略資訊整合股份有限公司 - 後端實習生 － Jan 2018 ~ Jul 2018'
+          title='治略資訊整合股份有限公司 - 後端實習生'
+          date='Jan 2018 ~ Jul 2018'
           paragraph='於大四上學期提早修畢學分，後於大四下尋找實習機會，學習職場生活，提早培養工作能力。'
           ulContents={[
             {

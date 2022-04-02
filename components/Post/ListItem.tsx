@@ -24,15 +24,17 @@ const PostDetail: FC<Post> = ({ title, slug, excerpt, labels, date }) => {
               </p>
             </div>
           </Link>
-          <div className='flex gap-2'>
-            {labels?.map(label => (
-              <span
-                key={label}
-                className='label__item rounded-2xl bg-gray-200 px-2 py-[0.125rem]'
-              >
-                {label}
-              </span>
-            ))}
+          <div className='flex flex-col sm:flex-row'>
+            <div className='labels flex flex-wrap gap-2'>
+              {labels?.map(label => (
+                <span
+                  key={label}
+                  className='label__item rounded-2xl bg-gray-200 px-2 py-[0.125rem]'
+                >
+                  {label}
+                </span>
+              ))}
+            </div>
             {date && (
               <span className='article__time grow self-end text-right text-sm'>
                 最後修改時間： {new Date(date).toISOString().slice(0, 10)}
