@@ -1,5 +1,6 @@
 ---
 title: '簡單閱讀 dayjs 原始碼 (一)'
+image: 'https://picsum.photos/id/225/900/1200'
 excerpt: '分享閱讀 dayjs 原始碼的小心得，希望可以從中學習一些比較優質的模組程式撰寫方法。'
 date: '2021-08-12T00:00:00.000Z'
 author:

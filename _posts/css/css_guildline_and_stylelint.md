@@ -1,5 +1,6 @@
 ---
 title: 'CSS style 指南，搭配 stylelint 套件'
+image: 'https://picsum.photos/id/119/900/1200'
 excerpt: '記錄了數篇文章的內容，如何撰寫乾淨的 css 程式碼，另外補充了 stylelint 的安裝方式(for vue)'
 date: '2021-07-25T00:00:00.000Z'
 author:

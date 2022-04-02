@@ -1,5 +1,6 @@
 ---
 title: '30 個值得你嘗試的 CSS 最佳實踐'
+image: 'https://picsum.photos/id/118/900/1200'
 excerpt: '原文中，提了 30 個 CSS 的 best practice，我節錄了我目前尚未應用的問題，也補充了少少的資訊，不管你是初學的人還是已經有一定經驗，都應該要讀過這篇文章，讓你的 css 寫得更精簡、漂亮！'
 date: '2021-07-28T00:00:00.000Z'
 author:

@@ -1,5 +1,6 @@
 ---
 title: ' 2020 Frontend Developer Roadmap'
+image: 'https://picsum.photos/id/1010/900/1200'
 excerpt: '分享 Web developer 2020 技術學習知識庫，閱讀後可以了解什麼技術該優先學習，希望能夠幫助到初學者，看完以後記得記得連到 github 給原作者點個 star！'
 date: '2021-07-28T00:00:00.000Z'
 author:
