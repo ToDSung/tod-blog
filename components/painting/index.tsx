@@ -13,19 +13,18 @@ const Painting: FC<Props> = ({
   borderColor = 'green',
 }) => {
   return (
-    <div className='rounded-lg'>
-      <div className='focus-ring w-full rounded-lg object-cover object-center backdrop-blur-xl transition' />
+    <>
       {src && (
         <Image
           src={src}
           alt={alt}
           layout='fill'
-          className="
-            focus-ring transition-opacity' rounded-lg object-cover object-center transition
-          "
+          className='
+            hover-ring rounded-lg object-cover object-center   transition-opacity
+          '
         />
       )}
-    </div>
+    </>
   );
 };
 

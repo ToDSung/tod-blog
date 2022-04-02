@@ -31,7 +31,7 @@ const Posts: FC<Props> = ({ allPosts }) => {
           return (
             <Link href={`/posts/${post.slug}`} passHref key={index}>
               <div className='post__wrapper cursor-pointer text-center'>
-                <div className='aspect-h-4 aspect-w-3'>
+                <div className='aspect-h-4 aspect-w-3 mb-4 rounded-lg ring-gray-800 transition hover:ring-4 '>
                   <Painting src={post.image} />
                 </div>
                 <div className='flex flex-col italic'>
