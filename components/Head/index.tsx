@@ -19,6 +19,10 @@ const HtmlHead: FC<Props> = ({ title }) => (
     <meta property='og:url' content='https://tod-blog-wlunareve.vercel.app/' />
     <meta property='og:site_name' content={title} />
     <meta property='og:locale' content='zh-tw' />
+    <meta
+      name='google-site-verification'
+      content='9JFlPPjMcTWCa_ePEuHyFvlCv8LS2xZkeK3alcNc_oE'
+    />
     <link rel='icon' href='/favicon.ico' />
     <link
       rel='alternate'
