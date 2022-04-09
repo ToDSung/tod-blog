@@ -26,19 +26,22 @@ const Posts: FC<Props> = ({ allPosts }) => {
       <h2 className="posts-title my-4 font-['DiamorScript'] text-6xl">
         Articles
       </h2>
-      <div className='posts grid gap-6 sm:grid-cols-2 2xl:grid-cols-3'>
+      <div className='posts grid gap-6 sm:grid-cols-2 xl:grid-cols-3'>
         {postsWithRandomImage?.map((post, index) => {
           return (
             <Link href={`/posts/${post.slug}`} passHref key={index}>
               <div className='post__wrapper cursor-pointer text-center'>
-                <div className='aspect-h-4 aspect-w-3 mb-4 rounded-lg ring-gray-800 transition hover:ring-4 '>
+                <div className=' aspect-w-16 aspect-h-9 mb-4 rounded-lg ring-gray-800 transition hover:ring-4 xl:aspect-h-4 xl:aspect-w-3 '>
                   <Painting src={post.image} />
                 </div>
                 <div className='flex flex-col italic'>
-                  <span className='text-lg'>
-                    {post.title} /{' '}
-                    {new Date(post.date).toISOString().slice(0, 10)}
-                  </span>
+                  <div className='flex flex-wrap justify-center text-lg'>
+                    <span>{post.title} </span>
+                    <span dangerouslySetInnerHTML={{ __html: '&nbsp/&nbsp' }} />
+                    <span>
+                      {new Date(post.date).toISOString().slice(0, 10)}
+                    </span>
+                  </div>
                   <span>{post.labels.join(', ')}</span>
                 </div>
               </div>
