@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { FiGithub, FiLinkedin } from 'react-icons/fi';
 import { GrArticle } from 'react-icons/gr';
 import { SiAboutdotme } from 'react-icons/si';
@@ -18,12 +18,6 @@ const SOCIAL_MEDIAS = [
     link: 'https://www.linkedin.com/in/%E6%98%8E%E8%AC%99-%E5%AE%8B-982b30172/',
   },
 ];
-
-// beacuse nextjs Link component, use forwardRef.
-// forwardRef may occur typescript error, so that define any type to the component.
-const IconForLink: FC<any> = React.forwardRef(function IconForLink(props, ref) {
-  return <>{props.children}</>;
-});
 
 const Navbar = () => {
   return (
@@ -47,9 +41,9 @@ const Navbar = () => {
           <div className='nav__social-media items-cente flex gap-4'>
             {TABS.map((tab, index) => (
               <Link href={tab.link} key={index} passHref>
-                <IconForLink>
+                <a>
                   <tab.icon className='block text-2xl sm:hidden' />
-                </IconForLink>
+                </a>
               </Link>
             ))}
             {SOCIAL_MEDIAS.map((socialMedia, index) => (
