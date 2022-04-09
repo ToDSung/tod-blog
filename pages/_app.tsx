@@ -11,7 +11,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head title="Tod's personal blog from TW" />
       <main id='app' className='app mx-2 flex	justify-center text-justify'>
         <Navbar />
-        <div className='component-wrapper relative mt-14 w-full max-w-[1680px] sm:mt-[3.25rem] sm:w-[80vw]'>
+        <div className='component-wrapper relative mt-[3.2rem] w-full max-w-[1680px] sm:w-[80vw]'>
           <Component {...pageProps} />
         </div>
       </main>

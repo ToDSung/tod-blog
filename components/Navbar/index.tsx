@@ -1,26 +1,29 @@
-import { Component, useState } from 'react';
+import React, { FC } from 'react';
+import { FiGithub, FiLinkedin } from 'react-icons/fi';
+import { GrArticle } from 'react-icons/gr';
+import { SiAboutdotme } from 'react-icons/si';
 import Link from 'next/link';
 
 import ExternalLink from '../ExternalLink';
-import GithubIcon from '../Icon/github';
-import LinkedinIcon from '../Icon/linkedin';
 
-const tabs = [
-  { name: '文章清單', link: '/posts' },
-  { name: '關於我', link: '/cv' },
+const TABS = [
+  { name: '文章清單', link: '/posts', icon: GrArticle },
+  { name: '關於我', link: '/cv', icon: SiAboutdotme },
 ];
 
-const socialMedias = [
-  { name: 'GithubIcon', link: 'https://github.com/wlunareve' },
+const SOCIAL_MEDIAS = [
+  { icon: FiGithub, link: 'https://github.com/wlunareve' },
   {
-    name: 'fa-linkedin-in',
+    icon: FiLinkedin,
     link: 'https://www.linkedin.com/in/%E6%98%8E%E8%AC%99-%E5%AE%8B-982b30172/',
   },
-  {
-    name: 'fa-instagram',
-    link: 'https://www.instagram.com/sung35680/?hl=zh-tw',
-  },
 ];
+
+// beacuse nextjs Link component, use forwardRef.
+// forwardRef may occur typescript error, so that define any type to the component.
+const IconForLink: FC<any> = React.forwardRef(function IconForLink(props, ref) {
+  return <>{props.children}</>;
+});
 
 const Navbar = () => {
   return (
@@ -31,10 +34,10 @@ const Navbar = () => {
             <Link href='/' passHref>
               <span className='cursor-pointer text-2xl font-bold'>ToD</span>
             </Link>
-            <div className='tab my-0 mx-4 flex flex-1 items-center gap-4 text-xl'>
+            <div className='tab my-0 mx-4 hidden flex-1 items-center gap-4 text-xl sm:flex'>
               <div className='tab__items flex gap-4'>
-                {tabs.map(({ name, link }) => (
-                  <Link key={name} href={link} passHref>
+                {TABS.map(({ name, link }) => (
+                  <Link href={link} key={name} passHref>
                     <a className='tab__item cursor-pointer'>{name}</a>
                   </Link>
                 ))}
@@ -42,12 +45,18 @@ const Navbar = () => {
             </div>
           </div>
           <div className='nav__social-media items-cente flex gap-4'>
-            <ExternalLink href='https://github.com/wlunareve'>
-              <GithubIcon />
-            </ExternalLink>
-            <ExternalLink href='https://www.linkedin.com/in/%E6%98%8E%E8%AC%99-%E5%AE%8B-982b30172/'>
-              <LinkedinIcon />
-            </ExternalLink>
+            {TABS.map((tab, index) => (
+              <Link href={tab.link} key={index} passHref>
+                <IconForLink>
+                  <tab.icon className='block text-2xl sm:hidden' />
+                </IconForLink>
+              </Link>
+            ))}
+            {SOCIAL_MEDIAS.map((socialMedia, index) => (
+              <ExternalLink href={socialMedia.link} key={index}>
+                <socialMedia.icon className='text-2xl' />
+              </ExternalLink>
+            ))}
           </div>
         </div>
       </nav>
