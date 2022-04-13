@@ -1,10 +1,20 @@
 import Painting from '@/components/painting';
+import useLoading from '@/contexts/loading';
 
 const EntryContent = () => {
+  const { setLoading } = useLoading();
+  const handlePaintingLoaded = () => {
+    setLoading(false);
+  };
+
   return (
     <div className='entry-content relative my-4 flex flex-col justify-center'>
       <div className='image__wrapper aspect-h-9 aspect-w-16 hidden rounded-2xl md:block'>
-        <Painting src='/entryImage.jpg' alt='entryImage' />
+        <Painting
+          src='/entryImage.jpg'
+          alt='entryImage'
+          onLoadingComplete={handlePaintingLoaded}
+        />
       </div>
       <div
         className='text__wrapper left-[10vw] bottom-0 flex h-full w-full flex-col items-center 

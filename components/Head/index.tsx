@@ -29,6 +29,18 @@ const HtmlHead: FC<Props> = ({ title }) => (
       hrefLang='zh-Hant'
       href='https://tod-blog-wlunareve.vercel.app/'
     />
+    <link
+      rel='preload'
+      href='/fonts/JasonHandwriting/JasonHandwriting1.ttf'
+      as='font'
+      crossOrigin=''
+    />
+    <link
+      rel='preload'
+      href='/fonts/DiamorScript/Diamor.ttf'
+      as='font'
+      crossOrigin=''
+    />
   </Head>
 );
 

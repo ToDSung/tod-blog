@@ -4,13 +4,13 @@ import Image from 'next/image';
 type Props = {
   src?: string;
   alt?: string;
-  borderColor?: string;
+  onLoadingComplete?: Function;
 };
 
 const Painting: FC<Props> = ({
   src,
   alt = 'a painting',
-  borderColor = 'green',
+  onLoadingComplete = null,
 }) => {
   return (
     <>
@@ -22,6 +22,9 @@ const Painting: FC<Props> = ({
           className='
             hover-ring rounded-lg object-cover object-center   transition-opacity
           '
+          onLoadingComplete={() => {
+            onLoadingComplete && onLoadingComplete();
+          }}
         />
       )}
     </>

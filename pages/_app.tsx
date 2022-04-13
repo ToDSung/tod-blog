@@ -4,10 +4,11 @@ import type { AppProps } from 'next/app';
 
 import Head from '@/components/Head';
 import Navbar from '@/components/Navbar';
+import { LoadingProvider } from '@/contexts/loading';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <>
+    <LoadingProvider>
       <Head title="Tod's personal blog from TW" />
       <main id='app' className='app mx-2 flex	justify-center text-justify'>
         <Navbar />
@@ -15,7 +16,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <Component {...pageProps} />
         </div>
       </main>
-    </>
+    </LoadingProvider>
   );
 }
 
