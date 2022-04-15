@@ -1,23 +1,44 @@
 import { FC } from 'react';
 
+import { Transition } from '@headlessui/react';
+
 type Props = {
-  color?: string;
+  show: boolean;
 };
 
-const Progress: FC<Props> = () => {
-  return (
-    <div className='propgress flex h-screen w-screen items-center justify-center '>
+const Circle = () => (
+  <div
+    className={`spinner spinner--max absolute h-12 w-12 animate-[spin_3s_linear_infinite] border-fountain-blue`}
+  >
+    <div
+      className={`spinner spinner--mid h-10 w-10 animate-[spin_5s_linear_infinite] border-fountain-blue`}
+    >
       <div
-        className={`spinner spinner--max h-12 w-12 animate-[spin_3s_linear_infinite] border-fountain-blue`}
+        className={`spinner spinner--min h-8 w-8 animate-[spin_5s_linear_infinite] border-fountain-blue`}
+      />
+    </div>
+  </div>
+);
+
+const Progress: FC<Props> = ({ show }) => {
+  return (
+    <div className='propgress absolute z-50 flex h-screen w-[99vw] items-center justify-center overflow-x-hidden bg-white	'>
+      <Transition
+        show={show}
+        leave='transition-all duration-1000'
+        leaveFrom='opacity-100'
+        leaveTo='translate-x-28 translate-y-28 opacity-0'
       >
-        <div
-          className={`spinner spinner--mid h-10 w-10 animate-[spin_5s_linear_infinite] border-fountain-blue`}
-        >
-          <div
-            className={`spinner spinner--min h-8 w-8 animate-[spin_5s_linear_infinite] border-fountain-blue`}
-          />
-        </div>
-      </div>
+        <Circle />
+      </Transition>
+      <Transition
+        show={show}
+        leave='transition-all duration-1000'
+        leaveFrom='translate-y-0 opacity-100'
+        leaveTo='-translate-x-28 -translate-y-28 opacity-0'
+      >
+        <Circle />
+      </Transition>
     </div>
   );
 };

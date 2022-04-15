@@ -6,8 +6,11 @@ import {
   SetStateAction,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from 'react';
+
+import { Transition } from '@headlessui/react';
 
 import Progress from '@/components/Progress';
 
@@ -34,8 +37,12 @@ export const LoadingProvider: FC<Props> = ({ children }) => {
   const { loading } = loadingStatus;
   return (
     <loadingContext.Provider value={loadingStatus}>
-      {loading && <Progress />}
-      {children}
+      <Transition show={loading} leave='duration-1000'>
+        <Progress show={loading} />
+      </Transition>
+      <Transition show={!loading} enter='duration-1000'>
+        {children}
+      </Transition>
     </loadingContext.Provider>
   );
 };
