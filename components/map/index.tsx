@@ -31,6 +31,11 @@ const restaurants: Restaurants = [
       'https://www.google.com/maps/place/%E8%90%AC%E5%BE%97%E5%AF%8C%E7%88%B8%E7%88%B8%E8%82%89%E9%AA%A8%E8%8C%B6%E7%8E%8B%E4%B8%AD%E7%8E%8B/@25.0296308,121.457094,14z/data=!4m8!1m2!2m1!1z5Y2w5bqm6aSQ5buz!3m4!1s0x3442a83e354fc029:0xf9862d0007e9cb61!8m2!3d25.0246586!4d121.4698697',
     lonlat: [25.025421963404877, 121.47011895391618],
   },
+  {
+    name: 'M.M Dessert Studio（麥貳甜點工作室）',
+    reference: 'https://youtu.be/6JYoKgEu9aU',
+    lonlat: [25.0591588, 121.5323323],
+  },
 ];
 
 const MyMapEvent = () => {
