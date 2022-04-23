@@ -8,15 +8,17 @@ import { LoadingProvider } from '@/contexts/loading';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <LoadingProvider>
+    <>
       <Head title="Tod's personal blog from TW" />
-      <main id='app' className='app mx-2 flex	justify-center text-justify'>
-        <Navbar />
-        <div className='component-wrapper relative mt-[3.2rem] w-full max-w-[1680px] sm:w-[80vw]'>
-          <Component {...pageProps} />
-        </div>
-      </main>
-    </LoadingProvider>
+      <LoadingProvider>
+        <main id='app' className='app mx-2 flex	justify-center text-justify'>
+          <Navbar />
+          <div className='component-wrapper relative mt-[3.2rem] w-full max-w-[1680px] sm:w-[80vw]'>
+            <Component {...pageProps} />
+          </div>
+        </main>
+      </LoadingProvider>
+    </>
   );
 }
 
