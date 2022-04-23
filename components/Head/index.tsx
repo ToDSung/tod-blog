@@ -16,7 +16,7 @@ const HtmlHead: FC<Props> = ({ title }) => (
     <meta name='author' content='Tod Sung' />
     <meta property='og:type' content='website' />
     <meta property='og:title' content={title} />
-    <meta property='og:url' content='https://tod-blog-wlunareve.vercel.app/' />
+    <meta property='og:url' content='https://tod-blog.vercel.app/' />
     <meta property='og:site_name' content={title} />
     <meta property='og:locale' content='zh-tw' />
     <meta
@@ -27,7 +27,7 @@ const HtmlHead: FC<Props> = ({ title }) => (
     <link
       rel='alternate'
       hrefLang='zh-Hant'
-      href='https://tod-blog-wlunareve.vercel.app/'
+      href='https://tod-blog.vercel.app/'
     />
     <link
       rel='preload'
