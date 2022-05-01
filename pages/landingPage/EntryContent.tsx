@@ -9,11 +9,12 @@ const EntryContent = () => {
 
   return (
     <div className='entry-content relative my-4 flex flex-col justify-center'>
-      <div className='image__wrapper aspect-h-9 aspect-w-16 hidden rounded-2xl md:block'>
+      <div className='image__wrapper aspect-h-9 aspect-w-16 hidden md:block'>
         <Painting
           src='/entryImage.jpg'
           alt='entryImage'
           onLoadingComplete={handlePaintingLoaded}
+          classProps='rounded-tl-[40%] rounded-br-[40%]'
         />
       </div>
       <div

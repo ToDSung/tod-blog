@@ -37,12 +37,13 @@ const Posts: FC<Props> = ({ allPosts }) => {
           return (
             <Link href={`/posts/${post.slug}`} passHref key={index}>
               <div className='post__wrapper cursor-pointer text-center'>
-                <div className=' aspect-w-16 aspect-h-9 mb-4 rounded-lg ring-gray-800 transition hover:ring-4 xl:aspect-h-4 xl:aspect-w-3 '>
+                <div className=' aspect-w-16 aspect-h-9 mb-4 rounded-lg transition hover:ring-4 xl:aspect-h-4 xl:aspect-w-3 '>
                   <Painting
                     src={post.image}
                     onLoadingComplete={
                       index === 0 ? handlePaintingLoaded : () => {}
                     }
+                    classProps='rounded-lg'
                   />
                 </div>
                 <div className='flex flex-col italic'>
