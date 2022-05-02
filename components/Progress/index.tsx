@@ -2,9 +2,7 @@ import { FC } from 'react';
 
 import { Transition } from '@headlessui/react';
 
-type Props = {
-  show: boolean;
-};
+import useLoading from '@/contexts/loading';
 
 const Circle = () => (
   <div
@@ -20,26 +18,29 @@ const Circle = () => (
   </div>
 );
 
-const Progress: FC<Props> = ({ show }) => {
+const Progress = () => {
+  const { loading } = useLoading();
   return (
-    <div className='propgress absolute z-50 flex h-screen w-[99vw] items-center justify-center overflow-x-hidden bg-white	'>
-      <Transition
-        show={show}
-        leave='transition-all duration-1000'
-        leaveFrom='opacity-100'
-        leaveTo='translate-x-28 translate-y-28 opacity-0'
-      >
-        <Circle />
-      </Transition>
-      <Transition
-        show={show}
-        leave='transition-all duration-1000'
-        leaveFrom='translate-y-0 opacity-100'
-        leaveTo='-translate-x-28 -translate-y-28 opacity-0'
-      >
-        <Circle />
-      </Transition>
-    </div>
+    <Transition show={loading} leave='duration-1000'>
+      <div className='propgress absolute z-50 flex h-screen w-[99vw] items-center justify-center overflow-x-hidden bg-white	'>
+        <Transition
+          show={loading}
+          leave='transition-all duration-1000'
+          leaveFrom='opacity-100'
+          leaveTo='translate-x-28 translate-y-28 opacity-0'
+        >
+          <Circle />
+        </Transition>
+        <Transition
+          show={loading}
+          leave='transition-all duration-1000'
+          leaveFrom='translate-y-0 opacity-100'
+          leaveTo='-translate-x-28 -translate-y-28 opacity-0'
+        >
+          <Circle />
+        </Transition>
+      </div>
+    </Transition>
   );
 };
 

@@ -13,10 +13,9 @@ type Props = {
 };
 
 const Posts: FC<Props> = ({ allPosts }) => {
-  const { setLoading } = useLoading();
-  const handlePaintingLoaded = () => {
-    setLoading(false);
-  };
+  const { handleLoadingStart } = useLoading();
+  const handleLoadingFinish = handleLoadingStart();
+  const handlePaintingLoaded = () => handleLoadingFinish();
 
   const postsWithRandomImage = allPosts.map((post, index) => {
     if (post.image) return post;

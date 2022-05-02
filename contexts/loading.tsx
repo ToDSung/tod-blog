@@ -6,24 +6,27 @@ import {
   SetStateAction,
   useContext,
   useEffect,
-  useMemo,
   useState,
 } from 'react';
 
-import { Transition } from '@headlessui/react';
-
 import Progress from '@/components/Progress';
 
-const TIMEOUT = 2000;
+const TIMEOUT = 0;
 
 type initialState = {
   loading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
+  needLoading: boolean;
+  setNeedLoading: Dispatch<SetStateAction<boolean>>;
+  handleLoadingStart: () => Dispatch<SetStateAction<boolean>> | any;
 };
 
 const initialState: initialState = {
   loading: true,
   setLoading: () => {},
+  needLoading: false,
+  setNeedLoading: () => {},
+  handleLoadingStart: () => {},
 };
 
 const loadingContext = createContext(initialState);
@@ -37,12 +40,8 @@ export const LoadingProvider: FC<Props> = ({ children }) => {
   const { loading } = loadingStatus;
   return (
     <loadingContext.Provider value={loadingStatus}>
-      <Transition show={loading} leave='duration-1000'>
-        <Progress show={loading} />
-      </Transition>
-      <Transition show={!loading} enter='duration-1000'>
-        {children}
-      </Transition>
+      <Progress />
+      <div className={`${loading ? 'invisible' : 'block'}`}>{children}</div>
     </loadingContext.Provider>
   );
 };
@@ -53,14 +52,31 @@ const useLoading = () => {
 
 const useProviderLoading = () => {
   const [loading, setLoading] = useState(initialState.loading);
+  const [needLoading, setNeedLoading] = useState(initialState.needLoading);
 
   useEffect(() => {
-    setTimeout(() => setLoading(false), TIMEOUT);
-  }, []);
+    let id: ReturnType<typeof setTimeout>;
+    if (!needLoading) {
+      id = setTimeout(() => setLoading(false), TIMEOUT);
+    }
+
+    return () => {
+      id && clearTimeout(id);
+    };
+  }, [needLoading]);
+
+  const handleLoadingStart = () => {
+    setNeedLoading(true);
+
+    return () => setLoading(false);
+  };
 
   return {
     loading,
     setLoading,
+    needLoading,
+    setNeedLoading,
+    handleLoadingStart,
   };
 };
 

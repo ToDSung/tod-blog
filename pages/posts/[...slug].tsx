@@ -24,10 +24,9 @@ type Props = {
 const Post: FC<Props> = ({ post }) => {
   const router = useRouter();
 
-  const { setLoading } = useLoading();
-  const handlePaintingLoaded = () => {
-    setLoading(false);
-  };
+  const { handleLoadingStart } = useLoading();
+  const handleLoadingFinish = handleLoadingStart();
+  const handlePaintingLoaded = () => handleLoadingFinish();
 
   if (!router.isFallback && !post?.slug) {
     return <ErrorPage statusCode={404} />;

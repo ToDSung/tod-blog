@@ -11,9 +11,10 @@ type Props = {
 const Painting: FC<Props> = ({
   src,
   alt = 'a painting',
-  onLoadingComplete = null,
+  onLoadingComplete = () => {},
   classProps = '',
 }) => {
+  const handleLoadingComplete = () => onLoadingComplete();
   return (
     <>
       {src && (
@@ -25,9 +26,7 @@ const Painting: FC<Props> = ({
             hover-ring object-cover object-center transition-opacity
             ${classProps}
           `}
-          onLoadingComplete={() => {
-            onLoadingComplete && onLoadingComplete();
-          }}
+          onLoadingComplete={handleLoadingComplete}
         />
       )}
     </>

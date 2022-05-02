@@ -1,11 +1,12 @@
+import { useEffect } from 'react';
+
 import Painting from '@/components/painting';
 import useLoading from '@/contexts/loading';
 
 const EntryContent = () => {
-  const { setLoading } = useLoading();
-  const handlePaintingLoaded = () => {
-    setLoading(false);
-  };
+  const { handleLoadingStart } = useLoading();
+  const handleLoadingFinish = handleLoadingStart();
+  const handlePaintingLoaded = () => handleLoadingFinish();
 
   return (
     <div className='entry-content relative my-4 flex flex-col justify-center'>
