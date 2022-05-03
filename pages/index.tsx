@@ -2,7 +2,6 @@ import React from 'react';
 import type { NextPage } from 'next';
 import { GetStaticProps } from 'next';
 
-import Progress from '@/components/Progress';
 import { getAllPostsStaticProps } from '@/lib/api';
 import Post from '@/types/post';
 import LandingPage from './landingPage';

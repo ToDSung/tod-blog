@@ -7,9 +7,10 @@ import Navbar from '@/components/Navbar';
 import { LoadingProvider } from '@/contexts/loading';
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const { head } = pageProps;
   return (
     <>
-      <Head title="Tod's personal blog from TW" />
+      <Head {...head} />
       <LoadingProvider>
         <main id='app' className='app mx-2 flex	justify-center text-justify'>
           <Navbar />

@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import ErrorPage from 'next/error';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 import { join } from 'path';
@@ -15,8 +14,9 @@ import markdownToHtml from '@/lib/markdownToHtml';
 type Props = {
   post: {
     slug?: string;
-    image: string;
     title: string;
+    excerpt: string;
+    image: string;
     content: string;
   };
 };
@@ -33,14 +33,10 @@ const Post: FC<Props> = ({ post }) => {
   }
 
   return router.isFallback ? (
-    // <PostTitle>Loading…</PostTitle>
     <></>
   ) : (
     <>
       <article className='mx-auto mt-4 mb-8 max-w-5xl'>
-        <Head>
-          <title>{post.title}</title>
-        </Head>
         <div className='aspect-h-9 aspect-w-16 mb-4'>
           <Painting
             src={post.image ?? getRandomImageUrl(0)}
@@ -65,18 +61,23 @@ export const getStaticProps = async ({ params }: Params) => {
   const path = join(POSTS_ROOT_NAME, ...params.slug) + '.md';
   const post = getPostByPath(path, [
     'title',
+    'excerpt',
     'image',
     'date',
     'slug',
     'author',
     'content',
-    'ogImage',
-    'coverImage',
   ]);
   const content = await markdownToHtml(post.content || '');
 
   return {
     props: {
+      ...(post.title && {
+        head: {
+          title: post.title,
+          description: post.excerpt ?? null,
+        },
+      }),
       post: {
         ...post,
         content,

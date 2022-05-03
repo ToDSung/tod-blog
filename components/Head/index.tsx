@@ -1,23 +1,22 @@
 import { FC } from 'react';
 import Head from 'next/head';
 
+import Descrition from './description';
+import Title from './title';
+
 type Props = {
   title: string;
+  description: string;
 };
 
-const HtmlHead: FC<Props> = ({ title }) => (
+const HtmlHead: FC<Props> = ({ title, description }) => (
   <Head>
-    <title>{title}</title>
     <meta charSet='UTF-8' />
-    <meta
-      name='description'
-      content='I am ToD 努力嘗試分享的小小前端，希望這邊有任何一篇文章能夠幫助到你！'
-    />
+    <Title value={title} />
+    <Descrition value={description} />
     <meta name='author' content='Tod Sung' />
     <meta property='og:type' content='website' />
-    <meta property='og:title' content={title} />
     <meta property='og:url' content='https://tod-blog.vercel.app/' />
-    <meta property='og:site_name' content={title} />
     <meta property='og:locale' content='zh-tw' />
     <meta
       name='google-site-verification'
