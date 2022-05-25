@@ -1,5 +1,5 @@
 ---
-title: 'CSS style 指南，搭配 stylelint 套件'
+title: '[Note] CSS style 指南，搭配 stylelint 套件'
 image: 'https://picsum.photos/id/119/900/1200'
 excerpt: '記錄了數篇文章的內容，如何撰寫乾淨的 css 程式碼，另外補充了 stylelint 的安裝方式(for vue)'
 date: '2021-07-25T00:00:00.000Z'
@@ -10,18 +10,19 @@ labels: [
 ]
 ---
 
-# css guildline & stylelint
+# [Note] CSS style 指南，搭配 stylelint 套件
 
 ## 出處
 
-此文章用於與辦公室的同事分享，
-是我自行整理及簡單白話翻譯的筆記，
-為了尊重原作者亦或是需要更詳盡的內容，建議以連結內容為優先
+此文章用於與辦公室的同事分享，是我自行整理及簡單白話翻譯的筆記，為了尊重原作者亦或是需要更詳盡的內容，建議以連結內容為優先。
 
-https://github.com/airbnb/css <br>
-https://github.com/ArvinH/css-style-guide <br>
-https://google.github.io/styleguide/htmlcssguide.html <br>
-https://dotblogs.com.tw/explooosion/2018/09/30/141005 <br>
+* [Airbnb CSS / Sass Styleguide](https://github.com/airbnb/css)
+  
+* [Airbnb CSS / Sass 指南](https://github.com/ArvinH/css-style-guide)
+
+* [Google HTML/CSS Style Guide](https://google.github.io/styleguide/htmlcssguide.html)
+
+* [CSS - 運用 Stylelint 養成好習慣](https://dotblogs.com.tw/explooosion/2018/09/30/141005)
 
 # Airbnb CSS / Sass 指南
 
@@ -312,8 +313,7 @@ Mixins 可幫助你的代碼遵循 DRY 原則（Don't Repeat Yourself）、增�
 
 ## Type Selectors
 
-由於效能考量，不要在 CSS 選擇器中使用 element 名稱
-https://www.stevesouders.com/blog/2009/06/18/simplifying-css-selectors/
+由於效能考量，不要在 CSS 選擇器中使用 element 名稱，[reference](https://www.stevesouders.com/blog/2009/06/18/simplifying-css-selectors/)
 
 **Bad**
 

@@ -1,5 +1,5 @@
 ---
-title: '[一起讀源碼] lodash isEmpty'
+title: '[作伙讀 code] lodash isEmpty'
 image: 'https://picsum.photos/id/1040/900/1200'
 excerpt: '撰寫技術文章是個相當務實的方法來提升技術能力，為了給自己最高的自由度，我選擇了利用 NextJs 及 Vecel 自架部落格，與實際工作不同，從功能的思考、介面的設計、技術的挑選、程式的實作，全部都要靠自己獨自完成，就讓我一一細數為了達到標題的目的，我做了什麼處理！'
 date: '2022-05-24T23:51:00.000Z'
@@ -10,7 +10,7 @@ labels: [
 ]
 ---
 
-# [一起讀源碼] lodash isEmpty
+# [作伙讀 code] lodash isEmpty
 
 
 相信只要在職場有工作過一小段時間以後的前端工作者，一定或多或少都使用過 lodash 這個套件，而我自己與同事在 code base 中最常使用的 method 便是其中的 isEmpty，不過最近一段時間也發現這個 method 與我們所想的有些不同，就讓我們一起來看看吧！
@@ -217,7 +217,7 @@ for (const key in value) {
 5. 各式各樣的基本 Js 觀念，例如為了寫這樣的文章我又多了解了 Arguments 跟更清楚了原型鏈的關係。
 6. 更簡潔的寫法，例如 .legnth !== 0 直接 return .length 讓強制轉型做判斷即可 ( 初學者蠻常寫成這樣，當然並非在所有時候都無腦的使用 .length ，沒有絕對必須因地制宜，永遠記得追求可讀性。）
 
-### reference
+## reference
 
 1. [該來理解 JavaScript 的原型鍊了](https://blog.huli.tw/2017/08/27/the-javascripts-prototype-chain/)
 2. [lodash源码分析之isPrototype](https://github.com/HeftyKoo/pocket-lodash/issues/196)

@@ -6,8 +6,9 @@
   background-color: #ffffff;
   font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
   font-size: 16px;
-  line-height: 1.5;
+  line-height: 1.6;
   word-wrap: break-word;
+  text-align: start;
 }
 
 .markdown-body .octicon {
@@ -539,7 +540,11 @@
 .markdown-body pre,
 .markdown-body details {
   margin-top: 0;
-  margin-bottom: 16px;
+  margin-bottom: 1rem;
+}
+
+.markdown-body li {
+  margin-bottom: .25rem;
 }
 
 .markdown-body blockquote>:first-child {

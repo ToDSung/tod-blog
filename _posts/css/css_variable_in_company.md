@@ -1,5 +1,5 @@
 ---
-title: '公司專案的 CSS variable 寫法'
+title: '[Note] 公司專案的 CSS variable 寫法'
 image: 'https://picsum.photos/id/139/900/1200'
 excerpt: '這篇文章的目的是給公司的 UIUX 工程師幾個將 CSS 變數提出的範例，僅是我目前所知道的方式，最重要的事情是(不只是 CSS 寫法)，有很多的方法可以解決問題，但要根據情境找到盡量優秀的方式來解決。'
 date: '2021-07-28T00:00:00.000Z'
@@ -10,23 +10,27 @@ labels: [
 ]
 ---
 
-# 公司專案的 CSS variable 寫法
+# [Note] 公司專案的 CSS variable 寫法
 
 這篇文章的目的是給公司的 UIUX 工程師幾個將 CSS 變數提出的範例，僅是我目前所知道的方式，最重要的事情是(不只是 CSS 寫法)，有很多的方法可以解決問題，但要根據情境找到盡量優秀的方式來解決。
 
-## 套件
+### 套件
 使用 vue2 + vuetify2 + scss + webpack5
 
-## scss (recommend)
+### scss (recommend)
 **優點**
+
 搭配 .vue scoped 不容易汙染
 import 也相對簡單
 
 **缺點**
+
 相對後面的方法暫時沒想到什麼問題，(因為相對單純)
 
 **用法**
+
 使用 $ 號宣告
+
 ```scss
 $grey: #a2a2a2;
 $orange: #f39800;
@@ -45,14 +49,18 @@ h2 {
 出來的效果
 ![](https://i.imgur.com/V8DzrU4.png)
 
-## 搭配 vue 用 JS
+### 搭配 vue 用 JS
+
 **優點**
+
 適合用來處理搭配 JS 的邏輯運算
 
 **缺點**
+
 子元件會一直繼承下去，所以要小心汙染
 
 **用法**
+
 分別寫在 .vue 中三個區塊
 ```html=
 <template>
@@ -85,10 +93,12 @@ computed: {
 ## 傳統作法
 
 **優點&&缺點**
+
 整個網頁都會吃到這些 CSS 變數，好處就是大家都能用，壞處就是可能會重複命名導致汙染
 建議可以擁有一個自己的命名模式
 
 **用法**
+
 寫一個 CSS or scss 檔案
 ```css=
 :root {
@@ -137,13 +147,17 @@ import '../css/root.scss'
 
 
 ## 搭配 vuetify
+
 **優點**
+
 能夠快速啟用幾個相近的顏色，做好不錯的風格
 
 **缺點**
+
 被使用的框架限制(其實就是使用框架的缺點)
 
 **用法**
+
 options 中 customPropertiies 設為 true
 在進入點 import vuetify 時， 添加新的 theme 變數，
 
