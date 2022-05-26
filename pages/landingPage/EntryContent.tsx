@@ -1,36 +1,71 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-import Painting from '@/components/painting';
-import useLoading from '@/contexts/loading';
+import Typed from 'typed.js';
+
+const typedOptions = {
+  typeSpeed: 50,
+  showCursor: false,
+};
 
 const EntryContent = () => {
-  const { handleLoadingStart } = useLoading();
-  const handleLoadingFinish = handleLoadingStart();
-  const handlePaintingLoaded = () => handleLoadingFinish();
+  const [isTitleFinished, setIsTitleFinished] = useState(false);
+
+  const titleElement = useRef(null);
+  const titleTyped: any = useRef(null);
+
+  const subtitleElement = useRef(null);
+  const subtitleTyped: any = useRef(null);
+
+  useEffect(() => {
+    if (!titleElement.current) {
+      return;
+    }
+
+    const options = {
+      strings: ['I am ToD'],
+      onComplete: () => setIsTitleFinished(true),
+      ...typedOptions,
+    };
+
+    titleTyped.current = new Typed(titleElement.current, options);
+
+    return () => {
+      titleTyped.current.destroy();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!subtitleElement.current || !isTitleFinished) {
+      return;
+    }
+
+    const options = {
+      strings: ['努力嘗試分享的小小前端\n希望這邊有任何一篇文章能夠幫助到你！'],
+      ...typedOptions,
+    };
+
+    subtitleTyped.current = new Typed(subtitleElement.current, options);
+
+    return () => {
+      subtitleTyped.current.destroy();
+    };
+  }, [isTitleFinished]);
 
   return (
-    <div className='entry-content relative my-4 flex flex-col justify-center'>
-      <div className='image__wrapper aspect-h-9 aspect-w-16 hidden md:block'>
-        <Painting
-          src='/entryImage.jpg'
-          alt='entryImage'
-          onLoadingComplete={handlePaintingLoaded}
-          classProps='rounded-tl-[40%] rounded-br-[40%]'
-        />
-      </div>
+    <div className='entry-content relative my-4 flex flex-col items-center justify-center md:h-[50vh]'>
       <div
-        className='text__wrapper left-[10vw] bottom-0 flex h-full w-full flex-col items-center 
-          justify-center rounded-tl-[30%] rounded-tr-[60%] rounded-bl-[37%]
-          rounded-br-[40%] bg-white p-5 sm:w-96 md:absolute md:h-96
+        className='text__wrapper flex h-full w-full flex-col items-start
+          justify-center rounded-md  p-5 sm:max-w-[1280px] md:h-64
         '
       >
-        <h1 className="introduction__title mb-4 font-['DiamorScript'] text-6xl text-amber-800 sm:text-8xl">
-          I am ToD
-        </h1>
-        <div className="introduction__content font-['JasonHandwriting'] text-2xl sm:text-3xl">
-          <p>努力嘗試分享的小小前端</p>
-          <p>希望這邊有任何一篇文章能夠幫助到你！</p>
-        </div>
+        <h1
+          ref={titleElement}
+          className="introduction__title mb-4 font-['DiamorScript'] text-6xl text-amber-200 sm:text-8xl"
+        />
+        <div
+          ref={subtitleElement}
+          className="introduction__content font-['JasonHandwriting'] text-2xl sm:text-3xl"
+        />
       </div>
     </div>
   );

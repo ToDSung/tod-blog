@@ -21,7 +21,7 @@ const Sidebar: FC<Props> = ({ skills = [] }) => {
   return (
     <aside
       id='cv-sidebar'
-      className='cv-sidebar flex flex-col items-center bg-teal-800 px-8 text-white'
+      className='cv-sidebar flex flex-col items-center rounded bg-sub-canvas px-8 text-white'
     >
       <span className='cv-sidebar__title mt-4 text-3xl sm:mt-8'>宋明謙</span>
       <span>Tod Sung</span>

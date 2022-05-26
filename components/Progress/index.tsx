@@ -22,7 +22,7 @@ const Progress = () => {
   const { loading } = useLoading();
   return (
     <Transition show={loading} leave='duration-1000'>
-      <div className='propgress absolute z-50 flex h-screen w-[99vw] items-center justify-center overflow-x-hidden bg-white	'>
+      <div className='propgress absolute z-50 flex h-screen w-[99vw] items-center justify-center bg-white overflow-x-hidden	'>
         <Transition
           show={loading}
           leave='transition-all duration-1000'

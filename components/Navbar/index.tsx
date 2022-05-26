@@ -1,13 +1,13 @@
 import React from 'react';
 import { FiGithub, FiLinkedin } from 'react-icons/fi';
-import { GrArticle } from 'react-icons/gr';
+import { MdArticle } from 'react-icons/md';
 import { SiAboutdotme } from 'react-icons/si';
 import Link from 'next/link';
 
 import ExternalLink from '../ExternalLink';
 
 const TABS = [
-  { name: '文章清單', link: '/posts', icon: GrArticle },
+  { name: '文章清單', link: '/posts', icon: MdArticle },
   { name: '關於我', link: '/cv', icon: SiAboutdotme },
 ];
 
@@ -22,8 +22,8 @@ const SOCIAL_MEDIAS = [
 const Navbar = () => {
   return (
     <>
-      <nav className='nav fixed z-10 flex min-h-[3.25rem] w-screen justify-center border-b-2 bg-white'>
-        <div className='nav__container flex w-[80vw] max-w-[1680px] flex-wrap items-center justify-between sm:flex-row'>
+      <nav className='nav fixed z-10 flex min-h-[3.25rem] w-screen justify-center border-b-2 border-default-border bg-default-canvas'>
+        <div className='nav__container flex w-[80vw] max-w-[1280px] flex-wrap items-center justify-between sm:flex-row'>
           <div className='flex flex-wrap'>
             <Link href='/' passHref>
               <span className='cursor-pointer text-2xl font-bold'>ToD</span>

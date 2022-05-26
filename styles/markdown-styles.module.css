@@ -2,8 +2,8 @@
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   margin: 0;
-  color: #24292f;
-  background-color: #ffffff;
+  color: var(--default-text);
+  background-color: var(--default-canvas);
   font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
   font-size: 16px;
   line-height: 1.6;
@@ -48,7 +48,7 @@
 
 .markdown-body a {
   background-color: transparent;
-  color: #0969da;
+  color: #8cb4ff;
   text-decoration: none;
 }
 
@@ -81,7 +81,7 @@
 
 .markdown-body mark {
   background-color: #fff8c5;
-  color: #24292f;
+  color: var(--default-text);
 }
 
 .markdown-body small {
@@ -108,7 +108,7 @@
   border-style: none;
   max-width: 100%;
   box-sizing: content-box;
-  background-color: #ffffff;
+  background-color: var(--default-canvas);
 }
 
 .markdown-body code,
@@ -236,7 +236,7 @@
   padding: 3px 5px;
   font: 11px ui-monospace,SFMono-Regular,SF Mono,Menlo,Consolas,Liberation Mono,monospace;
   line-height: 10px;
-  color: #24292f;
+  color: var(--default-text);
   vertical-align: middle;
   background-color: #f6f8fa;
   border: solid 1px rgba(175,184,193,0.2);
@@ -370,7 +370,7 @@
 
 .markdown-body .pl-smi,
 .markdown-body .pl-s .pl-s1 {
-  color: #24292f;
+  color: var(--default-text);
 }
 
 .markdown-body .pl-ent {
@@ -428,12 +428,12 @@
 
 .markdown-body .pl-mi {
   font-style: italic;
-  color: #24292f;
+  color: var(--default-text);
 }
 
 .markdown-body .pl-mb {
   font-weight: bold;
-  color: #24292f;
+  color: var(--default-text);
 }
 
 .markdown-body .pl-md {
@@ -569,7 +569,7 @@
 .markdown-body h4 .octicon-link,
 .markdown-body h5 .octicon-link,
 .markdown-body h6 .octicon-link {
-  color: #24292f;
+  color: var(--default-text);
   vertical-align: middle;
   visibility: hidden;
 }
@@ -679,7 +679,7 @@
 }
 
 .markdown-body table tr {
-  background-color: #ffffff;
+  background-color: var(--default-canvas);
   border-top: 1px solid hsla(210,18%,87%,1);
 }
 
@@ -729,7 +729,7 @@
   display: block;
   padding: 5px 0 0;
   clear: both;
-  color: #24292f;
+  color: var(--default-text);
 }
 
 .markdown-body span.align-center {
@@ -839,7 +839,8 @@
   overflow: auto;
   font-size: 85%;
   line-height: 1.45;
-  background-color: #f6f8fa;
+  background-color: #0d1117;
+  border: 1px solid #858585;
   border-radius: 6px;
 }
 
@@ -869,7 +870,7 @@
 .markdown-body .csv-data .blob-num {
   padding: 10px 8px 9px;
   text-align: right;
-  background: #ffffff;
+  background: var(--default-canvas);
   border: 0;
 }
 
@@ -905,12 +906,12 @@
   left: -24px;
   pointer-events: none;
   content: "";
-  border: 2px solid #0969da;
+  border: 2px solid #8cb4ff;
   border-radius: 6px;
 }
 
 .markdown-body .footnotes li:target {
-  color: #24292f;
+  color: var(--default-text);
 }
 
 .markdown-body .footnotes .data-footnote-backref g-emoji {

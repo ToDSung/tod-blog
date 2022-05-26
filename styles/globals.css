@@ -34,3 +34,11 @@ a {
     @apply flex items-center justify-center rounded-full border-r-4 border-t-4 border-l-0 border-b-0 border-transparent;
   }
 }
+
+:root {
+  --default-text: '#c9d1d9';
+  --default-canvas: '#0d1117';
+  --default-border: '#858585';
+  --link-text: '#8cb4ff';
+  color-scheme: dark;
+}

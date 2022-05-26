@@ -13,10 +13,6 @@ type Props = {
 };
 
 const Posts: FC<Props> = ({ allPosts }) => {
-  const { handleLoadingStart } = useLoading();
-  const handleLoadingFinish = handleLoadingStart();
-  const handlePaintingLoaded = () => handleLoadingFinish();
-
   const postsWithRandomImage = allPosts.map((post, index) => {
     if (post.image) return post;
 
@@ -37,13 +33,7 @@ const Posts: FC<Props> = ({ allPosts }) => {
             <Link href={`/posts/${post.slug}`} passHref key={index}>
               <div className='post__wrapper cursor-pointer text-center'>
                 <div className=' aspect-w-16 aspect-h-9 mb-4 rounded-lg transition hover:ring-4 xl:aspect-h-4 xl:aspect-w-3 '>
-                  <Painting
-                    src={post.image}
-                    onLoadingComplete={
-                      index === 0 ? handlePaintingLoaded : () => {}
-                    }
-                    classProps='rounded-lg'
-                  />
+                  <Painting src={post.image} classProps='rounded-lg' />
                 </div>
                 <div className='flex flex-col italic'>
                   <div className='flex flex-wrap justify-center text-lg'>
