@@ -1,39 +1,35 @@
 {
-  "extends": [
-    "next/core-web-vitals",
-    "plugin:prettier/recommended", 
-    "plugin:import/recommended"
-  ],
-  "plugins": [
-    "prettier",
-    "import", 
-    "simple-import-sort"
-  ],
-  "rules": {
-    "simple-import-sort/imports": [
-      2,
-      {
-        "groups": [
-          // Side effect imports.
-          ["^\\u0000"],
-          // React, Redux imports
-          ["^react", "^redux", "^next"],
-          // Packages
-          // Things that start with a letter (or digit or underscore)
-          ["^\\w"],
-          // Packages.
-          // Things that start with a @. usually @material-ui
-          ["^@\\w"],
-          // Absolute imports and other imports such as Vue-style `@/foo`.
-          // Anything that does not start with a dot.
-          // Relative imports.
-          // Anything that starts with a dot.
-          ["^[^.]", "^\\."]
+  "root": true,
+  "ignorePatterns": ["**/*"],
+  "plugins": ["@nrwl/nx"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "rules": {
+        "@nrwl/nx/enforce-module-boundaries": [
+          "error",
+          {
+            "enforceBuildableLibDependency": true,
+            "allow": [],
+            "depConstraints": [
+              {
+                "sourceTag": "*",
+                "onlyDependOnLibsWithTags": ["*"]
+              }
+            ]
+          }
         ]
       }
-    ],
-    "prettier/prettier": 2,
-    "react-hooks/rules-of-hooks": 2,
-    "react/self-closing-comp": 2
-  }
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "extends": ["plugin:@nrwl/nx/typescript"],
+      "rules": {}
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "extends": ["plugin:@nrwl/nx/javascript"],
+      "rules": {}
+    }
+  ]
 }
