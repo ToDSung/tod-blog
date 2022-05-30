@@ -1,18 +1,26 @@
-import { AppProps } from 'next/app';
-import Head from 'next/head';
-import './styles.css';
+import '@/styles/globals.css';
 
-function CustomApp({ Component, pageProps }: AppProps) {
+import type { AppProps } from 'next/app';
+
+import Head from '@/components/Head';
+import Navbar from '@/components/Navbar';
+
+function MyApp({ Component, pageProps }: AppProps) {
+  const { head } = pageProps;
   return (
     <>
-      <Head>
-        <title>Welcome to tod-blog!</title>
-      </Head>
-      <main className="app">
-        <Component {...pageProps} />
+      <Head {...head} />
+      <main
+        id='app'
+        className='app flex justify-center	bg-default-canvas px-2 text-justify text-default-text'
+      >
+        <Navbar />
+        <div className='component-wrapper relative mt-[3.2rem] w-full max-w-[1280px] sm:w-[80vw]'>
+          <Component {...pageProps} />
+        </div>
       </main>
     </>
   );
 }
 
-export default CustomApp;
+export default MyApp;
