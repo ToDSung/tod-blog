@@ -6,6 +6,10 @@
     "next/core-web-vitals",
     "plugin:import/recommended"
   ],
+  "plugins": [
+    "import", 
+    "simple-import-sort"
+  ],
   "ignorePatterns": ["!**/*"],
   "overrides": [
     {

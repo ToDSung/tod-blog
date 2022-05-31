@@ -4,7 +4,7 @@ const Content = () => {
   return (
     <div
       id='cv-content'
-      className='cv-content mx-0 w-full overflow-y-auto rounded bg-slate-800 px-4 pt-2 scrollbar-thin scrollbar-thumb-gray-900 md:px-4'
+      className='cv-content scrollbar-thin scrollbar-thumb-gray-900 mx-0 w-full overflow-y-auto rounded bg-slate-800 px-4 pt-2 md:px-4'
     >
       <section className='cv-content__section article mb-2 flex flex-col'>
         <h1 className='cv-content__title relative flex items-center justify-between text-3xl'>
