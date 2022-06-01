@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { from, fromEvent, race } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-const timeout: (ms: number) => Promise<Function> = ms => {
+const timeout: (ms: number) => Promise<() => void> = ms => {
   return new Promise(resolve => setTimeout(resolve, ms));
 };
 

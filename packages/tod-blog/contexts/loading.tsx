@@ -23,10 +23,16 @@ type initialState = {
 
 const initialState: initialState = {
   loading: true,
-  setLoading: () => {},
+  setLoading: () => {
+    // do nothing.
+  },
   needLoading: false,
-  setNeedLoading: () => {},
-  handleLoadingStart: () => {},
+  setNeedLoading: () => {
+    // do nothing.
+  },
+  handleLoadingStart: () => {
+    // do nothing.
+  },
 };
 
 const loadingContext = createContext(initialState);

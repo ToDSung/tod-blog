@@ -12,7 +12,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head {...head} />
       <main
         id='app'
-        className='app flex justify-center	bg-default-canvas px-2 text-justify text-default-text'
+        className='app bg-default-canvas text-default-text flex justify-center px-2 text-justify'
       >
         <Navbar />
         <div className='component-wrapper relative mt-[3.2rem] w-full max-w-[1280px] sm:w-[80vw]'>

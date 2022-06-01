@@ -1,18 +1,16 @@
-import { FC } from 'react';
-
 import { Transition } from '@headlessui/react';
 
 import useLoading from '@/contexts/loading';
 
 const Circle = () => (
   <div
-    className={`spinner spinner--max absolute h-12 w-12 animate-[spin_3s_linear_infinite] border-fountain-blue`}
+    className={`spinner spinner--max border-fountain-blue absolute h-12 w-12 animate-[spin_3s_linear_infinite]`}
   >
     <div
-      className={`spinner spinner--mid h-10 w-10 animate-[spin_5s_linear_infinite] border-fountain-blue`}
+      className={`spinner spinner--mid border-fountain-blue h-10 w-10 animate-[spin_5s_linear_infinite]`}
     >
       <div
-        className={`spinner spinner--min h-8 w-8 animate-[spin_5s_linear_infinite] border-fountain-blue`}
+        className={`spinner spinner--min border-fountain-blue h-8 w-8 animate-[spin_5s_linear_infinite]`}
       />
     </div>
   </div>
@@ -22,7 +20,7 @@ const Progress = () => {
   const { loading } = useLoading();
   return (
     <Transition show={loading} leave='duration-1000'>
-      <div className='propgress absolute z-50 flex h-screen w-[99vw] items-center justify-center bg-white overflow-x-hidden	'>
+      <div className='propgress absolute z-50 flex h-screen w-[99vw] items-center justify-center overflow-x-hidden bg-white	'>
         <Transition
           show={loading}
           leave='transition-all duration-1000'

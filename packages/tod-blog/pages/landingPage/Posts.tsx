@@ -3,7 +3,6 @@ import { GetStaticProps } from 'next';
 import Link from 'next/link';
 
 import Painting from '@/components/painting';
-import useLoading from '@/contexts/loading';
 import { getAllPostsStaticProps } from '@/lib/api';
 import { getRandomImageUrl } from '@/lib/image';
 import Post from '@/types/post';
@@ -32,7 +31,7 @@ const Posts: FC<Props> = ({ allPosts }) => {
           return (
             <Link href={`/posts/${post.slug}`} passHref key={index}>
               <div className='post__wrapper cursor-pointer text-center'>
-                <div className=' aspect-w-16 aspect-h-9 mb-4 rounded-lg transition hover:ring-4 xl:aspect-h-4 xl:aspect-w-3 '>
+                <div className=' aspect-w-16 aspect-h-9 xl:aspect-h-4 xl:aspect-w-3 mb-4 rounded-lg transition hover:ring-4 '>
                   <Painting src={post.image} classProps='rounded-lg' />
                 </div>
                 <div className='flex flex-col italic'>

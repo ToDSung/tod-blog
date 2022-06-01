@@ -1,4 +1,4 @@
-const ID_LIMIT: number = 1000;
+const ID_LIMIT = 1000;
 
 export const getRandomImageUrl = (index: number) => {
   const randomIdList = [...Array(ID_LIMIT)]

@@ -6,7 +6,7 @@ import { join } from 'path';
 
 import Painting from '@/components/painting';
 import MarkdownDetail from '@/components/Post/MarkdownDetail';
-import { getAllPosts, getPostByPath, POSTS_ROOT_NAME } from '@/lib/api';
+import { getAllPosts, getPostByPath } from '@/lib/api';
 import { getRandomImageUrl } from '@/lib/image';
 import markdownToHtml from '@/lib/markdownToHtml';
 

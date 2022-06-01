@@ -16,7 +16,7 @@ import type { Restaurants } from '@/types/map';
 import { iconRestaurant } from '../Icon/map/restaurant';
 
 const DEFAULT_CENTER: LatLngTuple = [25.04, 121.5];
-const DEFAULT_ZOOM_LEVEL: number = 13;
+const DEFAULT_ZOOM_LEVEL = 13;
 
 const restaurants: Restaurants = [
   {

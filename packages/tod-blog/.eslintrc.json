@@ -11,6 +11,19 @@
     "simple-import-sort"
   ],
   "ignorePatterns": ["!**/*"],
+  "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "typescript": {
+        "project": ["packages/tod-blog/tsconfig.json"]
+      },
+      "node": {
+        "project": ["package/tod-blog/tsconfig.json"]
+      }
+    }
+  },
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],

@@ -1,7 +1,7 @@
-import L from 'leaflet';
+import { Icon, Point } from 'leaflet';
 
-export const iconRestaurant = new L.Icon({
+export const iconRestaurant = new Icon({
   iconUrl: '/icon/restaurant.png',
-  iconSize: new L.Point(20, 20),
+  iconSize: new Point(20, 20),
   className: 'leaflet-div-icon',
 });

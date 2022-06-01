@@ -5,14 +5,14 @@ import Post from '@/types/post';
 
 const PostDetail: FC<Post> = ({ title, slug, excerpt, labels, date }) => {
   return (
-    <div className='list my-4 flex flex-col rounded border border-item-border bg-sub-canvas py-2'>
+    <div className='list border-item-border bg-sub-canvas my-4 flex flex-col rounded border py-2'>
       <div className='list__content mx-auto w-11/12 xl:w-4/5'>
         <Link href={`/posts/${slug}`} passHref>
           <div className='mb-2'>
             <span className='list__title text-blue-grey-800 cursor-pointer text-2xl font-semibold leading-8'>
               {title}
             </span>
-            <p className='list__introduction mx-0 my-2 h-12 cursor-pointer text-ellipsis text-gray-300 line-clamp-2'>
+            <p className='list__introduction line-clamp-2 mx-0 my-2 h-12 cursor-pointer text-ellipsis text-gray-300'>
               {excerpt}
             </p>
           </div>

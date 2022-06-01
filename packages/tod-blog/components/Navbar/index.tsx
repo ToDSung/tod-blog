@@ -1,4 +1,3 @@
-import React from 'react';
 import { FiGithub, FiLinkedin } from 'react-icons/fi';
 import { MdArticle } from 'react-icons/md';
 import { SiAboutdotme } from 'react-icons/si';
@@ -22,7 +21,7 @@ const SOCIAL_MEDIAS = [
 const Navbar = () => {
   return (
     <>
-      <nav className='nav fixed z-10 flex min-h-[3.25rem] w-screen justify-center border-b-2 border-default-border bg-default-canvas'>
+      <nav className='nav border-default-border bg-default-canvas fixed z-10 flex min-h-[3.25rem] w-screen justify-center border-b-2'>
         <div className='nav__container flex w-[80vw] max-w-[1280px] flex-wrap items-center justify-between sm:flex-row'>
           <div className='flex flex-wrap'>
             <Link href='/' passHref>

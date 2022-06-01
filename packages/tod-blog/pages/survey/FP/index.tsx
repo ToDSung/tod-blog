@@ -89,14 +89,14 @@ const filterDirectory = filter(
   ])
 );
 
-const isLayer: (layer: number) => Function = layer =>
+const isLayer = layer =>
   flow([
     get('layer'), //
     isEqual(layer),
   ]);
 
 const isLayer1 = isLayer(1);
-const isLayer2 = isLayer(2);
+// const isLayer2 = isLayer(2);
 
 const isLabelCsvExist = some(isLayer1 && isFileCsv);
 
