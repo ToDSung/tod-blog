@@ -1,18 +1,8 @@
+import { TreeNode } from '../../structure/TreeNode';
+
 /**
  * Definition for a binary tree node.
  */
-
-export class TreeNode {
-  val: number;
-  left: TreeNode | null;
-  right: TreeNode | null;
-
-  constructor(val: number, left?: TreeNode, right?: TreeNode) {
-    this.val = val === undefined ? 0 : val;
-    this.left = left === undefined ? null : left;
-    this.right = right === undefined ? null : right;
-  }
-}
 
 // 先拜訪左子節點，再拜訪父節點，最後拜訪右子節點
 /**

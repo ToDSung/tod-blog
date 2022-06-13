@@ -1,4 +1,5 @@
-import { inorderTraversal, TreeNode } from '.';
+import { TreeNode } from '../../structure/TreeNode';
+import { inorderTraversal } from '.';
 
 describe('0094 Binary Tree Inorder Traversal', () => {
   it('should work', () => {
