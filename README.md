@@ -7,3 +7,12 @@ New Blog to share my life
 * food / music
 * life experience
 
+## nx commands
+
+nx generate @nrwl/js:lib {libName}
+
+nx generate @nrwl/next:application {applicationName}
+
+nx test {libName} -- test-file {directoryName}
+
+nx build {libName/applicationName}

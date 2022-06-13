@@ -2,6 +2,7 @@
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
+    "implementation": "packages/implementation",
     "leetcode-practice": "packages/leetcode-practice",
     "tod-blog": "packages/tod-blog",
     "tod-blog-e2e": "packages/tod-blog-e2e"
