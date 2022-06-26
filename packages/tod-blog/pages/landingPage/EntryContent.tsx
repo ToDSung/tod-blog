@@ -54,8 +54,8 @@ const EntryContent = () => {
   return (
     <div className='entry-content relative my-4 flex flex-col items-center justify-center md:h-[50vh]'>
       <div
-        className='text__wrapper flex h-full w-full flex-col items-start
-          justify-center rounded-md  p-5 sm:max-w-[1280px] md:h-64
+        className='text__wrapper flex h-full min-h-[16rem] w-full flex-col
+          items-start justify-center rounded-md p-5 sm:max-w-[1280px] md:h-64
         '
       >
         <h1
