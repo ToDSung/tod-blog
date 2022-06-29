@@ -11,7 +11,7 @@ const Content = () => {
           Profile
         </h1>
         <p className='profile__content indent-8 leading-8'>
-          三年的網頁開發經驗，建置具備 i18n，RWD
+          三年的網頁開發經驗，建置具備 i18n, RWD
           的大型地圖互動網站，亦有快速迭代提供專業人員操作的數個小系統經驗。
           前端使用 JavaScript 後端使用 Node.js，Python，
           除了發展系統，擔任小組骨幹，經常幫助團隊成員解決問題，與主管討論如何優化開發流程並且協助面試新夥伴。
@@ -24,7 +24,23 @@ const Content = () => {
           Employment History
         </h1>
         <Article
-          title='資拓宏宇氣象部門 - 前、全端工程師'
+          title='HTC DeepQ AI Healthcare - 資深前端工程師'
+          date='Jan 2018 ~ Jul 2018'
+          paragraph='擔任資深前端工程師，參與產品釋出，與另外兩名前端開發人員互相 code review。'
+          ulContents={[
+            {
+              title: '系統重構',
+              content: [
+                '與專案成員重構公司產品，增進網頁效能，提升可讀性、可維護性。',
+                '優化可複用 React 元件及專案函式庫。',
+                '實作產品新功能，用以幫助使用者能快速清理、整理資料。',
+                '工作之餘，透過開發個人部落格學習 TypeScript 以及 NextJs。',
+              ],
+            },
+          ]}
+        />
+        <Article
+          title='資拓宏宇氣象部門 - 軟體工程師'
           date='Apr 2019 ~ Aug 2021'
           paragraph='擔任全端工程師，負責氣象局專案業務，解決客戶需求議題、設計網頁架構、實作系統程式、串接即時資料，提供實時資料查詢、各式不同氣象參數整合的地圖互動網站。'
           ulContents={[
