@@ -25,7 +25,7 @@ const Content = () => {
         </h1>
         <Article
           title='HTC DeepQ AI Healthcare - 資深前端工程師'
-          date='Jan 2018 ~ Jul 2018'
+          date='Oct 2021 ~ Current'
           paragraph='擔任資深前端工程師，參與產品釋出，與另外兩名前端開發人員互相 code review。'
           ulContents={[
             {
@@ -41,7 +41,7 @@ const Content = () => {
         />
         <Article
           title='資拓宏宇氣象部門 - 軟體工程師'
-          date='Apr 2019 ~ Aug 2021'
+          date='Apr 2019 ~ Oct 2021'
           paragraph='擔任全端工程師，負責氣象局專案業務，解決客戶需求議題、設計網頁架構、實作系統程式、串接即時資料，提供實時資料查詢、各式不同氣象參數整合的地圖互動網站。'
           ulContents={[
             {
