@@ -1,4 +1,4 @@
-import Article from '../Article';
+import Article from '@/components/cv/Article';
 
 const Content = () => {
   return (
@@ -11,10 +11,10 @@ const Content = () => {
           Profile
         </h1>
         <p className='profile__content indent-8 leading-8'>
-          三年的網頁開發經驗，建置具備 i18n, RWD
-          的大型地圖互動網站，亦有快速迭代提供專業人員操作的數個小系統經驗。
+          三年的網頁開發經驗，建置過涵蓋 i18n, RWD
+          的地圖互動網站，亦有快速迭代提供專業人員操作的數個小系統經驗。
           前端使用 JavaScript 後端使用 Node.js，Python，
-          除了發展系統，擔任小組骨幹，經常幫助團隊成員解決問題，與主管討論如何優化開發流程並且協助面試新夥伴。
+          除了開發系統，與團隊成員互助解決問題，與主管討論如何優化開發流程並且協助面試新夥伴，
           工作之餘閱讀技術文章，分享給組員，對技術富有熱忱，具備有效解決問題的自信。
         </p>
       </section>
@@ -31,9 +31,10 @@ const Content = () => {
             {
               title: '系統重構',
               content: [
-                '與專案成員重構公司產品，增進網頁效能，提升可讀性、可維護性。',
-                '優化可複用 React 元件及專案函式庫。',
-                '實作產品新功能，用以幫助使用者能快速清理、整理資料。',
+                '與團隊成員重構公司產品，增進網頁效能，提升程式碼可讀性、可維護性。',
+                '分類、重整可複用 React 元件及專案函式庫。',
+                '實作產品新功能，用以幫助使用者能快速清理、整理供給 AI 訓練用資料集',
+                '維護、開發以 Vue，Vuetify，TypeScript，gRPC 為基底的系統網站。',
                 '工作之餘，透過開發個人部落格學習 TypeScript 以及 NextJs。',
               ],
             },
