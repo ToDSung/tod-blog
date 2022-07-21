@@ -27,7 +27,7 @@ const Article: FC<Props> = ({
       {titleLink ? (
         <ExternalLink href={titleLink}>
           <h2
-            className={`article__title my-1 text-xl font-bold ${
+            className={`article__title  my-1  font-bold ${
               titleLink && 'article__title--has-link'
             }`}
           >
