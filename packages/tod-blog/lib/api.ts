@@ -8,7 +8,13 @@ type GetFullPath = {
   (path: string): string;
 };
 
-const getFullPath: GetFullPath = path => join(process.cwd(), path);
+const getFullPath: GetFullPath = path => {
+  if (!path.startsWith(POSTS_ROOT_NAME)) {
+    return join(process.cwd(), `${POSTS_ROOT_NAME}/${path}`);
+  }
+
+  return join(process.cwd(), path);
+};
 
 type GetPostFullSlugs = {
   (path?: string): string[];
@@ -45,7 +51,12 @@ export const getPostByPath: GetPostByPath = (path, fields = []) => {
   // Ensure only the minimal needed data is exposed
   fields.forEach(field => {
     if (field === 'slug') {
-      const slug = path.split('/').slice(1).join('/').replace(/\.md$/, '');
+      const slug = path
+        .replace(POSTS_ROOT_NAME, '')
+        .split('/')
+        .slice(1)
+        .join('/')
+        .replace(/\.md$/, '');
       items[field] = slug;
     }
     if (field === 'content') {
