@@ -1,7 +1,9 @@
 import { FC } from 'react';
 
-import Skill from '@/components/cv/Skill';
+import UnorderedList from '@/components/List/UnorderedList';
+import Paragraph from '@/components/Paragrath';
 import type Icon from '@/types/icon';
+import Skill from './Skill';
 
 type Props = {
   skills: {
@@ -24,23 +26,27 @@ const Sidebar: FC<Props> = ({ skills = [] }) => {
       className='cv-sidebar bg-sub-canvas flex flex-col items-start rounded px-4 pt-2 text-white md:items-center md:px-8'
     >
       <span className='cv-sidebar__title text-3xl'>宋明謙</span>
-      <span>Tod Sung</span>
-      <span>前端工程師</span>
-      <ul className='details my-2 ml-6 flex w-full list-disc flex-col md:ml-12'>
-        <li>0975-871-937</li>
-        <li>wlunareve@gmail.com</li>
-        <li>中正大學 資訊管理學系</li>
-      </ul>
-      <div className='about my-2 flex flex-col gap-2'>
+      <span className='leading-7'>Tod Sung</span>
+      <span className='leading-7'>前端工程師</span>
+      <div className='md:w-full'>
+        <UnorderedList
+          items={[
+            '0975-871-937',
+            'wlunareve@gmail.com',
+            '中正大學 資訊管理學系',
+          ]}
+        />
+      </div>
+      <div className='about my-1 flex flex-col gap-2'>
         {aboutContents.map((about, index) => (
-          <p key={index} className='about__item text-left indent-8'>
+          <Paragraph key={index} className='about__item'>
             {about}
-          </p>
+          </Paragraph>
         ))}
       </div>
-      <div className='skills mb-4 flex flex-col self-start'>
+      <div className='skills flex flex-col'>
         <span className='skills__title text-3xl'>skills</span>
-        <div className='skills__content mt-4 grid grid-cols-2 gap-4'>
+        <div className='skills__content mt-4 grid grid-cols-2 gap-2'>
           {skills.map(({ name, icon }) => (
             <Skill key={name} name={name} icon={icon} />
           ))}

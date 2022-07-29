@@ -1,4 +1,5 @@
-import Article from '@/components/cv/Article';
+import Paragraph from '@/components/Paragrath';
+import Article from './Article';
 
 const Content = () => {
   return (
@@ -7,18 +8,18 @@ const Content = () => {
       className='cv-content scrollbar-thin scrollbar-thumb-gray-900 mx-0 w-full overflow-y-auto rounded bg-slate-800 px-4 pt-2 md:px-4'
     >
       <section className='cv-content__section article mb-2 flex flex-col'>
-        <h1 className='cv-content__title relative flex items-center justify-between text-3xl'>
+        <h1 className='cv-content__title relative flex items-center justify-between text-2xl'>
           Profile
         </h1>
-        <p className='profile__content indent-8 leading-8'>
+        <Paragraph className='profile__content'>
           三年的網頁開發經驗，目前主要工作以 React
           生態系處理系統重構、重建相關工作，曾利用 Vue 建置包含 I18n
           的地圖互動網站，亦有快速迭代提供專業人員操作的數個小系統經驗。除了基本的開發系統，樂於與團隊成員互助討論問題，能夠與夥伴討論如何優化開發流程並且協助面試新夥伴，工作之餘經常閱讀技術文章，對技術富有熱忱，具備有效解決問題的自信。
-        </p>
+        </Paragraph>
       </section>
 
       <section className='cv-content__section article mb-4'>
-        <h1 className='cv-content__title relative flex items-center justify-between text-3xl'>
+        <h1 className='cv-content__title relative flex items-center justify-between text-2xl'>
           Employment History
         </h1>
         <Article
