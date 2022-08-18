@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@curi/components": ["packages/components/src/index.ts"],
       "@tod-workspace/implementation": ["packages/implementation/src/index.ts"],
       "@tod-workspace/leetcode-practice": [
         "packages/leetcode-practice/src/index.ts"

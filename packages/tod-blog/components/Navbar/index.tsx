@@ -3,7 +3,7 @@ import { MdArticle } from 'react-icons/md';
 import { SiAboutdotme } from 'react-icons/si';
 import Link from 'next/link';
 
-import ExternalLink from '../ExternalLink';
+import ExternalLink from '@curi/components/ExternalLink';
 
 const TABS = [
   { name: '文章清單', link: '/posts', icon: MdArticle },

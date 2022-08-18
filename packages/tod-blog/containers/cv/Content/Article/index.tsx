@@ -1,8 +1,8 @@
 import { FC } from 'react';
 
-import ExternalLink from '@/components/ExternalLink';
-import UnorderedList from '@/components/List/UnorderedList';
-import Paragraph from '@/components/Paragrath';
+import ExternalLink from '@curi/components/ExternalLink';
+import UnorderedList from '@curi/components/List/UnorderedList';
+import Paragraph from '@curi/components/Paragrath';
 
 type Props = {
   title: string;

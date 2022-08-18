@@ -1,4 +1,5 @@
-import Paragraph from '@/components/Paragrath';
+import Paragraph from '@curi/components/Paragrath';
+
 import Article from './Article';
 
 const Content = () => {

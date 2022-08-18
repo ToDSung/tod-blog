@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 type Props = {
   text?: string;
@@ -6,7 +6,7 @@ type Props = {
   children?: ReactNode;
 };
 
-const Paragraph: FC<Props> = ({ text, className, children }) => (
+const Paragraph = ({ text, className, children }: Props) => (
   <p className={`indent-8 leading-7 ${className}`}>{text || children}</p>
 );
 

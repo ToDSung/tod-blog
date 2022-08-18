@@ -14,7 +14,8 @@
     "types": ["jest", "node"],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["*"]
+      "@/*": ["*"],
+      "@curi/components/*": ["../../packages/components/src/lib/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "next-env.d.ts"],
