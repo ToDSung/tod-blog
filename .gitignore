@@ -59,3 +59,6 @@ yarn-error.log*
 
 public/sitemap-0.xml
 public/sitemap.xml
+
+packages/implementation/src/lib/forFun/**/*.json
+packages/implementation/src/lib/forFun/**/*.txt
