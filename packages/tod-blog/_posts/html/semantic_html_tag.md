@@ -1,5 +1,5 @@
 ---
-title: '[Note] 數個 HTML5 新增的 Semantic HTML Tag'
+title: '<不嚴謹 Note> 數個 HTML5 新增的 Semantic HTML Tag'
 image: 'https://picsum.photos/id/6/900/1200'
 excerpt: '紀錄 HTML5 的新 tag，目的是增進 SEO，透過使用多樣化的 Tag 也能增進程式碼的可讀性，如果你目前還是持續不停的使用 div 撰寫程式碼，不彷進來看看有什麼常見的 tag 是你可以套用的！'
 date: '2021-07-25T00:00:00.000Z'

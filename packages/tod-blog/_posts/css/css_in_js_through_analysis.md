@@ -1,7 +1,7 @@
 ---
-title: '[Note] CSS in JS 全面解析'
+title: '<不嚴謹 Note> CSS in JS 全面解析'
 image: 'https://picsum.photos/id/130/900/1200'
-excerpt: ''
+excerpt: '我之前的工作經驗，都是直接使用像是 mui 或是 vuetify 此類的元件為主的 UI 框架，比較少專注於 CSS 的刻畫，更遑論去利用 CSS in JS 的寫法去撰寫程式碼，讀過這篇文章，似乎對於 CSS 框架的選用有了更深的理解，如果你也有興趣，歡迎來看看這篇筆記，或是直接點進標題的文章，給原作者一分鼓勵。'
 date: '2021-07-25T00:00:00.000Z'
 author:
   name: Tod Sung
@@ -10,7 +10,9 @@ labels: [
 ]
 ---
 
-# [[Note] CSS in JS 全面解析](https://css-tricks.com/a-thorough-analysis-of-css-in-js/)
+# [<不嚴謹 Note> CSS in JS 全面解析](https://css-tricks.com/a-thorough-analysis-of-css-in-js/)
+
+我之前的工作經驗，都是直接使用像是 mui 或是 vuetify 此類的元件為主的 UI 框架，比較少專注於 CSS 的刻畫，更遑論去利用 CSS in JS 的寫法去撰寫程式碼，讀過這篇文章，似乎對於 CSS 框架的選用有了更深的理解，如果你也有興趣，歡迎來看看這篇筆記，或是直接點進標題的文章，給原作者一分鼓勵。
 
 ## Common CSS-in-JS features
 
@@ -72,12 +74,12 @@ const heading = css({
 
 ### Styles output
 
-#### `<style>`
-輸出是包在同個檔案之中以 `<style>` 的方式，好處是可以減少讀取的速度，render 的速度會更快。
-
-#### CSS output
-
-輸出以獨立檔案 CSS 包的方式，SSR 可以選擇這個，可以更方便的套用快取。
+* `<style>`
+  
+  輸出是包在同個檔案之中以 `<style>` 的方式，好處是可以減少讀取的速度，render 的速度會更快。
+* CSS output
+  
+  輸出以獨立檔案 CSS 包的方式，SSR 可以選擇這個，可以更方便的套用快取。
 
 ### Atomic CSS
 
@@ -87,23 +89,8 @@ const heading = css({
 
 要思考選擇的 CSS in JS 框架我們可以考慮以下幾點。
 
-#### 我們是否使用 REACT 或是任何其他框架? 
-
-當然有使用網頁框架的話，必須選擇能夠支援的 CSS in JS 框架
-
-#### 我們是否是一個有高度互動， SPA APP? 
-
-是的話就做好 lazy loading 的工作，不需要將 CSS 變成單一檔案
-
-#### 我們是否是一個 SSR 網站?
-
-把程式變成 CSS 檔案，可以更好的套用快取功能
-
-#### 我們是否經常更新 style? 
-
-常更新的話，提供快取功能的功能需求就較小了。
-
-#### 我們是否重複使用了很多樣式和組件？
-
-使用 Atomic CSS 可以非常好的解決問題
-筆者駐我認為像 Tailwind CSS 就是以這種方式進行處理的
+* 我們是否使用 REACT 或是任何其他框架？ 必須選擇能夠支援的 CSS in JS 框架。
+* 我們是否是一個有高度互動 SPA APP?？ 是的話就做好 lazy loading 的工作，不要將 CSS 變成單一檔案。
+* 我們是否是一個 SSR 網站？ 把程式變成 CSS 檔案，可以更好的套用快取功能
+* 我們是否經常更新 style？ 常更新的話，提供快取功能的功能需求就較小了。
+* 我們是否重複使用了很多樣式和組件？ 使用 Atomic CSS 可以非常好的解決問題

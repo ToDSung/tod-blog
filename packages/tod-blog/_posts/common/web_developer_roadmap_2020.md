@@ -1,5 +1,5 @@
 ---
-title: '2020 Frontend Developer Roadmap'
+title: ' <不嚴謹 Note> 2020 Frontend Developer Roadmap'
 image: 'https://picsum.photos/id/1010/900/1200'
 excerpt: '分享 Web developer 2020 技術學習知識庫，閱讀後可以了解什麼技術該優先學習，希望能夠幫助到初學者，看完以後記得記得連到 github 給原作者點個 star！'
 date: '2021-07-28T00:00:00.000Z'
@@ -10,7 +10,7 @@ labels: [
 ]
 ---
 
-# 2020 Frontend Developer Roadmap <!-- 你猜得沒錯這是去年的東西 -->
+# <不嚴謹 Note> 2020 Frontend Developer Roadmap <!-- 你猜得沒錯這是去年的東西 -->
 
 此文章用於與辦公室的同事分享，
 看英文沒有問題的朋友，可以直接左轉看原文，當然我也寫了很多我自己淺薄的知識與經驗。

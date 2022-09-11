@@ -1,5 +1,5 @@
 ---
-title: '逐一說明我的 NextJs With Vercel blog 如何才能被 Google 爬蟲偵測到。'
+title: '<SEO>逐一說明我的 NextJs With Vercel blog 如何才能被 Google 爬蟲偵測到'
 image: 'https://picsum.photos/id/1041/900/1200'
 excerpt: '撰寫技術文章是個相當務實的方法來提升技術能力，為了給自己最高的自由度，我選擇了利用 NextJs 及 Vecel 自架部落格，與實際工作不同，從功能的思考、介面的設計、技術的挑選、程式的實作，全部都要靠自己獨自完成，就讓我一一細數為了達到標題的目的，我做了什麼處理！'
 date: '2022-04-29T00:00:00.000Z'
@@ -10,7 +10,7 @@ labels: [
 ]
 ---
 
-# 逐一說明我的 NextJs With Vercel blog 如何才能被 Google 爬蟲偵測到。
+# <SEO>逐一說明我的 NextJs With Vercel blog 如何才能被 Google 爬蟲偵測到
 
 ![](https://i.imgur.com/iicPj2B.png)
 

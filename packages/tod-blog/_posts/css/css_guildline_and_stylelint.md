@@ -1,7 +1,7 @@
 ---
-title: '[Note] CSS style 指南，搭配 stylelint 套件'
+title: '<不嚴謹 Note> CSS style 指南，搭配 stylelint 套件'
 image: 'https://picsum.photos/id/119/900/1200'
-excerpt: '記錄了數篇文章的內容，如何撰寫乾淨的 css 程式碼，另外補充了 stylelint 的安裝方式(for vue)'
+excerpt: '此文章用於與辦公室的同事分享，是我自行整理及簡單白話翻譯的筆記，為了尊重原作者亦或是需要更詳盡的內容，建議以連結內容為優先。文章內容主要是如何撰寫乾淨的 css 程式碼，也另外補充了 stylelint 的安裝方式(for vue)'
 date: '2021-07-25T00:00:00.000Z'
 author:
   name: Tod Sung
@@ -10,11 +10,11 @@ labels: [
 ]
 ---
 
-# [Note] CSS style 指南，搭配 stylelint 套件
+# <不嚴謹 Note> CSS style 指南，搭配 stylelint 套件
+
+此文章用於與辦公室的同事分享，是我自行整理及簡單白話翻譯的筆記，為了尊重原作者亦或是需要更詳盡的內容，建議以連結內容為優先。文章內容主要是如何撰寫乾淨的 css 程式碼，也另外補充了 stylelint 的安裝方式(for vue)
 
 ## 出處
-
-此文章用於與辦公室的同事分享，是我自行整理及簡單白話翻譯的筆記，為了尊重原作者亦或是需要更詳盡的內容，建議以連結內容為優先。
 
 * [Airbnb CSS / Sass Styleguide](https://github.com/airbnb/css)
   
