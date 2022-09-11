@@ -1,24 +1,26 @@
 import { FC } from 'react';
 import Link from 'next/link';
 
+import Painting from '@curi/components/Painting';
+
 import Post from '@/types/post';
 
-const PostDetail: FC<Post> = ({ title, slug, excerpt, labels, date }) => {
+const ListItem: FC<Post> = ({ title, slug, excerpt, labels, date, image }) => {
   return (
-    <div className='list border-item-border bg-sub-canvas my-4 flex flex-col rounded border py-2'>
-      <div className='list__content mx-auto w-11/12 xl:w-4/5'>
+    <div className='list border-item-border bg-sub-canvas my-4 grid gap-2 rounded border py-2 pl-4 md:grid-cols-4'>
+      <div className='list__content col-span-3 flex w-full flex-col px-2'>
         <Link href={`/posts/${slug}`} passHref>
-          <div className='mb-2'>
+          <div className='mb-2 flex-1'>
             <span className='list__title text-blue-grey-800 cursor-pointer text-2xl font-semibold leading-8'>
               {title}
             </span>
-            <p className='list__introduction line-clamp-2 mx-0 my-2 h-12 cursor-pointer text-ellipsis text-gray-300'>
+            <p className='list__excerpt line-clamp-4 my-2 mx-0 cursor-pointer text-ellipsis text-gray-300'>
               {excerpt}
             </p>
           </div>
         </Link>
         <div className='flex flex-col sm:flex-row'>
-          <div className='labels flex flex-wrap gap-2'>
+          <div className='labels mb-2 flex flex-wrap gap-2 sm:mb-0'>
             {labels?.map(label => (
               <span
                 key={label}
@@ -35,8 +37,11 @@ const PostDetail: FC<Post> = ({ title, slug, excerpt, labels, date }) => {
           )}
         </div>
       </div>
+      <div className='list__image aspect-h-9 aspect-w-16 mx-2 hidden md:block'>
+        <Painting src={image} className='rounded-lg' />
+      </div>
     </div>
   );
 };
 
-export default PostDetail;
+export default ListItem;

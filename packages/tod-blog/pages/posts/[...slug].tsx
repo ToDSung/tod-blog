@@ -4,8 +4,9 @@ import { useRouter } from 'next/router';
 
 import { join } from 'path';
 
-import Painting from '@/components/painting';
-import MarkdownDetail from '@/components/Post/MarkdownDetail';
+import Painting from '@curi/components/Painting';
+
+import MarkdownDetail from '@/containers/Post/MarkdownDetail';
 import { getAllPosts, getPostByPath } from '@/lib/api';
 import { getRandomImageUrl } from '@/lib/image';
 import markdownToHtml from '@/lib/markdownToHtml';

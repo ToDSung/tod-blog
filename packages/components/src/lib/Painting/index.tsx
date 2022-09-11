@@ -1,22 +1,20 @@
-import { FC } from 'react';
 import Image from 'next/image';
 
 type Props = {
-  src?: string;
+  src: string;
   alt?: string;
   onLoadingComplete?: () => void;
-  classProps?: string;
+  className?: string;
 };
 
-const Painting: FC<Props> = ({
+const Painting = ({
   src,
   alt = 'a painting',
   onLoadingComplete = () => {
     // do notiong.
   },
-  classProps = '',
-}) => {
-  const handleLoadingComplete = () => onLoadingComplete();
+  className = '',
+}: Props) => {
   return (
     <>
       {src && (
@@ -26,9 +24,9 @@ const Painting: FC<Props> = ({
           layout='fill'
           className={`
             hover-ring object-cover object-center transition-opacity
-            ${classProps}
+            ${className}
           `}
-          onLoadingComplete={handleLoadingComplete}
+          onLoadingComplete={onLoadingComplete}
         />
       )}
     </>

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import PostListItem from '@/components/Post/ListItem';
+import PostListItem from '@/containers/Post/ListItem';
 import { getAllPosts } from '@/lib/api';
 import Post from '@/types/post';
 
@@ -21,6 +21,7 @@ const Posts: FC<Props> = ({ allPosts }) => {
             excerpt={post.excerpt}
             labels={post.labels}
             date={post.date}
+            image={post.image}
           />
         ))}
     </div>
@@ -38,6 +39,7 @@ export const getStaticProps = async () => {
     'coverImage',
     'excerpt',
     'labels',
+    'image',
   ]);
 
   return {
