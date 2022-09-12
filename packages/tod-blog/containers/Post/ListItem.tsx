@@ -7,7 +7,7 @@ import Post from '@/types/post';
 
 const ListItem: FC<Post> = ({ title, slug, excerpt, labels, date, image }) => {
   return (
-    <div className='list border-item-border bg-sub-canvas my-4 grid gap-2 rounded border py-2 pl-4 md:grid-cols-4'>
+    <div className='list border-item-border bg-sub-canvas my-4 grid gap-2 rounded border py-2 md:grid-cols-4'>
       <div className='list__content col-span-3 flex w-full flex-col px-2'>
         <Link href={`/posts/${slug}`} passHref>
           <div className='mb-2 flex-1'>
