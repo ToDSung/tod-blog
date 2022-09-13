@@ -1,0 +1,12 @@
+{
+  "name": "tod-blog",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "postbuild": "npx next-sitemap"
+  },
+  "private": true,
+  "devDependencies": {
+    "next-sitemap": "^2.5.28"
+  }
+}
