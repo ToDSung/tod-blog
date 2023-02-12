@@ -12,10 +12,10 @@ type Props = {
 
 const LandingPage: NextPage<Props> = ({ allPosts }) => {
   return (
-    <main className='main max-w-[48rem]'>
+    <main className='main flex max-w-[48rem] items-center'>
       <section id='main' className='main'>
         <EntryContent />
-        <Posts allPosts={allPosts} />
+        {/* <Posts allPosts={allPosts} /> */}
         {/* <Guide /> */}
       </section>
     </main>

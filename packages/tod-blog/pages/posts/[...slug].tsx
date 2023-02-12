@@ -32,11 +32,11 @@ const Post: FC<Props> = ({ post }) => {
   ) : (
     <>
       <article className='mx-auto mt-4 mb-8 max-w-3xl'>
-        {post.image && (
+        {/* {post.image && (
           <div className='aspect-h-9 aspect-w-16 mb-4'>
             <Painting src={post.image} />
           </div>
-        )}
+        )} */}
         <MarkdownDetail content={post.content} />
       </article>
     </>

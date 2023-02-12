@@ -1,30 +1,31 @@
 import { SyntheticEvent } from 'react';
 
-type Menu = {
-  value: string;
+export type Menu = {
+  value?: string;
   text: string;
   children?: Menu[];
 };
 
-type Props = {
+type DrawerProps = {
   nodes: Menu[];
   onClick: (node: Menu) => void;
   className?: string;
 };
 
-const Drawer = ({ nodes, onClick, className = '' }: Props) => {
+const Drawer = ({ nodes, onClick, className = '' }: DrawerProps) => {
   const handleClick = (node: Menu) => (e: SyntheticEvent) => {
+    if (!node.value) return;
     e.stopPropagation();
     onClick(node);
   };
 
   return (
-    <>
+    <div className='px-2 py-4'>
       {nodes.map(node => {
         return (
           <div
             key={node.value}
-            className={className}
+            className={`${className} py-1`}
             onClick={handleClick(node)}
           >
             {node.text}
@@ -38,7 +39,7 @@ const Drawer = ({ nodes, onClick, className = '' }: Props) => {
           </div>
         );
       })}
-    </>
+    </div>
   );
 };
 
