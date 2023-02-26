@@ -1,16 +1,9 @@
 ---
-title: ' <不嚴謹 Note> 2020 Frontend Developer Roadmap'
-image: 'https://picsum.photos/id/1010/900/1200'
-excerpt: '分享 Web developer 2020 技術學習知識庫，閱讀後可以了解什麼技術該優先學習，希望能夠幫助到初學者，看完以後記得記得連到 github 給原作者點個 star！'
-date: '2021-07-28T00:00:00.000Z'
-author:
-  name: Tod Sung
-labels: [
-  "Front End", "Web"
-]
+
 ---
 
-# <不嚴謹 Note> 2020 Frontend Developer Roadmap <!-- 你猜得沒錯這是去年的東西 -->
+# Frontend Developer Roadmap (2020)
+<!-- 你猜得沒錯這是去年的東西 -->
 
 此文章用於與辦公室的同事分享，
 看英文沒有問題的朋友，可以直接左轉看原文，當然我也寫了很多我自己淺薄的知識與經驗。
@@ -177,7 +170,7 @@ labels: [
 
 * CSS預處理器
   
-  讓你可以寫 CSS 像在寫 CODE 一樣，我現在是用 SCSS，把變數拉出來，然後嵌套減少重複相似的命名，也有 mixin 什麼的，要使用的話 webpack.config 跟 \<style> 那邊改一下就行了。
+  讓你可以寫 CSS 像在寫 CODE 一樣，我現在是用 SCSS，把變數拉出來，然後嵌套減少重複相似的命名，也有 mixin 什麼的，要使用的話 webpack.config 跟 style 那邊改一下就行了。
 
 ### Build Tools
 
@@ -255,7 +248,7 @@ CSS in JS 可以參考 Summer。桑莫。夏天 的這篇[文章](https://cythil
 
 * [HTML Templates](https://developer.mozilla.org/zh-TW/docs/Web/HTML/Element/template)
 
- 範例說，可以先建立好 html，但不會 render 等到用 JS 觸發再把畫面畫出來 <br>
+ 範例說，可以先建立好 html，但不會 render 等到用 JS 觸發再把畫面畫出來
  平常使用的 slot 的觀念跟這個也有相關
 
 * Custom Elements
@@ -317,9 +310,8 @@ CSS in JS 可以參考 Summer。桑莫。夏天 的這篇[文章](https://cythil
 
 Server Side Rendering 伺服器端渲染，目的就是要讓你的網站更容易被 google 到，增加 SEO，因為 client side render ，比較弱的爬蟲爬不出東西，就不容易讓你的網站被搜尋到。 
 
-<span style="color: gray">這部分我還需要多調查，
 以 Nuxt.js 為例，建立一個中介 server 先拿完 api 資料組合完放進 template 中， 
-而後顯示，其實我覺得跟 Django template 很像，只是多了一層</span>
+而後顯示，其實我覺得跟 Django template 很像，只是多了一層
 
 ### GraphQL
 

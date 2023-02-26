@@ -1,16 +1,8 @@
 ---
-title: '<不嚴謹 Note> CSS in JS 全面解析'
-image: 'https://picsum.photos/id/130/900/1200'
-excerpt: '我之前的工作經驗，都是直接使用像是 mui 或是 vuetify 此類的元件為主的 UI 框架，比較少專注於 CSS 的刻畫，更遑論去利用 CSS in JS 的寫法去撰寫程式碼，讀過這篇文章，似乎對於 CSS 框架的選用有了更深的理解，如果你也有興趣，歡迎來看看這篇筆記，或是直接點進標題的文章，給原作者一分鼓勵。'
-date: '2021-07-25T00:00:00.000Z'
-author:
-  name: Tod Sung
-labels: [
-  "Front End", "Web", "CSS", "Dev Tool"
-]
+
 ---
 
-# [<不嚴謹 Note> CSS in JS 全面解析](https://css-tricks.com/a-thorough-analysis-of-css-in-js/)
+# CSS in JS 全面解析
 
 我之前的工作經驗，都是直接使用像是 mui 或是 vuetify 此類的元件為主的 UI 框架，比較少專注於 CSS 的刻畫，更遑論去利用 CSS in JS 的寫法去撰寫程式碼，讀過這篇文章，似乎對於 CSS 框架的選用有了更深的理解，如果你也有興趣，歡迎來看看這篇筆記，或是直接點進標題的文章，給原作者一分鼓勵。
 
@@ -94,3 +86,7 @@ const heading = css({
 * 我們是否是一個 SSR 網站？ 把程式變成 CSS 檔案，可以更好的套用快取功能
 * 我們是否經常更新 style？ 常更新的話，提供快取功能的功能需求就較小了。
 * 我們是否重複使用了很多樣式和組件？ 使用 Atomic CSS 可以非常好的解決問題
+
+## reference
+
+https://css-tricks.com/a-thorough-analysis-of-css-in-js/

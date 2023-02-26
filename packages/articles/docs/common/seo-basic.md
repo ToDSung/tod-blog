@@ -1,16 +1,8 @@
 ---
-title: '<SEO> 給前端工程師的 SEO 基礎知識惡補'
-image: 'https://picsum.photos/id/1073/900/1200'
-excerpt: '分享由於面試被問到 SEO 相關問題，於是高速給自己惡補的一段 SEO 相關知識。'
-date: '2021-07-28T00:00:00.000Z'
-author:
-  name: Tod Sung
-labels: [
-  "Front End", "Web", "SEO"
-]
+
 ---
 
-# <SEO> 給前端工程師的 SEO 基礎知識惡補
+# 給前端工程師的 SEO 基礎知識惡補
 
 ### Origin
 

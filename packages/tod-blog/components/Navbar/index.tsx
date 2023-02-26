@@ -5,7 +5,11 @@ import { SiAboutdotme } from 'react-icons/si';
 import CuriNavbar from '@curi/components/Navbar';
 
 const TABS = [
-  { name: '文章清單', link: '/posts', icon: MdArticle },
+  {
+    name: '文章清單',
+    link: 'https://tod-blog-docusaurus.vercel.app/docs',
+    icon: MdArticle,
+  },
   { name: '關於我', link: '/cv', icon: SiAboutdotme },
 ];
 

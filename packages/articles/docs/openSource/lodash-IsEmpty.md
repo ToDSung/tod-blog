@@ -1,16 +1,8 @@
 ---
-title: '<作伙讀 code> lodash isEmpty'
-image: 'https://picsum.photos/id/1040/900/1200'
-excerpt: '相信只要在職場有工作過一小段時間以後的前端工作者，一定或多或少都使用過 lodash 這個套件，而我自己與同事在 code base 中最常使用的 method 便是其中的 isEmpty，不過最近一段時間也發現這個 method 與我們所想的有些不同，就讓我們一起來看看吧！'
-date: '2022-05-24T23:51:00.000Z'
-author:
-  name: Tod Sung
-labels: [
-  "OpenSource", "Web", "JavaScript", "lodash"
-]
+
 ---
 
-# <作伙讀 code> lodash isEmpty
+# lodash isEmpty
 
 
 相信只要在職場有工作過一小段時間以後的前端工作者，一定或多或少都使用過 lodash 這個套件，而我自己與同事在 code base 中最常使用的 method 便是其中的 isEmpty，不過最近一段時間也發現這個 method 與我們所想的有些不同，就讓我們一起來看看吧！

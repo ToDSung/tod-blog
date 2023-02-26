@@ -1,16 +1,8 @@
 ---
-title: '<不嚴謹 Note> CSS style 指南，搭配 stylelint 套件'
-image: 'https://picsum.photos/id/119/900/1200'
-excerpt: '此文章用於與辦公室的同事分享，是我自行整理及簡單白話翻譯的筆記，為了尊重原作者亦或是需要更詳盡的內容，建議以連結內容為優先。文章內容主要是如何撰寫乾淨的 css 程式碼，也另外補充了 stylelint 的安裝方式(for vue)'
-date: '2021-07-25T00:00:00.000Z'
-author:
-  name: Tod Sung
-labels: [
-  "Front End", "Web", "CSS", "Dev Tool"
-]
+
 ---
 
-# <不嚴謹 Note> CSS style 指南，搭配 stylelint 套件
+# CSS style 指南，搭配 stylelint 套件
 
 此文章用於與辦公室的同事分享，是我自行整理及簡單白話翻譯的筆記，為了尊重原作者亦或是需要更詳盡的內容，建議以連結內容為優先。文章內容主要是如何撰寫乾淨的 css 程式碼，也另外補充了 stylelint 的安裝方式(for vue)
 
@@ -80,8 +72,8 @@ labels: [
 
 * 使用 soft tabs (兩個空格）作為縮排。(我自己是四格，覺得影響不大，但是 stylelint 要調整) 
 * 類別名稱建議使用 dashes 代替 camelCasing。如果你使用 BEM，也可以使用底線或 PascalCasing（參考下面的 [OOCSS 和 BEM](#oocss-and-bem)）。
-* 不要使用 ID 選擇器。<br>
-(ID 選擇器會影響 CSS 套用的優先權，在 HTML 的準則中，每個 ID 應該獨一無二)
+* 不要使用 ID 選擇器。
+  (ID 選擇器會影響 CSS 套用的優先權，在 HTML 的準則中，每個 ID 應該獨一無二)
 * 在一個規則宣告中，若同時使用多個選擇器時，讓每個選擇器各佔一行。
 * 在規則宣告的左大括弧 `{` 前加上一個空格。
 * 在屬性設定的冒號 `:` 後面加上一個空格，前面不要加空格。
@@ -422,7 +414,7 @@ npm install -D stylelint-config-sass-guidelines
 npm install -D stylelint-order
 ```
 
-個人非常建議套用，雖然剛 import 的時候會有點痛苦，但長久習慣以後會更好<br>
+個人非常建議套用，雖然剛 import 的時候會有點痛苦，但長久習慣以後會更好
 eslint 以及 vscode extension 也非常推薦
 
 ## 設定檔

@@ -1,16 +1,8 @@
 ---
-title: '<不嚴謹 Note> 30 個值得你嘗試的 CSS 最佳實踐節錄'
-image: 'https://picsum.photos/id/118/900/1200'
-excerpt: '原文中，提了 30 個 CSS 的 best practice，我節錄了我目前尚未應用的好寫法，也補充了少少的資訊，不管你是初學的人還是已經有一定經驗的 coder，希望讀過這篇文章，能夠讓你的 css 寫得更精簡、漂亮！'
-date: '2021-07-28T00:00:00.000Z'
-author:
-  name: Tod Sung
-labels: [
-  "Front End", "Web", "CSS"
-]
+
 ---
 
-# <不嚴謹 Note> 30 個值得你嘗試的 CSS 最佳實踐節錄
+# 30 個值得你嘗試的 CSS 最佳實踐節錄
 
 有能力看懂英文的人，建議左轉文章 [30 CSS Best Practices for Beginners](https://code.tutsplus.com/tutorials/30-css-best-practices-for-beginners--net-6741)
 
