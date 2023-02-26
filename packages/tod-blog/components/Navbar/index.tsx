@@ -7,7 +7,7 @@ import CuriNavbar from '@curi/components/Navbar';
 const TABS = [
   {
     name: '文章清單',
-    link: 'https://tod-blog-docusaurus.vercel.app/docs',
+    link: 'https://tod-blog-docusaurus.vercel.app',
     icon: MdArticle,
   },
   { name: '關於我', link: '/cv', icon: SiAboutdotme },
