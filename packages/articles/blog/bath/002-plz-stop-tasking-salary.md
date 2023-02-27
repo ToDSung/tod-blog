@@ -1,6 +1,6 @@
 ---
 
-slug: 002-plz_stop_tasking_salary
+slug: 002-plz-stop-tasking-salary
 title: '<洗澡隨筆> 談錢傷感情'
 date: '2022-09-12'
 tags: [

@@ -1,11 +1,12 @@
 ---
 
-slug: 001-what_is_purpose_in_my_life
+slug: 001-what-is-purpose-in-my-life
 title: '<洗澡隨筆> 人生所求何物'
 date: '2022-03-27'
 tags: [
   "bath", "boring"
 ]
+
 ---
 
 洗澡隨筆是新開的廢文系列，也不知道會有幾篇呢，人類在洗澡時似乎都會有更多更多的念想產生，那是每天跟自己對話的最佳時機，我就筆記下我剛剛洗澡時在想什麼好了。

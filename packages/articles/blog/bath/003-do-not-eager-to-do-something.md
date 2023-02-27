@@ -1,6 +1,6 @@
 ---
 
-slug: 003-do_not_eager_to_do_something
+slug: 003-do-not-eager-to-do-something
 title: '<洗澡隨筆> 心急吃不了熱豆腐'
 date: '2023-02-11'
 tags: [
