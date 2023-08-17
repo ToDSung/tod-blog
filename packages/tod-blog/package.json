@@ -7,6 +7,6 @@
   },
   "private": true,
   "devDependencies": {
-    "next-sitemap": "^2.5.28"
+    "next-sitemap": "^4.0.0"
   }
 }
