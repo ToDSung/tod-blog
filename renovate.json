@@ -7,6 +7,11 @@
     {
       "matchUpdateTypes": ["major"],
       "enabled": false
+    },
+    {
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "devDependencies (non-major)"
     }
   ]
 }
