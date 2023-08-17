@@ -57,7 +57,7 @@
     "next-sitemap": "^2.5.28",
     "nx": "14.1.9",
     "postcss": "^8.4.14",
-    "prettier": "^2.5.1",
+    "prettier": "^3.0.0",
     "prettier-plugin-tailwindcss": "^0.1.11",
     "react-test-renderer": "18.1.0",
     "tailwind-scrollbar": "^1.3.1",
