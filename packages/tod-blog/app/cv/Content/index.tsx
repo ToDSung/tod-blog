@@ -1,4 +1,4 @@
-import Paragraph from '@curi/components/Paragrath';
+import Paragraph from '@curi/components/Paragraph';
 
 import Article from './Article';
 

@@ -67,7 +67,7 @@ const isFile = flow([
 
 const filterFile = filter(isFile);
 
-const isFileCsv: (directory: directoryObj) => boolean = directory =>
+const isFileCsv = (directory: directoryObj) =>
   flow([
     get('name'), //
     isEndWithCsv,
@@ -89,11 +89,11 @@ const filterDirectory = filter(
   ])
 );
 
-const isLayer = layer =>
+const isLayer = (layer: number) =>
   flow([
     get('layer'), //
     isEqual(layer),
-  ]);
+  ])();
 
 const isLayer1 = isLayer(1);
 // const isLayer2 = isLayer(2);

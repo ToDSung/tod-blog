@@ -1,7 +1,8 @@
+import '@/styles/globals.css';
+
 import type { NextPage } from 'next';
 
-import Post from '@/types/post';
-import LandingPage from './landingPage';
+import LandingPage from './landingPage/page';
 
 const Home: NextPage = () => {
   return <LandingPage />;

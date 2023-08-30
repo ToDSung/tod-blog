@@ -1,8 +1,7 @@
 import { FC } from 'react';
 
-import ExternalLink from '@curi/components/ExternalLink';
 import UnorderedList from '@curi/components/List/UnorderedList';
-import Paragraph from '@curi/components/Paragrath';
+import Paragraph from '@curi/components/Paragraph';
 
 type Props = {
   title: string;
@@ -27,7 +26,7 @@ const Article: FC<Props> = ({
   return (
     <div className='article flex flex-col'>
       {titleLink ? (
-        <ExternalLink href={titleLink}>
+        <a href={titleLink} target='_blank' rel='noopener noreferrer'>
           <h2
             className={`article__title my-1 ${
               titleLink && 'article__title--has-link'
@@ -35,7 +34,7 @@ const Article: FC<Props> = ({
           >
             {/* {{ title }} */}
           </h2>
-        </ExternalLink>
+        </a>
       ) : (
         <div className='article__title-container my-1 flex flex-wrap text-xl'>
           <h2 className='article__title sm:mr-4'>{title}</h2>

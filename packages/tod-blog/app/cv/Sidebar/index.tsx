@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import UnorderedList from '@curi/components/List/UnorderedList';
-import Paragraph from '@curi/components/Paragrath';
+import Paragraph from '@curi/components/Paragraph';
 
 import type Icon from '@/types/icon';
 import Skill from './Skill';

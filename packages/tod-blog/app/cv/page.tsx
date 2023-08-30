@@ -1,6 +1,6 @@
-import { FRONT_END_SKILLS, TOOL_SKILLS } from '@/constants/cv/skill';
-import Content from '@/containers/cv/Content';
-import Sidebar from '@/containers/cv/Sidebar';
+import Content from '@/app/cv/Content';
+import Sidebar from '@/app/cv/Sidebar';
+import { FRONT_END_SKILLS, TOOL_SKILLS } from './constants';
 
 const cv = () => (
   <div

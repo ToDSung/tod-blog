@@ -1,6 +1,4 @@
-import Link from 'next/link';
 import { IconType } from 'react-icons';
-import ExternalLink from '../ExternalLink';
 
 interface IconLink {
   link: string;
@@ -20,15 +18,15 @@ type Props = {
 
 const MainSide = ({ title, tabs }: { title: string; tabs: Tab[] }) => (
   <div className='flex flex-wrap items-center gap-6'>
-    <Link href='/' passHref>
+    <a href='/'>
       <h1 className='title cursor-pointer text-2xl font-bold'>{title}</h1>
-    </Link>
+    </a>
     <div className='tabs my-0 hidden text-xl sm:flex'>
       <div className='tabs__items flex gap-4'>
         {tabs.map(({ name, link }) => (
-          <Link href={link} key={name} passHref>
-            <a className='tab__item cursor-pointer'>{name}</a>
-          </Link>
+          <a href={link} key={name} className='tab__item cursor-pointer'>
+            {name}
+          </a>
         ))}
       </div>
     </div>
@@ -44,16 +42,14 @@ const IconSide = ({
 }) => (
   <div className='nav__icon flex gap-4'>
     {tabs.map(({ link, icon: Icon }) => (
-      <Link href={link} key={link} passHref>
-        <a>
-          <Icon className='block text-2xl sm:hidden' />
-        </a>
-      </Link>
+      <a href={link} key={link}>
+        <Icon className='block text-2xl sm:hidden' />
+      </a>
     ))}
     {socialMedias.map(({ link, icon: Icon }) => (
-      <ExternalLink href={link} key={link}>
+      <a href={link} key={link} target='_blank' rel='noopener noreferrer'>
         <Icon className='text-2xl' />
-      </ExternalLink>
+      </a>
     ))}
   </div>
 );
