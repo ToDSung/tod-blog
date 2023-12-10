@@ -4,7 +4,7 @@ import EntryContent from './EntryContent';
 
 const LandingPage: NextPage = () => {
   return (
-    <main className='main flex max-w-[48rem] items-center'>
+    <main className='main flex max-w-[64rem] items-center'>
       <section id='main' className='main'>
         <EntryContent />
       </section>

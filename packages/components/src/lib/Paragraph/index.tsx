@@ -7,7 +7,7 @@ type Props = {
 };
 
 const Paragraph = ({ text, className, children }: Props) => (
-  <p className={`indent-8 leading-7 ${className}`}>{text || children}</p>
+  <p className={`indent-4 leading-7 ${className}`}>{text || children}</p>
 );
 
 export default Paragraph;

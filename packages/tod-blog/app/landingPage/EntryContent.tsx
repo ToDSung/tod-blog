@@ -23,7 +23,7 @@ const EntryContent = () => {
     }
 
     const options = {
-      strings: ['I am ToD'],
+      strings: ['This is Tod From Taiwan'],
       onComplete: () => setIsTitleFinished(true),
       ...typedOptions,
     };
@@ -61,11 +61,11 @@ const EntryContent = () => {
       >
         <h1
           ref={titleElement}
-          className="introduction__title mb-4 font-['DiamorScript'] text-6xl text-amber-200 sm:text-8xl"
+          className='introduction__title mb-4 text-6xl text-amber-200 sm:text-8xl'
         />
         <div
           ref={subtitleElement}
-          className="introduction__content font-['JasonHandwriting'] text-2xl sm:text-3xl"
+          className='introduction__content text-2xl sm:text-3xl'
         />
       </div>
     </div>

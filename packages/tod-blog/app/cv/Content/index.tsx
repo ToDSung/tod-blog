@@ -9,7 +9,7 @@ const Content = () => {
       className='cv-content scrollbar-thin scrollbar-thumb-gray-900 mx-0 w-full overflow-y-auto rounded bg-slate-800 px-4 pt-2 md:px-4'
     >
       <section className='cv-content__section article mb-2 flex flex-col'>
-        <h1 className='cv-content__title relative flex items-center justify-between text-2xl'>
+        <h1 className='cv-content__title relative flex items-center justify-between text-3xl'>
           Profile
         </h1>
         <Paragraph className='profile__content'>
@@ -20,7 +20,7 @@ const Content = () => {
       </section>
 
       <section className='cv-content__section article mb-4'>
-        <h1 className='cv-content__title relative flex items-center justify-between text-2xl'>
+        <h1 className='cv-content__title relative flex items-center justify-between text-3xl'>
           Employment History
         </h1>
         <Article
