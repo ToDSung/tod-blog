@@ -15,9 +15,6 @@ const nextConfig = {
   images: {
     domains: ['picsum.photos'],
   },
-  experimental: {
-    appDir: true,
-  },
 };
 
 const plugins = [
