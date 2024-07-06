@@ -30,6 +30,7 @@ const HtmlHead = ({
       <meta property='og:type' content='website' />
       <meta property='og:url' content={url} />
       <meta property='og:locale' content='zh-tw' />
+      <meta name="google-site-verification" content="9JFlPPjMcTWCa_ePEuHyFvlCv8LS2xZkeK3alcNc_oE" />
       {favicon && <link rel='icon' href={favicon} />}
       <link
         rel='preload'
