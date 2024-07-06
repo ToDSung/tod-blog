@@ -13,10 +13,10 @@ const TABS = [
 ];
 
 const SOCIAL_MEDIAS = [
-  { icon: FiGithub, link: 'https://github.com/wlunareve' },
+  { icon: FiGithub, link: 'https://github.com/ToDSung' },
   {
     icon: FiLinkedin,
-    link: 'https://www.linkedin.com/in/%E6%98%8E%E8%AC%99-%E5%AE%8B-982b30172/',
+    link: 'https://www.linkedin.com/in/tod-sung-982b30172/',
   },
 ];
 
