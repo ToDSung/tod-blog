@@ -6,11 +6,8 @@ import some from 'lodash/fp/some';
 
 const fileName = 'image.png';
 
-const isEndWithCsv: (fileName: string) => boolean = fileName =>
-  fileName.endsWith('.csv');
-
-const isEndWithPng: (fileName: string) => boolean = fileName =>
-  fileName.endsWith('.png');
+const isEndWithCsv = (fileName: string) => fileName.endsWith('.csv');
+const isEndWithPng = (fileName: string) => fileName.endsWith('.png');
 
 const isStringFile = isEqual('file');
 const isStringDirectory = isEqual('directory');
@@ -102,7 +99,7 @@ const isLabelCsvExist = some(isLayer1 && isFileCsv);
 
 const HomeFP = () => {
   return (
-    <main className='map__container h-[calc(100vh-3.5rem)] md:h-[calc(100vh-3.25rem)]'>
+    <main className='h-[calc(100vh-3.5rem)] md:h-[calc(100vh-3.25rem)]'>
       <div>isEndWithCsv: {`${isEndWithCsv(fileName)}`}</div>
       <div>isEndWithPng: {`${isEndWithPng(fileName)}`}</div>
       <br />

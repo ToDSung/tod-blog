@@ -54,20 +54,17 @@ const EntryContent = () => {
   }, [isTitleFinished]);
 
   return (
-    <div className='entry-content relative my-4 flex flex-col items-center justify-center md:h-[50vh]'>
+    <div className='relative my-4 flex flex-col items-center justify-center md:h-[50vh]'>
       <div
-        className='text__wrapper flex h-full min-h-[16rem] w-full flex-col
-          items-start justify-center rounded-md p-5 sm:max-w-[1280px] md:h-64
+        className='flex size-full min-h-64 flex-col items-start
+          justify-center rounded-md p-5 sm:max-w-screen-xl md:h-64
         '
       >
         <h1
           ref={titleElement}
-          className='introduction__title mb-4 text-6xl text-amber-200 sm:text-8xl'
+          className='mb-4 text-6xl text-amber-200 sm:text-8xl'
         />
-        <div
-          ref={subtitleElement}
-          className='introduction__content text-2xl sm:text-3xl'
-        />
+        <div ref={subtitleElement} className='text-2xl sm:text-3xl' />
       </div>
     </div>
   );

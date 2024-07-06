@@ -23,9 +23,9 @@ const Sidebar = ({ skills = [] }: SidebarProps) => {
   return (
     <aside
       id='cv-sidebar'
-      className='cv-sidebar bg-sub-canvas flex flex-col items-start rounded px-4 pt-2 text-white md:items-center md:px-8'
+      className='bg-sub-canvas flex flex-col items-start rounded px-4 pt-2 text-white md:items-center md:px-8'
     >
-      <span className='cv-sidebar__title text-3xl'>宋明謙</span>
+      <span className='text-3xl'>宋明謙</span>
       <span className='leading-7'>Tod Sung</span>
       <span className='leading-7'>前端工程師</span>
       <div className='md:w-full'>
@@ -37,16 +37,14 @@ const Sidebar = ({ skills = [] }: SidebarProps) => {
           ]}
         />
       </div>
-      <div className='about my-1 flex flex-col gap-2'>
+      <div className='my-1 flex flex-col gap-2'>
         {aboutContents.map((about, index) => (
-          <Paragraph key={index} className='about__item'>
-            {about}
-          </Paragraph>
+          <Paragraph key={index}>{about}</Paragraph>
         ))}
       </div>
-      <div className='skills flex flex-col'>
-        <span className='skills__title text-3xl'>skills</span>
-        <div className='skills__content mt-4 grid grid-cols-2 gap-2'>
+      <div className='flex flex-col'>
+        <span className='text-3xl'>skills</span>
+        <div className='mt-4 grid grid-cols-2 gap-2'>
           {skills.map(({ name, icon }) => (
             <Skill key={name} name={name} icon={icon} />
           ))}

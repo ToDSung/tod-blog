@@ -20,16 +20,16 @@ const Article = ({
   ulContents = [],
 }: ArticleProps) => {
   return (
-    <div className='article flex flex-col'>
-      <div className='article__title-container my-1 flex flex-wrap text-xl'>
-        <h2 className='article__title sm:mr-4'>{title}</h2>
-        <h2 className='article__date'>{date}</h2>
+    <div className='flex flex-col'>
+      <div className='my-1 flex flex-wrap text-xl'>
+        <h2 className='sm:mr-4'>{title}</h2>
+        <h2>{date}</h2>
       </div>
-      <Paragraph className='article__subtitle'>{subtitle}</Paragraph>
-      <Paragraph className='article__paragraph'>{paragraph}</Paragraph>
+      <Paragraph>{subtitle}</Paragraph>
+      <Paragraph>{paragraph}</Paragraph>
       {ulContents.map(({ title: ulTitle, content: liContents = [] }, index) => (
-        <div key={index} className='lineup my-1'>
-          <h3 className='lineup__title mb-2 text-lg font-bold md:mb-0 md:text-base indent-4'>
+        <div key={index} className='my-1'>
+          <h3 className='mb-2 indent-4 text-lg font-bold md:mb-0 md:text-base'>
             {ulTitle}
           </h3>
           <UnorderedList

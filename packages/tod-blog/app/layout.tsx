@@ -24,10 +24,10 @@ const RootLayout = ({ children }: RootLayoutProps) => {
       <body>
         <main
           id='app'
-          className='app bg-default-canvas text-default-text flex min-h-screen justify-center px-2 text-justify '
+          className='bg-default-canvas text-default-text flex min-h-screen justify-center px-2 text-justify'
         >
           <Navbar />
-          <div className='component-wrapper relative mt-[3.2rem] flex w-full justify-center sm:w-[80vw]'>
+          <div className='relative mt-[3.2rem] flex w-full justify-center sm:w-[80vw]'>
             {children}
           </div>
         </main>

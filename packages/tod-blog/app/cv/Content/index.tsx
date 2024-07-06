@@ -6,20 +6,20 @@ const Content = () => {
   return (
     <div
       id='cv-content'
-      className='cv-content mx-0 w-full overflow-y-auto rounded bg-slate-800 px-4 pt-2 md:px-4'
+      className='mx-0 w-full overflow-y-auto rounded bg-slate-800 px-4 pt-2 md:px-4'
     >
-      <section className='cv-content__section article mb-2 flex flex-col'>
-        <h1 className='cv-content__title relative flex items-center justify-between text-3xl'>
+      <section className='mb-2 flex flex-col'>
+        <h1 className='relative flex items-center justify-between text-3xl'>
           Profile
         </h1>
-        <Paragraph className='profile__content'>
+        <Paragraph>
           五年的網頁開發經驗，主要以 React
           生態系進行網頁開發、重構工作，除了基本的開發系統，樂於與團隊成員互助討論問題，能夠與夥伴討論如何優化開發流程並且協助面試新夥伴，工作之餘經常閱讀技術文章，對技術富有熱忱，具備有效解決問題的自信。
         </Paragraph>
       </section>
 
-      <section className='cv-content__section article mb-4'>
-        <h1 className='cv-content__title relative flex items-center justify-between text-3xl'>
+      <section className='mb-4'>
+        <h1 className='relative flex items-center justify-between text-3xl'>
           Employment History
         </h1>
         <Article

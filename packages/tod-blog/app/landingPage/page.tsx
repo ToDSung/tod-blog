@@ -4,8 +4,8 @@ import EntryContent from './EntryContent';
 
 const LandingPage: NextPage = () => {
   return (
-    <main className='main flex max-w-[64rem] items-center'>
-      <section id='main' className='main'>
+    <main className='flex max-w-5xl items-center'>
+      <section id='main'>
         <EntryContent />
       </section>
     </main>

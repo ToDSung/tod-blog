@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { from, fromEvent, race } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-const timeout: (ms: number) => Promise<() => void> = ms => {
+const timeout = (ms: number): Promise<() => void> => {
   return new Promise(resolve => setTimeout(resolve, ms));
 };
 
@@ -49,7 +49,7 @@ const DropExecution = () => {
   };
 
   return (
-    <main className='map__container h-[calc(100vh-3.5rem)] md:h-[calc(100vh-3.25rem)]'>
+    <main className='h-[calc(100vh-3.5rem)] md:h-[calc(100vh-3.25rem)]'>
       <div>{JSON.stringify(value)}</div>
       <div>
         <button onClick={handleDo}>do function execution</button>
