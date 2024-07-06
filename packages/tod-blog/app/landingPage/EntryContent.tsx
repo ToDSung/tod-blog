@@ -1,6 +1,5 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-
 import Typed from 'typed.js';
 
 const typedOptions = {
@@ -12,10 +11,10 @@ const EntryContent = () => {
   const [isTitleFinished, setIsTitleFinished] = useState(false);
 
   const titleElement = useRef(null);
-  const titleTyped: any = useRef(null);
+  const titleTyped = useRef<Typed | null>(null);
 
   const subtitleElement = useRef(null);
-  const subtitleTyped: any = useRef(null);
+  const subtitleTyped = useRef<Typed | null>(null);
 
   useEffect(() => {
     if (!titleElement.current) {
@@ -31,6 +30,7 @@ const EntryContent = () => {
     titleTyped.current = new Typed(titleElement.current, options);
 
     return () => {
+      if (!titleTyped.current) return;
       titleTyped.current.destroy();
     };
   }, []);
@@ -48,6 +48,7 @@ const EntryContent = () => {
     subtitleTyped.current = new Typed(subtitleElement.current, options);
 
     return () => {
+      if (!subtitleTyped.current) return;
       subtitleTyped.current.destroy();
     };
   }, [isTitleFinished]);

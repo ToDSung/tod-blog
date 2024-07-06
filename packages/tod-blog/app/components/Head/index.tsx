@@ -1,6 +1,6 @@
 import Head from '@curi/components/Head';
 
-type Props = {
+type HeadProps = {
   title: string;
   description: string;
 };
@@ -8,7 +8,7 @@ type Props = {
 const HtmlHead = ({
   title,
   description = 'I am ToD 努力嘗試分享的小小前端，希望這邊有任何一篇文章能夠幫助到你！',
-}: Props) => {
+}: HeadProps) => {
   const titleContent = title
     ? `${title} - Tod's blog`
     : "Tod's personal blog from TW";

@@ -1,6 +1,7 @@
 import '@/styles/globals.css';
 
 import { Caveat } from 'next/font/google';
+import { ReactNode } from 'react';
 
 import Navbar from '@/app/components/Navbar';
 
@@ -13,11 +14,11 @@ const caveat = Caveat({
   subsets: ['latin'],
 });
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+interface RootLayoutProps {
+  children: ReactNode;
+}
+
+const RootLayout = ({ children }: RootLayoutProps) => {
   return (
     <html lang='en' className={caveat.className}>
       <body>
@@ -33,4 +34,6 @@ export default function RootLayout({
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

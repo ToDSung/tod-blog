@@ -1,12 +1,11 @@
-import { FC } from 'react';
-
 import UnorderedList from '@curi/components/List/UnorderedList';
 import Paragraph from '@curi/components/Paragraph';
 
 import type Icon from '@/types/icon';
+
 import Skill from './Skill';
 
-type Props = {
+type SidebarProps = {
   skills: {
     name: string;
     description?: string;
@@ -15,7 +14,7 @@ type Props = {
   }[];
 };
 
-const Sidebar: FC<Props> = ({ skills = [] }) => {
+const Sidebar = ({ skills = [] }: SidebarProps) => {
   const aboutContents = [
     '我是 Tod，是講究務實的人，總是渴望能找到問題的本質與答案的價值，追求於開發別具意義的產品。',
     '正嘗試著分享我的歷程，期待精進自己的同時也能幫到他人，希望自己能夠從小處開始分享，將自己的小小能量散發出去！',

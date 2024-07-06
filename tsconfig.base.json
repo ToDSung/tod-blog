@@ -1,26 +1,28 @@
 {
-  "compileOnSave": false,
   "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "incremental": true,
+    "module": "commonjs",
     "rootDir": ".",
-    "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "target": "es2015",
-    "module": "esnext",
-    "lib": ["es2017", "dom"],
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
+    "strict": true,
+    "target": "ES2020",
     "baseUrl": ".",
     "paths": {
-      "@curi/components": ["packages/components/src/index.ts"],
-      "@tod-workspace/implementation": ["packages/implementation/src/index.ts"],
-      "@tod-workspace/leetcode-practice": [
-        "packages/leetcode-practice/src/index.ts"
-      ]
-    }
+      "*": ["node_modules"],
+    },
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
   },
-  "exclude": ["node_modules", "tmp"]
+  "references": [
+    { "path": "packages/articles" },
+    { "path": "packages/components" },
+    { "path": "packages/leetcode" },
+    { "path": "packages/tod-blog" },
+    { "path": "packages/tod-blog-e2e" },
+  ]
 }

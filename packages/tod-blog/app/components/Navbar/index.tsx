@@ -1,8 +1,7 @@
+import CuriNavbar from '@curi/components/Navbar';
 import { FiGithub, FiLinkedin } from 'react-icons/fi';
 import { MdArticle } from 'react-icons/md';
 import { SiAboutdotme } from 'react-icons/si';
-
-import CuriNavbar from '@curi/components/Navbar';
 
 const TABS = [
   {

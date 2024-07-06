@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { ReactNode } from 'react';
 
-type Props = {
+type HeadProps = {
   title: string;
   author: string;
   description: string;
@@ -10,6 +10,7 @@ type Props = {
   children?: ReactNode;
 };
 
+// TODO: move to tod-blog
 const HtmlHead = ({
   title,
   author,
@@ -17,7 +18,7 @@ const HtmlHead = ({
   url,
   favicon,
   children,
-}: Props) => {
+}: HeadProps) => {
   return (
     <Head>
       <meta charSet='UTF-8' />

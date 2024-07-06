@@ -1,9 +1,7 @@
-import { FC } from 'react';
-
 import UnorderedList from '@curi/components/List/UnorderedList';
 import Paragraph from '@curi/components/Paragraph';
 
-type Props = {
+type ArticleProps = {
   title: string;
   date: string;
   subtitle?: string;
@@ -14,13 +12,13 @@ type Props = {
   }[];
 };
 
-const Article: FC<Props> = ({
+const Article = ({
   title,
   date,
   subtitle,
   paragraph,
   ulContents = [],
-}) => {
+}: ArticleProps) => {
   return (
     <div className='article flex flex-col'>
       <div className='article__title-container my-1 flex flex-wrap text-xl'>

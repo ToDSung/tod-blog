@@ -1,13 +1,11 @@
-import { FC } from 'react';
-
 import type Icon from '@/types/icon';
 
-type Props = {
+type SkillProps = {
   name: string;
   icon: Icon;
 };
 
-const Skill: FC<Props> = ({ name, icon }) => (
+const Skill = ({ name, icon }: SkillProps) => (
   <div className='skill flex flex-col'>
     <div className='title flex flex-wrap items-center gap-2'>
       {icon.component && <icon.component color={icon.color} />}

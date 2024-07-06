@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-
 import { from, fromEvent, race } from 'rxjs';
 import { map } from 'rxjs/operators';
 

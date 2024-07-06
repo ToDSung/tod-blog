@@ -9,7 +9,7 @@ interface Tab extends IconLink {
   name: string;
 }
 
-type Props = {
+type NavbarProps = {
   title: string;
   tabs: Tab[];
   socialMedias: IconLink[];
@@ -59,7 +59,7 @@ const Navbar = ({
   tabs = [],
   socialMedias = [],
   className = '',
-}: Props) => {
+}: NavbarProps) => {
   return (
     <>
       <nav
