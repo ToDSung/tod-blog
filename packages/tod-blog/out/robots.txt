@@ -1,9 +1,0 @@
-# *
-User-agent: *
-Allow: /
-
-# Host
-Host: https://tod-blog.vercel.app/
-
-# Sitemaps
-Sitemap: https://tod-blog.vercel.app/sitemap.xml
