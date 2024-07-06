@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'leetcode-practice',
+  displayName: 'leetcode',
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -11,5 +11,5 @@ export default {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/packages/leetcode-practice',
+  coverageDirectory: '../../coverage/packages/leetcode',
 };

@@ -3,15 +3,8 @@
  * @return {number}
  */
 
-interface results {
-  [key: number]: {
-    count: number;
-    start: number;
-  };
-}
-
 export const findShortestSubArray: (nums: number[]) => number = nums => {
-  const results: results = {};
+  const results: Record<number, {count:number; start: number}> = {};
   let result = 1;
   let count = 0;
 
