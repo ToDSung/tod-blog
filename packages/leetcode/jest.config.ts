@@ -1,15 +1,8 @@
 /* eslint-disable */
+const baseConfig = require('../../jest.config.base.js');
+
 export default {
+  ...baseConfig,
   displayName: 'leetcode',
-  preset: '../../jest.preset.js',
-  globals: {
-    'ts-jest': {
-      tsconfig: '<rootDir>/tsconfig.spec.json',
-    },
-  },
-  transform: {
-    '^.+\\.[tj]s$': 'ts-jest',
-  },
-  moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/packages/leetcode',
 };

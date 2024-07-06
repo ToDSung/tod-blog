@@ -1,4 +1,14 @@
 {
-  "extends": ["../../.eslintrc.json"],
+  "extends": ["../../.eslintrc.json", "plugin:jest/recommended"],
+  "plugins": ["jest"],
   "ignorePatterns": ["!**/*"],
+  "env": {
+    "node": true,
+    "jest": true,
+    "es2018": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "script"
+  }
 }
