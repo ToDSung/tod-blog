@@ -5,9 +5,21 @@ import { ReactNode } from 'react';
 
 import Navbar from '@/app/components/Navbar';
 
-export const metadata = {
-  title: "Tod's personal blog",
-  description: 'This is a personal blog created by tod sung',
+export const generateMetadata = async () => {
+  return {
+    title: "Tod's personal blog",
+    description: 'This is a personal blog created by tod sung from Taiwan',
+    openGraph: {
+      title: "Tod's personal blog",
+      description: 'This is a personal blog created by tod sung from Taiwan',
+      type: 'website',
+      emails: 'wlunareve@gmail.com',
+      locale: 'zh-tw',
+    },
+    verification: {
+      google: '9JFlPPjMcTWCa_ePEuHyFvlCv8LS2xZkeK3alcNc_oE',
+    },
+  };
 };
 
 const caveat = Caveat({
