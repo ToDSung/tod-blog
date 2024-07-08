@@ -1,5 +1,5 @@
-import UnorderedList from '@curi/components/List/UnorderedList';
-import Paragraph from '@curi/components/Paragraph';
+import Paragraph from '@/app/cv/components/Paragraph';
+import UnorderedList from '@/app/cv/components/UnorderedList';
 
 type ArticleProps = {
   title: string;

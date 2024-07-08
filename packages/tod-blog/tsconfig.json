@@ -27,9 +27,6 @@
     "paths": {
       "@/*": [
         "./*"
-      ],
-      "@curi/components/*": [
-        "../../packages/components/src/lib/*"
       ]
     },
   },

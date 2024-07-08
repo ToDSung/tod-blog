@@ -1,8 +1,8 @@
 import type { IconType } from 'react-icons/lib';
 
-type Icon = {
+interface Icon {
   component: IconType;
   color?: string;
-};
+}
 
 export default Icon;

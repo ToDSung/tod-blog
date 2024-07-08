@@ -12,7 +12,11 @@
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
-      "rules": {}
+      "rules": {
+        "import/no-extraneous-dependencies": "error",
+        "import/no-relative-packages": "error",
+        "import/no-useless-path-segments": "error"
+      }
     }
   ]
 }

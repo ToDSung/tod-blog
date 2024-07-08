@@ -1,4 +1,4 @@
-import Head from 'next/head';
+import NextHead from 'next/head';
 import { ReactNode } from 'react';
 
 type HeadProps = {
@@ -10,8 +10,7 @@ type HeadProps = {
   children?: ReactNode;
 };
 
-// TODO: move to tod-blog
-const HtmlHead = ({
+const Head = ({
   title,
   author,
   description,
@@ -20,7 +19,7 @@ const HtmlHead = ({
   children,
 }: HeadProps) => {
   return (
-    <Head>
+    <NextHead>
       <meta charSet='UTF-8' />
       <title>{title}</title>
       <meta name='description' content={description} />
@@ -45,8 +44,8 @@ const HtmlHead = ({
       />
       <link rel='alternate' hrefLang='zh-Hant' href={url} />
       {children}
-    </Head>
+    </NextHead>
   );
 };
 
-export default HtmlHead;
+export default Head;

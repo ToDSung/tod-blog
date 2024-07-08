@@ -1,11 +1,11 @@
-import Head from '@curi/components/Head';
+import HeadComponent from '@/components/Head';
 
 type HeadProps = {
   title: string;
   description: string;
 };
 
-const HtmlHead = ({
+const Head = ({
   title,
   description = 'I am ToD 努力嘗試分享的小小前端，希望這邊有任何一篇文章能夠幫助到你！',
 }: HeadProps) => {
@@ -14,7 +14,7 @@ const HtmlHead = ({
     : "Tod's personal blog from TW";
 
   return (
-    <Head
+    <HeadComponent
       title={titleContent}
       description={description}
       author='ToD Sung'
@@ -26,8 +26,8 @@ const HtmlHead = ({
         content='9JFlPPjMcTWCa_ePEuHyFvlCv8LS2xZkeK3alcNc_oE'
       />
       <link rel='icon' href='/favicon.ico' />
-    </Head>
+    </HeadComponent>
   );
 };
 
-export default HtmlHead;
+export default Head;

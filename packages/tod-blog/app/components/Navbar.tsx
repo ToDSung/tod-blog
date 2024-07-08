@@ -1,7 +1,8 @@
-import CuriNavbar from '@curi/components/Navbar';
 import { FiGithub, FiLinkedin } from 'react-icons/fi';
 import { MdArticle } from 'react-icons/md';
 import { SiAboutdotme } from 'react-icons/si';
+
+import NavbarComponent from '@/components/Navbar';
 
 const TABS = [
   {
@@ -21,7 +22,7 @@ const SOCIAL_MEDIAS = [
 ];
 
 const Navbar = () => (
-  <CuriNavbar
+  <NavbarComponent
     title='ToD'
     tabs={TABS}
     socialMedias={SOCIAL_MEDIAS}
