@@ -13,8 +13,8 @@ const Content = () => {
           Profile
         </h1>
         <Paragraph>
-          五年的網頁開發經驗，主要以 React
-          生態系進行網頁開發、重構工作，除了基本的開發系統，樂於與團隊成員互助討論問題，能夠與夥伴討論如何優化開發流程並且協助面試新夥伴，工作之餘經常閱讀技術文章，對技術富有熱忱，具備有效解決問題的自信。
+          擁有五年網頁開發經驗，專長於 React
+          生態系的系統擴展、重構，並具備面試官經驗，在團隊中經常做為承上啟下的角色，能夠有效的在開發團隊間溝通，工作之餘經常閱讀技術文章，勇於在團隊合作中提出觀點，具備解決問題的自信。
         </Paragraph>
       </section>
 
@@ -25,15 +25,16 @@ const Content = () => {
         <Article
           title='Noodoe 拓連科技- 資深前端工程師'
           date='Oct 2022 ~ Current'
-          paragraph='擔任資深前端工程師，code review，產品功能開發，持續重構 code base。'
+          paragraph='擔任資深前端工程師，進行產品開發迭代，並與五名前端工程師進行 code review。'
           ulContents={[
             {
               title: '產品迭代',
               content: [
                 '實作 charger load management feature，用以幫助使用者控制充電樁充電行為。',
-                '以 Typescript, react-hook-form, zod 重構 or 重寫專案功能，確保功能具備型別保護。',
-                '利用 Jotai, custom hook 分類、重整、清理資料流相關程式碼。',
+                '實作 log management feature，提供使用者回顧系統操作記錄。',
+                '以 Typescript, react-hook-form, zod, GraphQL 重構系統功能，確保型別保護。',
                 '使用 linaria, react-aria 開發公司自用 UI component library。',
+                '利用 Jotai, custom hook 分類、重整、清理資料流相關程式碼。',
               ],
             },
             {
@@ -41,7 +42,7 @@ const Content = () => {
               content: [
                 '負責團隊 code review。',
                 '主動與夥伴們共同討論、制定程式碼風格。',
-                '與 UI, PM, backend, QA 合作，確保 feature 符合預期。',
+                '獨立與各職能設計師, PM, 後端工程師和 QA 銜接，確保功能符合需求，時程符合預期。 ',
                 '作為面試官，共同參與前端面試。',
               ],
             },
@@ -55,9 +56,9 @@ const Content = () => {
             {
               title: '產品迭代',
               content: [
-                '與團隊成員重構公司產品，增進網頁效能，提升程式碼可讀性、可維護性。',
+                '利用 React, Redux Observable 與團隊成員重構公司產品，增進網頁效能，提升程式碼可讀性、可維護性。',
                 '分類、重整可複用 React 元件及專案函式庫。',
-                '實作產品新功能，用以幫助使用者能快速清理、整理供給 AI 訓練用資料集，並使用 Jest 進行測試。',
+                '實作產品新功能，用以幫助使用者能快速清理、整理供給 AI 訓練用資料集，並利用 Jest 進行測試。',
                 '維護、開發以 Vue, Vuetify, TypeScript, gRPC 為基底的系統網站。',
                 '工作之餘，透過開發個人部落格學習 TypeScript',
               ],
