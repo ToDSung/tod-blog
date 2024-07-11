@@ -1,7 +1,7 @@
 ---
 
 slug: experience/three-years
-title: '<工作過往雜談> 前端工程師三年工作經驗心得'
+title: '前端工程師三年工作經驗心得'
 date: '2022-08-21'
 tags: [
   "Experience"
