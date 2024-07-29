@@ -14,7 +14,7 @@ const Content = () => {
         </h1>
         <Paragraph>
           擁有五年網頁開發經驗，專長於 React
-          生態系的系統擴展、重構，並具備面試官經驗，在團隊中經常做為承上啟下的角色，能夠有效的在開發團隊間溝通，工作之餘經常閱讀技術文章，勇於在團隊合作中提出觀點，具備解決問題的自信。
+          生態系的系統開發、重構，具備打造卓越產品的自信；在團隊中常做為承上啟下的角色，能夠有效的在開發團隊間溝通；工作之餘經常閱讀技術文章，並於團隊合作中提出觀點，致力於提升自己或是團隊的工作效率。
         </Paragraph>
       </section>
 
@@ -30,11 +30,11 @@ const Content = () => {
             {
               title: '產品迭代',
               content: [
-                '實作 charger load management feature，用以幫助使用者控制充電樁充電行為。',
-                '實作 log management feature，提供使用者回顧系統操作記錄。',
-                '以 Typescript, react-hook-form, zod, GraphQL 重構系統功能，確保型別保護。',
-                '使用 linaria, react-aria 開發公司自用 UI component library。',
-                '利用 Jotai, custom hook 分類、重整、清理資料流相關程式碼。',
+                '實作 charger load management 功能，提供使用者介面以動態調整充電量分配，使客戶能夠配合電價政策達到降低成本之目的。',
+                '實作 log management 功能，提供使用者回顧系統操作記錄之功能，減少公司內部營運之成本。',
+                '以 TypeScript, react-hook-form, Zod, GraphQL 重構系統功能，透過型別保護，減少不必要的出錯情境。',
+                '開發公司自用 UI component library，確保設計一致性。',
+                '利用 Jotai 和 custom hook 重整資料流程式碼，提升可維護性。',
               ],
             },
             {
@@ -58,8 +58,8 @@ const Content = () => {
               content: [
                 '利用 React, Redux Observable 與團隊成員重構公司產品，增進網頁效能，提升程式碼可讀性、可維護性。',
                 '分類、重整可複用 React 元件及專案函式庫。',
-                '實作產品新功能，用以幫助使用者能快速清理、整理供給 AI 訓練用資料集，並利用 Jest 進行測試。',
-                '維護、開發以 Vue, Vuetify, TypeScript, gRPC 為基底的系統網站。',
+                '實作 file 上傳檢查功能，用以幫助使用者快速整理供給給 AI 訓練用的資料集，亦利用 Jest 補上單元測試，確保實作成果。',
+                '維護、開發以 Vue, Vuetify, TypeScript, gRPC 為基底的系統網站，具備快速接手不同 tech stack 之能力。',
                 '工作之餘，透過開發個人部落格學習 TypeScript',
               ],
             },
