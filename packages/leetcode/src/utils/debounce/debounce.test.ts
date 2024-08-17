@@ -3,7 +3,6 @@ import { jest } from '@jest/globals';
 import debounce from './debounce';
 
 describe('debounce', () => {
-  // 模擬計時器
   jest.useFakeTimers();
 
   test('should call the function only once after the specified delay', () => {
