@@ -1,7 +1,12 @@
-staged_files=$(git diff --cached --name-only HEAD^)
-test_files=$(echo "$staged_files" | sed 's/\(.*\)\(\.[^.]*\)$/\1\.\(spec\|test\)\2/')
+npx lint-staged
 
-echo $test_files
+if [ "$1"=="--amend" ]; then
+    staged_files=$(git diff --cached --name-only HEAD^)
+else
+    staged_files=$(git diff --cached --name-only)
+fi
+
+test_files=$(echo "$staged_files" | sed 's/\(.*\)\(\.[^.]*\)$/\1\.\(spec\|test\)\2/')
 
 pnpm -F leetcode test -t $test_files
 
