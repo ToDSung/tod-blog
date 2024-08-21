@@ -7,7 +7,6 @@ export const isHappy: (n: number) => boolean = n => {
   const results = new Set();
 
   while (n) {
-    console.log(results);
     const result = `${n}`
       .split('')
       .reduce(

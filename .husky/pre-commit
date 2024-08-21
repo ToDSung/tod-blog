@@ -1,1 +1,14 @@
-pnpm --no-filter leetcode test
+staged_files=$(git diff --cached --name-only HEAD^)
+test_files=$(echo "$staged_files" | sed 's/\(.*\)\(\.[^.]*\)$/\1\.\(spec\|test\)\2/')
+
+echo $test_files
+
+pnpm -F leetcode test -t $test_files
+
+if [ $? -ne 0 ]; then
+    echo "Pre-commit test failed. Please fix the issues and try again."
+    exit 1
+else
+    echo "Pre-commit test passed. Proceeding with commit."
+    exit 0
+fi
