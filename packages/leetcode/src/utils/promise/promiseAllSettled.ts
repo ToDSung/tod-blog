@@ -1,7 +1,7 @@
-type FullfilledReturn<T> = { status: 'resolved'; value: T };
+type FulfilledReturn<T> = { status: 'resolved'; value: T };
 type RejectedReturn = { status: 'rejected'; reason: any };
 
-type Return<T> = FullfilledReturn<T> | RejectedReturn;
+type Return<T> = FulfilledReturn<T> | RejectedReturn;
 
 const promiseAllSettled = <T>(args: Promise<T>[]): Promise<Return<T>[]> => {
   return new Promise(resolve => {
