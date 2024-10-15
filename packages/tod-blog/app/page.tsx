@@ -1,3 +1,5 @@
+'use client';
+
 import '@/styles/globals.css';
 
 import type { NextPage } from 'next';
