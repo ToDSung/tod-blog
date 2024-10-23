@@ -2,11 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "composite": true,
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -25,19 +21,17 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./*"
+      "@/*": ["./*"],
+      "@curi/mui-with-linaria": [
+        "../../packages/mui-with-linaria/dist/types/index.d.ts"
       ]
-    },
+    }
   },
   "include": [
     "next-env.d.ts",
     "./**/*.ts",
     "./**/*.tsx",
-    "../../packages/components/**/*.tsx",
     ".next/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

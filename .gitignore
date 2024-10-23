@@ -57,6 +57,7 @@ yarn-error.log*
 *.tsbuildinfo
 *:Zone.Identifier
 
+packages/mui-with-linaria/dist/*
 
 packages/tod-blog/.next/*
 packages/tod-blog/out/*
@@ -65,3 +66,5 @@ packages/tod-blog/public/sitemap-0.xml
 
 # Next.js
 .next
+
+*storybook.log
