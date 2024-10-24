@@ -1,4 +1,5 @@
 import '@/styles/globals.css';
+import '@curi/mui-with-linaria/dist/styles.css';
 
 import { Caveat } from 'next/font/google';
 import { ReactNode } from 'react';
@@ -33,6 +34,7 @@ interface RootLayoutProps {
 const RootLayout = ({ children }: RootLayoutProps) => {
   return (
     <html lang='en' className={caveat.className}>
+      <head></head>
       <body>
         <main
           id='app'

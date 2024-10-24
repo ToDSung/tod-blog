@@ -1,0 +1,21 @@
+{
+  "extends": [
+    "../../.eslintrc.json",
+    "next/core-web-vitals",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
+    "plugin:react-hooks/recommended"
+  ],
+  "plugins": ["react", "react-hooks"],
+  "ignorePatterns": ["!**/*"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "rules": {
+        "import/no-extraneous-dependencies": "error",
+        "import/no-relative-packages": "error",
+        "import/no-useless-path-segments": "error"
+      }
+    }
+  ]
+}

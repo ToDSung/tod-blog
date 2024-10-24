@@ -1,11 +1,18 @@
-import { Button as MuiButton, ButtonProps } from '@mui/material';
+import { css } from '@linaria/core';
+import { Button as MuiButton, type ButtonProps } from '@mui/material';
 
-export interface CustomButtonProps extends ButtonProps {}
+const buttonWrapper = css`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+
+export type CustomButtonProps = ButtonProps;
 
 export const Button = ({ children, ...props }: CustomButtonProps) => {
   return (
-    <div>
-      <label>I am Button Label</label>
+    <div className={buttonWrapper}>
+      <label>Button Label</label>
       <MuiButton {...props}>{children}</MuiButton>
     </div>
   );

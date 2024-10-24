@@ -11,7 +11,9 @@ const MuiWithLinaria: NextPage = () => {
   return (
     <main className='flex max-w-5xl items-center'>
       <section id='main'>
-        <Button onClick={handleClick}>Click Me!</Button>
+        <Button variant='contained' onClick={handleClick}>
+          Click Me!
+        </Button>
       </section>
     </main>
   );

@@ -10,7 +10,8 @@
   ],
   "scripts": {
     "dev": "rollup -c -w",
-    "build": "rollup -c"
+    "build:type": "tsc",
+    "build": "rm -rf dist && pnpm run build:type && rollup -c"
   },
   "peerDependencies": {
     "@emotion/react": "^11.11.0",
@@ -19,20 +20,27 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   },
+  "dependencies": {
+    "@linaria/core": "^6.2.0",
+    "@linaria/react": "^6.2.1"
+  },
   "devDependencies": {
     "@babel/core": "^7.22.1",
-    "@babel/preset-react": "^7.22.3",
     "@babel/preset-env": "^7.22.4",
+    "@babel/preset-react": "^7.22.3",
+    "@babel/preset-typescript": "^7.25.9",
+    "@rollup/plugin-babel": "^5.3.1",
     "@rollup/plugin-commonjs": "^25.0.0",
     "@rollup/plugin-node-resolve": "^15.0.0",
-    "@rollup/plugin-typescript": "^11.0.0",
-    "@rollup/plugin-babel": "^5.3.1",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "@wyw-in-js/rollup": "^0.5.4",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "rollup": "^3.25.0",
+    "rollup-plugin-css-only": "^4.5.2",
     "rollup-plugin-peer-deps-external": "^2.2.4",
+    "tslib": "^2.8.0",
     "typescript": "^5.1.0"
   }
 }
