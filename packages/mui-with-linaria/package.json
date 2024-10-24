@@ -21,6 +21,8 @@
     "react-dom": "^18.0.0"
   },
   "dependencies": {
+    "@emotion/css": "^11.13.4",
+    "@linaria/atomic": "^6.2.0",
     "@linaria/core": "^6.2.0",
     "@linaria/react": "^6.2.1"
   },
