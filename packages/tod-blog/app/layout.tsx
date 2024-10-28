@@ -1,5 +1,5 @@
 import '@/styles/globals.css';
-import '@curi/mui-with-linaria/dist/styles.css';
+import '@curi/mui-with-linaria/styles.css';
 
 import { Caveat } from 'next/font/google';
 import { ReactNode } from 'react';

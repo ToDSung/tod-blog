@@ -1,6 +1,8 @@
 import { css } from '@emotion/css';
 import MuiButton, { type ButtonProps } from '@mui/material/Button';
 
+import { BaseColors } from '../theme/color.type';
+
 const buttonWrapper = css`
   display: flex;
   flex-direction: column;
@@ -8,7 +10,7 @@ const buttonWrapper = css`
 `;
 
 const button = css`
-  background-color: red;
+  background-color: ${BaseColors.GREEN_7};
 `;
 
 const Button = ({ children, ...props }: ButtonProps) => {

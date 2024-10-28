@@ -22,7 +22,7 @@ const switchStyle = css`
 
     & > .Mui-disabled {
       color: transparent;
-      color: ${BaseColors.GREY_800};
+      color: ${BaseColors.GREY_700};
     }
   }
 `;
