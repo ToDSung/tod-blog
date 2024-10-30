@@ -1,6 +1,8 @@
 import { ReactNode } from 'react';
 
 interface TypographyProps {
+  className: string;
+
   variant?: 'h3' | 'h4' | 'h5' | 'h6' | 'subtitle-md' | 'body-md';
 
   children: ReactNode;
@@ -18,8 +20,16 @@ const VARIANT_TO_CLASS = {
   string
 >;
 
-const Typography = ({ variant = 'body-md', children }: TypographyProps) => {
-  return <span className={VARIANT_TO_CLASS[variant]}>{children}</span>;
+const Typography = ({
+  className,
+  variant = 'body-md',
+  children,
+}: TypographyProps) => {
+  return (
+    <span className={`${VARIANT_TO_CLASS[variant]} ${className}`}>
+      {children}
+    </span>
+  );
 };
 
 export default Typography;

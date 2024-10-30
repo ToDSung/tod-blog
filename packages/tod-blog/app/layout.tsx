@@ -24,9 +24,9 @@ export const generateMetadata = async () => {
   };
 };
 
-const caveat = Caveat({
-  subsets: ['latin'],
-});
+// const caveat = Caveat({
+//   subsets: ['latin'],
+// });
 
 interface RootLayoutProps {
   children: ReactNode;
@@ -34,7 +34,7 @@ interface RootLayoutProps {
 
 const RootLayout = ({ children }: RootLayoutProps) => {
   return (
-    <html lang='en' className={caveat.className}>
+    <html lang='en'>
       <head></head>
       <body>
         <AppRouterCacheProvider options={{ key: 'css' }}>
