@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "pnpm -F mui-with-linaria build && next build",
     "start": "next start",
     "lint": "next lint",
     "postbuild": "npx next-sitemap"
