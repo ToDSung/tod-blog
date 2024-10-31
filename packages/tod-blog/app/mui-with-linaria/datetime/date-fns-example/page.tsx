@@ -5,30 +5,47 @@ import DatePickerLinaria from '@curi/mui-with-linaria/DatePickerLinaria';
 import DateTimePickerLinaria from '@curi/mui-with-linaria/DateTimePickerLinaria';
 import TimePickerLinaria from '@curi/mui-with-linaria/TimePickerLinaria';
 import { MenuItem, Select, type SelectChangeEvent } from '@mui/material';
-import { type Dayjs } from 'dayjs';
+import {
+  addHours,
+  addMonths,
+  format,
+  formatDistanceToNow,
+  subHours,
+  subMonths,
+} from 'date-fns';
+import { zhTW } from 'date-fns/locale';
 import type { NextPage } from 'next';
 
 import Typography from '@/components/Typography';
 
 import { useTimezone } from '../TimezoneContext';
 
-import useDayjs from './useDayjs';
+import useDateFns from './useDataFns';
 
-const DayjsExample: NextPage = () => {
-  const [date, setDate] = useDayjs('2024-02-29 07:00');
+const DateFnsExample: NextPage = () => {
+  const [date, setDate, zonedTimeDate, setZonedTimeDate] =
+    useDateFns('2024-02-29 07:00');
   const { timezone, setTimezone } = useTimezone();
 
-  const handleChange = (value: Dayjs | null) => {
+  const handleChange = (value: Date | null) => {
     if (value === null) return;
-    setDate(value);
+    setZonedTimeDate(value);
   };
 
-  const handleBack = (unit: 'day' | 'hour') => () => {
-    setDate(date.subtract(1, unit));
+  const handlePastHourClick = () => {
+    setDate(subHours(date, 1));
   };
 
-  const handleNext = (unit: 'day' | 'hour') => () => {
-    setDate(date.add(1, unit));
+  const handleNextHourClick = () => {
+    setDate(addHours(date, 1));
+  };
+
+  const handleYesterdayClick = () => {
+    setDate(subMonths(date, 1));
+  };
+
+  const handleTomorrowClick = () => {
+    setDate(addMonths(date, 1));
   };
 
   const handleTimezoneChange = (event: SelectChangeEvent) => {
@@ -54,44 +71,45 @@ const DayjsExample: NextPage = () => {
             UTC: {date.toISOString()}
           </Typography>
           <Typography variant='h5' className='text-black'>
-            Local Time: {date.format('YYYY/MM/DD HH:mm:ss A')}
+            Local Time: {format(zonedTimeDate, 'yyyy/MM/dd HH:mm:ss a')}
           </Typography>
           <DatePickerLinaria
-            value={date}
+            value={zonedTimeDate}
             timezone={timezone}
             onChange={handleChange}
           />
           <TimePickerLinaria
-            value={date}
+            value={zonedTimeDate}
             timezone={timezone}
             onChange={handleChange}
           />
           <DateTimePickerLinaria
-            value={date}
+            value={zonedTimeDate}
             timezone={timezone}
             onChange={handleChange}
           />
           <div className='flex justify-between gap-2'>
-            <ButtonLinaria variant='contained' onClick={handleBack('hour')}>
+            <ButtonLinaria variant='contained' onClick={handlePastHourClick}>
               past hour
             </ButtonLinaria>
-            <ButtonLinaria variant='contained' onClick={handleNext('hour')}>
+            <ButtonLinaria variant='contained' onClick={handleNextHourClick}>
               next hour
             </ButtonLinaria>
           </div>
           <div className='flex justify-between gap-2'>
-            <ButtonLinaria variant='contained' onClick={handleBack('day')}>
+            <ButtonLinaria variant='contained' onClick={handleYesterdayClick}>
               yesterday
             </ButtonLinaria>
-            <ButtonLinaria variant='contained' onClick={handleNext('day')}>
+            <ButtonLinaria variant='contained' onClick={handleTomorrowClick}>
               tomorrow
             </ButtonLinaria>
           </div>
           <Typography variant='h5' className='text-black'>
-            From Now: {date.fromNow()}
+            From Now: {formatDistanceToNow(date, { addSuffix: true })}
           </Typography>
           <Typography variant='h5' className='text-black'>
-            From Now (zh-tw): {date.locale('zh-tw').fromNow()}
+            From Now (zh-tw):
+            {formatDistanceToNow(date, { locale: zhTW, addSuffix: true })}
           </Typography>
         </div>
       </section>
@@ -99,4 +117,4 @@ const DayjsExample: NextPage = () => {
   );
 };
 
-export default DayjsExample;
+export default DateFnsExample;
