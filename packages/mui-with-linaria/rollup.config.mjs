@@ -40,6 +40,7 @@ const external = [
   'react',
   'react-dom',
   '@mui/material',
+  '@mui/x-date-pickers',
   '@emotion/css',
   '@emotion/react',
   '@emotion/styled',

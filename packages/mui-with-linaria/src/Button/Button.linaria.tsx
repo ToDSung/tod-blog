@@ -11,14 +11,14 @@ const buttonWrapper = css`
 
 const button = css`
   &.MuiButton-root {
-    background-color: ${BaseColors.GREEN_7};
+    /* background-color: ${BaseColors.GREEN_7}; */
   }
 `;
 
 const Button = ({ children, ...props }: ButtonProps) => {
   return (
     <div className={buttonWrapper}>
-      <label>Linaria Button Label</label>
+      {/* <label>Linaria Button Label</label> */}
       <MuiButton {...props} className={button}>
         {children}
       </MuiButton>
