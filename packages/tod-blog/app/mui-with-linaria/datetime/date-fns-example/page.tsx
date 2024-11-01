@@ -4,20 +4,24 @@ import ButtonLinaria from '@curi/mui-with-linaria/ButtonLinaria';
 import DatePickerLinaria from '@curi/mui-with-linaria/DatePickerLinaria';
 import DateTimePickerLinaria from '@curi/mui-with-linaria/DateTimePickerLinaria';
 import TimePickerLinaria from '@curi/mui-with-linaria/TimePickerLinaria';
-import { MenuItem, Select, type SelectChangeEvent } from '@mui/material';
 import {
   addHours,
   addMonths,
+  endOfDay,
   format,
   formatDistanceToNow,
+  isAfter,
+  isBefore,
+  startOfDay,
   subHours,
   subMonths,
 } from 'date-fns';
 import { zhTW } from 'date-fns/locale';
 import type { NextPage } from 'next';
 
-import Typography from '@/components/Typography';
-
+import SyntaxAndResult from '../components/SyntaxAndResult';
+import TimezoneSelect from '../components/TimezoneSelect';
+import { DATE_COMPARED, DATE_FORMATE } from '../constants';
 import { useTimezone } from '../TimezoneContext';
 
 import useDateFns from './useDataFns';
@@ -25,7 +29,7 @@ import useDateFns from './useDataFns';
 const DateFnsExample: NextPage = () => {
   const [date, setDate, zonedTimeDate, setZonedTimeDate] =
     useDateFns('2024-02-29 07:00');
-  const { timezone, setTimezone } = useTimezone();
+  const { timezone } = useTimezone();
 
   const handleChange = (value: Date | null) => {
     if (value === null) return;
@@ -48,44 +52,38 @@ const DateFnsExample: NextPage = () => {
     setDate(addMonths(date, 1));
   };
 
-  const handleTimezoneChange = (event: SelectChangeEvent) => {
-    setTimezone(event.target.value);
-  };
-
   return (
     <main className='flex w-[720px] max-w-5xl bg-white p-4'>
       <section id='main'>
-        <div className='flex items-center gap-4'>
-          <Typography variant='h4' className='text-green-900'>
-            Current Timezone: {timezone}
-          </Typography>
-          <Select value={timezone} onChange={handleTimezoneChange}>
-            <MenuItem value={'America/New_York'}>New York (UTC - 5)</MenuItem>
-            <MenuItem value={'Europe/London'}>London (UTC + 0)</MenuItem>
-            <MenuItem value={'Europe/Istanbul'}>Turkiye (UTC + 3)</MenuItem>
-            <MenuItem value={'Asia/Taipei'}>Taipei (UTC + 8)</MenuItem>
-          </Select>
-        </div>
         <div className='flex flex-col gap-4'>
-          <Typography variant='h5' className='text-black'>
-            UTC: {date.toISOString()}
-          </Typography>
-          <Typography variant='h5' className='text-black'>
-            Local Time: {format(zonedTimeDate, 'yyyy/MM/dd HH:mm:ss a')}
-          </Typography>
+          <TimezoneSelect />
+          <SyntaxAndResult
+            syntax='date.toISOString()'
+            result={`UTC: ${date.toISOString()}`}
+          />
+          <SyntaxAndResult
+            syntax={`format(zonedTimeDate, ${DATE_FORMATE['datefns']})`}
+            result={`Local Time: ${format(
+              zonedTimeDate,
+              'yyyy/MM/dd HH:mm:ss a'
+            )}`}
+          />
           <DatePickerLinaria
             value={zonedTimeDate}
             timezone={timezone}
+            format={DATE_FORMATE['datefns'].split(' ').at(0)}
             onChange={handleChange}
           />
           <TimePickerLinaria
             value={zonedTimeDate}
             timezone={timezone}
+            format={DATE_FORMATE['datefns'].split(' ').slice(1).join(' ')}
             onChange={handleChange}
           />
           <DateTimePickerLinaria
             value={zonedTimeDate}
             timezone={timezone}
+            format={`${DATE_FORMATE['datefns']}`}
             onChange={handleChange}
           />
           <div className='flex justify-between gap-2'>
@@ -104,13 +102,35 @@ const DateFnsExample: NextPage = () => {
               tomorrow
             </ButtonLinaria>
           </div>
-          <Typography variant='h5' className='text-black'>
-            From Now: {formatDistanceToNow(date, { addSuffix: true })}
-          </Typography>
-          <Typography variant='h5' className='text-black'>
-            From Now (zh-tw):
-            {formatDistanceToNow(date, { locale: zhTW, addSuffix: true })}
-          </Typography>
+          <SyntaxAndResult
+            syntax='startOfDay(date)'
+            result={`Local Time: ${startOfDay(zonedTimeDate).toISOString()}`}
+          />
+          <SyntaxAndResult
+            syntax='endOfDay(date)'
+            result={`Local Time: ${endOfDay(date).toISOString()}`}
+          />
+          <SyntaxAndResult
+            syntax={`isBefore(date, new Date('${DATE_COMPARED}'))`}
+            result={`IsBefore: ${isBefore(date, new Date(DATE_COMPARED))}`}
+          />
+          <SyntaxAndResult
+            syntax={`isAfter(date, new Date('${DATE_COMPARED}'))`}
+            result={`IsAfter: ${isAfter(date, new Date(DATE_COMPARED))}`}
+          />
+          <SyntaxAndResult
+            syntax='formatDistanceToNow(date, { addSuffix: true })'
+            result={`From Now: ${formatDistanceToNow(date, {
+              addSuffix: true,
+            })}`}
+          />
+          <SyntaxAndResult
+            syntax='formatDistanceToNow(date, { locale: zhTW, addSuffix: true })'
+            result={`From Now (zh-tw): ${formatDistanceToNow(date, {
+              locale: zhTW,
+              addSuffix: true,
+            })}`}
+          />
         </div>
       </section>
     </main>

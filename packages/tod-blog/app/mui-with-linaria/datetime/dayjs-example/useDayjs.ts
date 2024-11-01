@@ -13,11 +13,10 @@ dayjs.extend(timezone);
 
 const useDayjs = (config: ConfigType) => {
   const { timezone } = useTimezone();
-  const [date, setDate] = useState(dayjs.utc(config).tz(timezone));
+  const [date, setDate] = useState(dayjs.tz(config));
 
   useEffect(() => {
     setDate(date => date.tz(timezone));
-    dayjs.tz.setDefault(timezone);
   }, [timezone]);
 
   return [date, setDate] as const;

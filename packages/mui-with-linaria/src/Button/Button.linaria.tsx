@@ -1,5 +1,7 @@
 import { css } from '@linaria/core';
-import MuiButton, { type ButtonProps } from '@mui/material/Button';
+import MuiButton, {
+  type ButtonProps as MuiButtonProps,
+} from '@mui/material/Button';
 
 import { BaseColors } from '../theme/color.type';
 
@@ -11,14 +13,18 @@ const buttonWrapper = css`
 
 const button = css`
   &.MuiButton-root {
-    /* background-color: ${BaseColors.GREEN_7}; */
+    background-color: ${BaseColors.GREEN_7};
   }
 `;
 
-const Button = ({ children, ...props }: ButtonProps) => {
+interface ButtonProps extends MuiButtonProps {
+  label?: string;
+}
+
+const Button = ({ label, children, ...props }: ButtonProps) => {
   return (
     <div className={buttonWrapper}>
-      {/* <label>Linaria Button Label</label> */}
+      {label && <label>{label}</label>}
       <MuiButton {...props} className={button}>
         {children}
       </MuiButton>
