@@ -22,13 +22,15 @@
     "date-fns-tz": "^3.2.0",
     "dayjs": "^1.11.13",
     "lodash": "4.17.21",
+    "luxon": "^3.5.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "rxjs": "^7.8.1",
     "typed.js": "2.1.0"
   },
   "devDependencies": {
-    "@types/lodash": "^4.17.6"
+    "@types/lodash": "^4.17.6",
+    "@types/luxon": "^3.4.2"
   },
   "peerDependencies": {
     "next": "14.2.4",

@@ -1,8 +1,4 @@
-export const DateExampleList = [
-  // undefined,
-  // '2024-02-29T07:00:00.000Z',
-  // '2024-02-29 07:00:00.000+08:00',
-  '2024-02-29 07:00',
-  // '2023-02-30 07:00',
-  // '2024-02-30 07:00',
-];
+export const DATE_FORMATE = {
+  dayjs: 'YYYY/MM/DD HH:mm:ss A',
+  luxon: 'yyyy/MM/dd HH:mm:ss a',
+} as const;

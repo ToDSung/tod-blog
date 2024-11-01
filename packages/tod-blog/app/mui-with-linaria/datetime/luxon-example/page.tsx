@@ -5,7 +5,7 @@ import DatePickerLinaria from '@curi/mui-with-linaria/DatePickerLinaria';
 import DateTimePickerLinaria from '@curi/mui-with-linaria/DateTimePickerLinaria';
 import TimePickerLinaria from '@curi/mui-with-linaria/TimePickerLinaria';
 import { MenuItem, Select, type SelectChangeEvent } from '@mui/material';
-import { type Dayjs } from 'dayjs';
+import { DateTime, type DurationLike } from 'luxon';
 import type { NextPage } from 'next';
 
 import Typography from '@/components/Typography';
@@ -13,23 +13,23 @@ import Typography from '@/components/Typography';
 import { DATE_FORMATE } from '../constants';
 import { useTimezone } from '../TimezoneContext';
 
-import useDayjs from './useDayjs';
+import useLuxon from './useLuxon';
 
 const DayjsExample: NextPage = () => {
-  const [date, setDate] = useDayjs('2024-02-29 07:00');
+  const [date, setDate] = useLuxon('2024-02-29T07:00');
   const { timezone, setTimezone } = useTimezone();
 
-  const handleChange = (value: Dayjs | null) => {
+  const handleChange = (value: DateTime | null) => {
     if (value === null) return;
     setDate(value);
   };
 
-  const handleBack = (unit: 'day' | 'hour') => () => {
-    setDate(date.subtract(1, unit));
+  const handleBack = (duration: DurationLike) => () => {
+    setDate(date.minus(duration));
   };
 
-  const handleNext = (unit: 'day' | 'hour') => () => {
-    setDate(date.add(1, unit));
+  const handleNext = (duration: DurationLike) => () => {
+    setDate(date.plus(duration));
   };
 
   const handleTimezoneChange = (event: SelectChangeEvent) => {
@@ -52,10 +52,10 @@ const DayjsExample: NextPage = () => {
         </div>
         <div className='flex flex-col gap-4'>
           <Typography variant='h5' className='text-black'>
-            UTC: {date.toISOString()}
+            UTC: {date.toUTC().toISO()}
           </Typography>
           <Typography variant='h5' className='text-black'>
-            Local Time: {date.format(DATE_FORMATE['dayjs'])}
+            Local Time: {date.toFormat(DATE_FORMATE['luxon'])}
           </Typography>
           <DatePickerLinaria
             value={date}
@@ -73,26 +73,38 @@ const DayjsExample: NextPage = () => {
             onChange={handleChange}
           />
           <div className='flex justify-between gap-2'>
-            <ButtonLinaria variant='contained' onClick={handleBack('hour')}>
+            <ButtonLinaria
+              variant='contained'
+              onClick={handleBack({ hour: 1 })}
+            >
               past hour
             </ButtonLinaria>
-            <ButtonLinaria variant='contained' onClick={handleNext('hour')}>
+            <ButtonLinaria
+              variant='contained'
+              onClick={handleNext({ hour: 1 })}
+            >
               next hour
             </ButtonLinaria>
           </div>
           <div className='flex justify-between gap-2'>
-            <ButtonLinaria variant='contained' onClick={handleBack('day')}>
+            <ButtonLinaria
+              variant='contained'
+              onClick={handleBack({ days: 1 })}
+            >
               yesterday
             </ButtonLinaria>
-            <ButtonLinaria variant='contained' onClick={handleNext('day')}>
+            <ButtonLinaria
+              variant='contained'
+              onClick={handleNext({ days: 1 })}
+            >
               tomorrow
             </ButtonLinaria>
           </div>
           <Typography variant='h5' className='text-black'>
-            From Now: {date.fromNow()}
+            From Now: {date.toRelative({ locale: 'en-us' })}
           </Typography>
           <Typography variant='h5' className='text-black'>
-            From Now (zh-tw): {date.locale('zh-tw').fromNow()}
+            From Now (zh-tw): {date.toRelative({ locale: 'zh-tw' })}
           </Typography>
         </div>
       </section>
