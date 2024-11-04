@@ -17,7 +17,7 @@ const button = css`
   }
 `;
 
-interface ButtonProps extends MuiButtonProps {
+export interface ButtonProps extends MuiButtonProps {
   label?: string;
 }
 

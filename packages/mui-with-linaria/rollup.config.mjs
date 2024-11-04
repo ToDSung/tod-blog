@@ -5,7 +5,6 @@ import wyw from '@wyw-in-js/rollup';
 import { readdirSync } from 'node:fs';
 import path from 'node:path';
 import css from 'rollup-plugin-css-only';
-import dts from 'rollup-plugin-dts';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import { visualizer } from 'rollup-plugin-visualizer';
 
@@ -86,11 +85,6 @@ const rollupConfig = [
       cjsPath: `dist/${folderName}/${folderName}.linaria.js`,
       esmPath: `dist/${folderName}/${folderName}.linaria.esm.js`,
     }),
-    {
-      input: `src/${folderName}/${folderName}.linaria.tsx`,
-      output: { file: `dist/${folderName}/${folderName}.d.ts` },
-      plugins: [dts()],
-    },
   ]),
 ];
 
