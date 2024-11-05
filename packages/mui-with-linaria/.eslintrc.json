@@ -14,7 +14,8 @@
       "rules": {
         "import/no-extraneous-dependencies": "error",
         "import/no-relative-packages": "error",
-        "import/no-useless-path-segments": "error"
+        "import/no-useless-path-segments": "error",
+        "react/no-unknown-property": ["error", { "ignore": ["css"] }]
       }
     }
   ]

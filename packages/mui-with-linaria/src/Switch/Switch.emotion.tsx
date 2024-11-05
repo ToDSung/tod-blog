@@ -1,4 +1,4 @@
-import { css } from '@emotion/css';
+import { css } from '@emotion/react';
 import MuiSwitch, {
   type SwitchProps as MuiSwitchProps,
 } from '@mui/material/Switch';
@@ -33,8 +33,8 @@ export type SwitchProps = MuiSwitchProps & {
 
 const Switch = ({ children, ...props }: SwitchProps) => {
   return (
-    <div className={switchWrapperStyle}>
-      <MuiSwitch {...props} className={switchStyle} />
+    <div css={switchWrapperStyle}>
+      <MuiSwitch {...props} css={switchStyle} />
       <label>{children}</label>
     </div>
   );

@@ -1,6 +1,7 @@
 import '@/styles/globals.css';
 import '@curi/mui-with-linaria/styles.css';
 
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { Caveat } from 'next/font/google';
 import { ReactNode } from 'react';
 
@@ -36,15 +37,17 @@ const RootLayout = ({ children }: RootLayoutProps) => {
     <html lang='en' className={caveat.className}>
       <head></head>
       <body>
-        <main
-          id='app'
-          className='bg-default-canvas text-default-text flex min-h-screen justify-center px-2 text-justify'
-        >
-          <Navbar />
-          <div className='relative mt-[3.2rem] flex w-full justify-center sm:w-[80vw]'>
-            {children}
-          </div>
-        </main>
+        <AppRouterCacheProvider options={{ key: 'css' }}>
+          <main
+            id='app'
+            className='bg-default-canvas text-default-text flex min-h-screen justify-center px-2 text-justify'
+          >
+            <Navbar />
+            <div className='relative mt-[3.2rem] flex w-full justify-center sm:w-[80vw]'>
+              {children}
+            </div>
+          </main>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );
