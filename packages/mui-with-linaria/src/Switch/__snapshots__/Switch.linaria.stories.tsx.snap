@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mui-with-linaria/SwitchLinaria Default smoke-test 1`] = `
+<div class="atm_9s_1txwivl atm_h_1h6ojuz atm_cx_1y44olf">
+  <span class="MuiSwitch-root MuiSwitch-sizeMedium atm_1j4sjcm_hy6zze atm_1myhon8_1vzrvsl atm_141ft4g_1j28jx2 atm_141ft4g_hy6zze css-julti5-MuiSwitch-root">
+    <span class="MuiButtonBase-root MuiSwitch-switchBase MuiSwitch-colorPrimary Mui-checked PrivateSwitchBase-root MuiSwitch-switchBase MuiSwitch-colorPrimary Mui-checked Mui-checked css-byenzh-MuiButtonBase-root-MuiSwitch-switchBase">
+      <input class="PrivateSwitchBase-input MuiSwitch-input css-1m9pwf3"
+             type="checkbox"
+             checked
+      >
+      <span class="MuiSwitch-thumb css-jsexje-MuiSwitch-thumb">
+      </span>
+      <span class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root">
+      </span>
+    </span>
+    <span class="MuiSwitch-track css-1yjjitx-MuiSwitch-track">
+    </span>
+  </span>
+  <label>
+    Switch Label
+  </label>
+</div>
+`;

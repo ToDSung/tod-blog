@@ -68,3 +68,7 @@ packages/tod-blog/public/sitemap-0.xml
 .next
 
 *storybook.log
+
+# Storybbok
+
+packages/mui-with-linaria/storybook-static/*

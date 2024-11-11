@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mui-with-linaria/ButtonLinaria ClickExample play-test 1`] = `
+<div style="width: 100px; height: 20px; padding: 16px;">
+  <div class="b1o0vl8n">
+    <label id=":r1:">
+      Button Label
+    </label>
+    <button class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary Mui-focusVisible MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary bc2jvtj css-sghohy-MuiButtonBase-root-MuiButton-root"
+            tabindex="0"
+            type="button"
+            aria-labelledby=":r1:"
+    >
+      Button
+      <span class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root">
+        <span class="css-y4cjyz-MuiTouchRipple-ripple MuiTouchRipple-ripple MuiTouchRipple-rippleVisible MuiTouchRipple-ripplePulsate"
+              style="width: 84.3253px; height: 84.3253px; top: -24.1626px; left: 7.83737px;"
+        >
+          <span class="MuiTouchRipple-child MuiTouchRipple-childPulsate">
+          </span>
+        </span>
+        <span class="css-y4cjyz-MuiTouchRipple-ripple MuiTouchRipple-ripple MuiTouchRipple-rippleVisible"
+              style="width: 109.563px; height: 109.563px; top: -36.7814px; left: -4.78138px;"
+        >
+          <span class="MuiTouchRipple-child MuiTouchRipple-childLeaving">
+          </span>
+        </span>
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`mui-with-linaria/ButtonLinaria Default play-test 1`] = `
+<div style="width: 100px; height: 20px; padding: 16px;">
+  <div class="b1o0vl8n">
+    <label id=":r0:">
+      Button Label
+    </label>
+    <button class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary bc2jvtj css-sghohy-MuiButtonBase-root-MuiButton-root"
+            tabindex="0"
+            type="button"
+            aria-labelledby=":r0:"
+    >
+      Button
+      <span class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root">
+      </span>
+    </button>
+  </div>
+</div>
+`;
