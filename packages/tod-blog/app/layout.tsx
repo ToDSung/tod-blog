@@ -1,6 +1,8 @@
 import '@/styles/globals.css';
 import '@curi/mui-with-linaria/styles.css';
 
+import '@pigment-css/react/styles.css';
+
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { Caveat } from 'next/font/google';
 import { ReactNode } from 'react';
