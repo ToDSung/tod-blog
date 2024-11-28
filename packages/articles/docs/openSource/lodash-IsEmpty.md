@@ -1,30 +1,29 @@
 ---
-
+title: 'isEmpty 原始碼閱讀'
 ---
 
-# lodash isEmpty
-
+# isEmpty 原始碼閱讀
 
 相信只要在職場有工作過一小段時間以後的前端工作者，一定或多或少都使用過 lodash 這個套件，而我自己與同事在 code base 中最常使用的 method 便是其中的 isEmpty，不過最近一段時間也發現這個 method 與我們所想的有些不同，就讓我們一起來看看吧！
 
-一般在串接 api 時，筆者習慣會先利用以下的寫法控制參數是否被實際帶入到呼叫 api 的 queryString 或 body   中。
+一般在串接 api 時，筆者習慣會先利用以下的寫法控制參數是否被實際帶入到呼叫 api 的 queryString 或 body 中。
 
 ```javascript
 import isEmpty from 'lodash/isEmpty';
 
 const apiName = async ({ filter }) => {
-	const params = {
-		...!isEmpty(filter.status) && { status: filter.status },
-	};
-	
-	const response = await callApi(path, params);
-	return response;
-}
+  const params = {
+    ...(!isEmpty(filter.status) && { status: filter.status }),
+  };
+
+  const response = await callApi(path, params);
+  return response;
+};
 ```
 
 可以見到 keyword 或 status 在 && 前的判斷結果如若是 falsy，就能利用解構賦值的拆解與合併達到忽略的效果，在上述的例子之中由於設計上的因素 status 有可能被填入的值是 number or numbers array，題幹說明至此，使用過 isEmpty 的你有想出來可能發生什麼問題了嗎？
 
-沒錯，當在 isEmpty 中填入  number 時，isEmpty 會 return true，從而導致所有帶入 number 作為過濾的需求全部無法達成效果。
+沒錯，當在 isEmpty 中填入 number 時，isEmpty 會 return true，從而導致所有帶入 number 作為過濾的需求全部無法達成效果。
 
 ```javascript
 // const params = {
@@ -32,7 +31,7 @@ const apiName = async ({ filter }) => {
 // };
 
 const filter = {
-	status: 1,
+  status: 1,
 };
 
 expect(params).toEqual({ status: 1 }); // wrong
@@ -40,7 +39,7 @@ expect(params).toEqual({ status: 1 }); // wrong
 // params actually {}
 ```
 
-那麼如果我們直接拿掉 !isEmpty呢？又會導致帶入空陣列（[]）到 api 參數之中 。
+那麼如果我們直接拿掉 !isEmpty 呢？又會導致帶入空陣列（[]）到 api 參數之中 。
 
 ```javascript
 // const params = {
@@ -48,7 +47,7 @@ expect(params).toEqual({ status: 1 }); // wrong
 // };
 
 const filter = {
-	status: [],
+  status: [],
 };
 
 expect(params).toEqual({}); // wrong
@@ -63,9 +62,8 @@ expect(params).toEqual({}); // wrong
 節錄至官方文件的說明內容
 
 > Checks if value is an empty object, collection, map, or set.
->Objects are considered empty if they have no own enumerable string keyed properties. 
->Array-like values such as arguments objects, arrays, buffers, strings, or jQuery-like collections are considered empty if they have length of 0 . Similarly, maps and sets are considered empty if they have a size of 0.
-> 
+> Objects are considered empty if they have no own enumerable string keyed properties.
+> Array-like values such as arguments objects, arrays, buffers, strings, or jQuery-like collections are considered empty if they have length of 0 . Similarly, maps and sets are considered empty if they have a size of 0.
 
 其實裡面早已經說明了只有空物件，空 collection，空 map ，空 set 才能透過使用 isEmpty 判斷 ，而什麼是 collection ，他指的是可以用來被迭代（iteratre）的 Array-like 資料結構 。( objects, arrays, buffers, string, jQuery-like collections )
 
@@ -74,26 +72,24 @@ expect(params).toEqual({}); // wrong
 ```javascript
 function isEmpty(value) {
   if (value == null) {
-    return true
+    return true;
   }
-  if (isArrayLike(value) &&
-      (Array.isArray(value) || typeof value === 'string' || typeof value.splice === 'function' ||
-        isBuffer(value) || isTypedArray(value) || isArguments(value))) {
-    return !value.length
+  if (isArrayLike(value) && (Array.isArray(value) || typeof value === 'string' || typeof value.splice === 'function' || isBuffer(value) || isTypedArray(value) || isArguments(value))) {
+    return !value.length;
   }
-  const tag = getTag(value)
+  const tag = getTag(value);
   if (tag == '[object Map]' || tag == '[object Set]') {
-    return !value.size
+    return !value.size;
   }
   if (isPrototype(value)) {
-    return !Object.keys(value).length
+    return !Object.keys(value).length;
   }
   for (const key in value) {
     if (hasOwnProperty.call(value, key)) {
-      return false
+      return false;
     }
   }
-  return true
+  return true;
 }
 ```
 
@@ -103,16 +99,13 @@ function isEmpty(value) {
 
 ```javascript
 function isArrayLike(value) {
-  return value != null && typeof value !== 'function' && isLength(value.length)
+  return value != null && typeof value !== 'function' && isLength(value.length);
 }
 
 function isLength(value) {
-  return typeof value === 'number' &&
-    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER
+  return typeof value === 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
 }
 ```
-
- 
 
 接著我們慢慢拆解 && 以後的值每個判斷式各代表什麼。
 
@@ -139,16 +132,16 @@ function isArguments(value) {
 如果符合以上任一條件就取 value 的 length 而後搭配強制轉型確認是否是空的 array-like 變數。
 
 ```javascript
-return !value.length
+return !value.length;
 ```
 
 第三步假定輸入的變數不是一個 array-like 的變數，就判斷他是否是 Map 或是 Set，如果是就取 vlaue 的 size 然後一樣強制轉型確認是否為空。
 
 ```javascript
-const tag = getTag(value)
+const tag = getTag(value);
 // getTag 這邊可當作 Object.prototype.toString.call(value) 用來取得物件的 class
 if (tag == '[object Map]' || tag == '[object Set]') {
-  return !value.size
+  return !value.size;
 }
 ```
 
@@ -156,33 +149,32 @@ if (tag == '[object Map]' || tag == '[object Set]') {
 
 ```javascript
 if (isPrototype(value)) {
-  return !Object.keys(value).length
+  return !Object.keys(value).length;
 }
 
 var objectProto = Object.prototype;
 
 function isPrototype(value) {
-	var Ctor = value && value.constructor, // 取得構造函數
-      proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto;
-			// 也就是取得 value 的構造函數的 prototype 或是物件的 prototype
-	
-  return value === proto; 
+  var Ctor = value && value.constructor, // 取得構造函數
+    proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto;
+  // 也就是取得 value 的構造函數的 prototype 或是物件的 prototype
+
+  return value === proto;
 }
 ```
 
 <b>快速釐清 prototype</b>
- 
 
 ```javascript
-function Person(name, gender){
+function Person(name, gender) {
   this.name = name;
   this.gender = gender;
 }
 console.log(Person.prototype); // {} 是一个空对象
 Person.prototype = {
-  country: 'China'
+  country: 'China',
 };
-const Jason = new Person("Jason", 'male');
+const Jason = new Person('Jason', 'male');
 
 // Jason.__proto__ === Person.prototype
 // Jason.__proto__.__proto__ == Person.prototype.__proto__ == Object.prototype
@@ -193,7 +185,7 @@ const Jason = new Person("Jason", 'male');
 ```javascript
 for (const key in value) {
   if (hasOwnProperty.call(value, key)) {
-    return false
+    return false;
   }
 }
 ```
@@ -212,4 +204,4 @@ for (const key in value) {
 ## reference
 
 1. [該來理解 JavaScript 的原型鍊了](https://blog.huli.tw/2017/08/27/the-javascripts-prototype-chain/)
-2. [lodash源码分析之isPrototype](https://github.com/HeftyKoo/pocket-lodash/issues/196)
+2. [lodash 源码分析之 isPrototype](https://github.com/HeftyKoo/pocket-lodash/issues/196)
