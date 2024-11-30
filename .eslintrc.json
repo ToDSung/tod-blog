@@ -15,13 +15,14 @@
     },
     "import/resolver": {
       "typescript": {
-        "project": [
-          "packages/*/tsconfig.json"
-        ]
+        "project": ["packages/*/tsconfig.json"]
       },
       "node": {
         "project": ["packages/*/tsconfig.json"]
       }
+    },
+    "react": {
+      "version": "detect"
     }
   },
   "overrides": [
