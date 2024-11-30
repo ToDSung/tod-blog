@@ -23,6 +23,7 @@
     "types": "tsc --project tsconfig.build.json --declaration",
     "dev": "rollup -c -w & pnpm run types --watch",
     "build": "rm -rf dist && rollup -c & pnpm run types",
+    "eslint:fix": "eslint --fix ./src --ext .js,.jsx,.ts,.tsx",
     "gzip-size": "gzip-size",
     "storybook": "storybook dev -p 6006",
     "build:storybook": "storybook build",

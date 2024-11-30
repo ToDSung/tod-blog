@@ -1,4 +1,5 @@
 import { useArgs } from '@storybook/preview-api';
+
 import type { Meta, StoryObj } from '@storybook/react';
 
 import SwitchLinaria from './Switch.linaria';

@@ -1,15 +1,17 @@
 import 'dayjs/locale/zh-tw';
-import dayjs, { ConfigType } from 'dayjs';
+import dayjs, { extend } from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import { useEffect, useState } from 'react';
 
+import type { ConfigType } from 'dayjs';
+
 import { useTimezone } from '../TimezoneContext';
 
-dayjs.extend(utc);
-dayjs.extend(relativeTime);
-dayjs.extend(timezone);
+extend(utc);
+extend(relativeTime);
+extend(timezone);
 
 const useDayjs = (config: ConfigType) => {
   const { timezone } = useTimezone();

@@ -2,6 +2,7 @@
 
 import ButtonLinaria from '@curi/mui-with-linaria/ButtonLinaria';
 import SwitchLinaria from '@curi/mui-with-linaria/SwitchLinaria';
+
 import type { NextPage } from 'next';
 
 import usePerformance from '../hooks/usePerformance';

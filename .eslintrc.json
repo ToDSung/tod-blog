@@ -29,12 +29,21 @@
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
+        "sort-imports": [
+          "error",
+          {
+            "ignoreDeclarationSort": true,
+            "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
+          }
+        ],
+        "import/consistent-type-specifier-style": ["error"],
         "import/order": [
           "error",
           {
             "groups": [
               "builtin",
               "external",
+              "type",
               "internal",
               "parent",
               "sibling",
@@ -45,6 +54,13 @@
               "order": "asc",
               "caseInsensitive": true
             }
+          }
+        ],
+        "import/named": "off",
+        "@typescript-eslint/consistent-type-imports": [
+          "error",
+          {
+            "prefer": "type-imports"
           }
         ]
       }

@@ -4,7 +4,9 @@ import ButtonLinaria from '@curi/mui-with-linaria/ButtonLinaria';
 import DatePickerLinaria from '@curi/mui-with-linaria/DatePickerLinaria';
 import DateTimePickerLinaria from '@curi/mui-with-linaria/DateTimePickerLinaria';
 import TimePickerLinaria from '@curi/mui-with-linaria/TimePickerLinaria';
-import { DateTime, type DurationLike } from 'luxon';
+import { DateTime } from 'luxon';
+
+import type { DurationLike } from 'luxon';
 import type { NextPage } from 'next';
 
 import SyntaxAndResult from '../components/SyntaxAndResult';

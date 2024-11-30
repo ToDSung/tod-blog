@@ -1,8 +1,10 @@
-import { MenuItem, Select, type SelectChangeEvent } from '@mui/material';
+import { MenuItem, Select } from '@mui/material';
 
-import Typography from '@/components/Typography';
+import type { SelectChangeEvent } from '@mui/material';
 
 import { useTimezone } from '../TimezoneContext';
+
+import Typography from '@/components/Typography';
 
 const TimezoneSelect = () => {
   const { timezone, setTimezone } = useTimezone();

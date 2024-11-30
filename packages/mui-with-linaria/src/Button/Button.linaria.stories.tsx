@@ -1,6 +1,7 @@
+import { expect, fireEvent, fn, userEvent, within } from '@storybook/test';
+
 import type { Meta, StoryObj } from '@storybook/react';
-import { fireEvent, userEvent, within, fn, expect } from '@storybook/test';
-import { ComponentProps, CSSProperties } from 'react';
+import type { CSSProperties, ComponentProps } from 'react';
 
 import ButtonLinaria from './Button.linaria';
 
@@ -31,7 +32,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {},
-  play: async ({ canvasElement, args }) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
     expect(canvas.getByText('Button Label')).toHaveTextContent('Button Label');

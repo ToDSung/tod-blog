@@ -2,6 +2,7 @@
 
 import ButtonEmotion from '@curi/mui-with-linaria/ButtonEmotion';
 import SwitchEmotion from '@curi/mui-with-linaria/SwitchEmotion';
+
 import type { NextPage } from 'next';
 
 import usePerformance from '../hooks/usePerformance';

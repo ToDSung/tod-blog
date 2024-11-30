@@ -2,7 +2,8 @@
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider as BaseLocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { ReactNode } from 'react';
+
+import type { ReactNode } from 'react';
 
 interface LocalizationProviderProps {
   children: ReactNode;

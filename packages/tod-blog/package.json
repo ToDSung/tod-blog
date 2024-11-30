@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "pnpm -F mui-with-linaria build && next build",
     "start": "next start",
-    "lint": "next lint",
+    "eslint:fix": "eslint --fix ./app ./components --ext .js,.jsx,.ts,.tsx",
     "postbuild": "npx next-sitemap"
   },
   "private": true,

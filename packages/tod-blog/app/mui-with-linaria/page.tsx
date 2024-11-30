@@ -4,6 +4,7 @@ import ButtonEmotion from '@curi/mui-with-linaria/ButtonEmotion';
 import ButtonLinaria from '@curi/mui-with-linaria/ButtonLinaria';
 import SwitchEmotion from '@curi/mui-with-linaria/SwitchEmotion';
 import SwitchLinaria from '@curi/mui-with-linaria/SwitchLinaria';
+
 import type { NextPage } from 'next';
 
 const MuiWithLinaria: NextPage = () => {

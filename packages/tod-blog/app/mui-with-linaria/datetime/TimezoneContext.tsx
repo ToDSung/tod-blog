@@ -1,11 +1,13 @@
 'use client';
 
-import dayjs from 'dayjs';
+import dayjs, { extend } from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import { Settings } from 'luxon';
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import { createContext, useContext, useState } from 'react';
 
-dayjs.extend(timezone);
+import type { ReactNode } from 'react';
+
+extend(timezone);
 
 interface TimezoneContextType {
   timezone: string;

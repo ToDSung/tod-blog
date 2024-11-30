@@ -2,7 +2,8 @@ import { css } from '@linaria/atomic';
 import MuiSwitch, {
   type SwitchProps as MuiSwitchProps,
 } from '@mui/material/Switch';
-import { ReactNode } from 'react';
+
+import type { ReactNode } from 'react';
 
 import { BaseColors } from '../theme/color.type';
 

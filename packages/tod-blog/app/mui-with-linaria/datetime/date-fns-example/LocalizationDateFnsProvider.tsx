@@ -2,7 +2,8 @@
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { LocalizationProvider as BaseLocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { ReactNode } from 'react';
+
+import type { ReactNode } from 'react';
 
 interface LocalizationProviderProps {
   children: ReactNode;

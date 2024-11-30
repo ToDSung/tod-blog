@@ -17,7 +17,7 @@ const Sidebar = ({ skills = [] }: SidebarProps) => {
   return (
     <aside
       id='cv-sidebar'
-      className='bg-sub-canvas flex flex-col items-start gap-4 rounded px-4 py-2 text-white md:px-8'
+      className='flex flex-col items-start gap-4 rounded bg-sub-canvas px-4 py-2 text-white md:px-8'
     >
       <div className='flex flex-col'>
         <Typography variant='h3'>宋明謙 Tod Sung</Typography>

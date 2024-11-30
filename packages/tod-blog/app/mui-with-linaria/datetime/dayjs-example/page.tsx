@@ -4,7 +4,9 @@ import ButtonLinaria from '@curi/mui-with-linaria/ButtonLinaria';
 import DatePickerLinaria from '@curi/mui-with-linaria/DatePickerLinaria';
 import DateTimePickerLinaria from '@curi/mui-with-linaria/DateTimePickerLinaria';
 import TimePickerLinaria from '@curi/mui-with-linaria/TimePickerLinaria';
-import dayjs, { type Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
+
+import type { Dayjs } from 'dayjs';
 import type { NextPage } from 'next';
 
 import SyntaxAndResult from '../components/SyntaxAndResult';

@@ -3,7 +3,8 @@ import '@curi/mui-with-linaria/styles.css';
 
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { Caveat } from 'next/font/google';
-import { ReactNode } from 'react';
+
+import type { ReactNode } from 'react';
 
 import Navbar from '@/app/components/Navbar';
 
