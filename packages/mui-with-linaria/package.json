@@ -1,13 +1,7 @@
 {
   "name": "@curi/mui-with-linaria",
   "version": "0.0.0",
-  "main": "dist/index.js",
-  "module": "dist/index.esm.js",
   "type": "module",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
   "exports": {
     "./styles.css": "./dist/styles.css",
     "./*Emotion": {
@@ -19,24 +13,21 @@
       "types": "./dist/*/*.linaria.d.ts"
     }
   },
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "types": "tsc --project tsconfig.build.json --declaration",
-    "dev": "rollup -c -w & pnpm run types --watch",
     "build": "rm -rf dist && rollup -c & pnpm run types",
+    "build:storybook": "storybook build",
+    "dev": "rollup -c -w & pnpm run types --watch",
     "eslint:fix": "eslint --fix ./src --ext .js,.jsx,.ts,.tsx",
     "gzip-size": "gzip-size",
     "storybook": "storybook dev -p 6006",
-    "build:storybook": "storybook build",
-    "test:storybook": "test-storybook"
-  },
-  "peerDependencies": {
-    "@emotion/css": "11.13.5",
-    "@emotion/react": "11.13.5",
-    "@emotion/styled": "11.13.5",
-    "@mui/material": "^5.14.0",
-    "@mui/x-date-pickers": "^7.22.0",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "test:storybook": "test-storybook",
+    "types": "tsc --project tsconfig.build.json --declaration"
   },
   "dependencies": {
     "@linaria/atomic": "6.2.0",
@@ -80,5 +71,14 @@
     "storybook": "8.4.6",
     "tslib": "2.8.1",
     "typescript": "5.7.2"
+  },
+  "peerDependencies": {
+    "@emotion/css": "11.13.5",
+    "@emotion/react": "11.13.5",
+    "@emotion/styled": "11.13.5",
+    "@mui/material": "^5.14.0",
+    "@mui/x-date-pickers": "^7.22.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
   }
 }
