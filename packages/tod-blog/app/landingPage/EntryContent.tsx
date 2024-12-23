@@ -41,7 +41,7 @@ const EntryContent = () => {
     }
 
     const options = {
-      strings: ['努力嘗試分享的小小前端\n希望這邊有任何一篇文章能夠幫助到你！'],
+      strings: ['努力嘗試分享的前端工程師\n希望有任何一篇文章能夠幫助到你！'],
       ...typedOptions,
     };
 

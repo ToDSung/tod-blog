@@ -1,7 +1,5 @@
 import '@/styles/globals.css';
-import '@curi/mui-with-linaria/styles.css';
 
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { Caveat } from 'next/font/google';
 
 import type { ReactNode } from 'react';
@@ -25,9 +23,9 @@ export const generateMetadata = async () => {
   };
 };
 
-// const caveat = Caveat({
-//   subsets: ['latin'],
-// });
+const caveat = Caveat({
+  subsets: ['latin'],
+});
 
 interface RootLayoutProps {
   children: ReactNode;
@@ -36,19 +34,17 @@ interface RootLayoutProps {
 const RootLayout = ({ children }: RootLayoutProps) => {
   return (
     <html lang='en'>
-      <head></head>
-      <body>
-        <AppRouterCacheProvider options={{ key: 'css' }}>
-          <main
-            id='app'
-            className='bg-default-canvas text-default-text flex min-h-screen justify-center px-2 text-justify'
-          >
-            <Navbar />
-            <div className='relative mt-[3.2rem] flex w-full justify-center sm:w-[80vw]'>
-              {children}
-            </div>
-          </main>
-        </AppRouterCacheProvider>
+      <head />
+      <body className={caveat.className}>
+        <main
+          id='app'
+          className='bg-default-canvas text-default-text flex min-h-screen justify-center px-2 text-justify'
+        >
+          <Navbar />
+          <div className='relative mt-[3.2rem] flex w-full justify-center sm:w-[80vw]'>
+            {children}
+          </div>
+        </main>
       </body>
     </html>
   );
