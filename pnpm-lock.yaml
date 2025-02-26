@@ -63,6 +63,9 @@ importers:
       eslint-import-resolver-typescript:
         specifier: 2.7.1
         version: 2.7.1(eslint-plugin-import@2.31.0)(eslint@8.57.1)
+      eslint-plugin-custom-rules:
+        specifier: file:packages/eslint-plugin-custom-rules
+        version: link:packages/eslint-plugin-custom-rules
       eslint-plugin-cypress:
         specifier: 2.15.2
         version: 2.15.2(eslint@8.57.1)
@@ -151,6 +154,8 @@ importers:
       '@docusaurus/module-type-aliases':
         specifier: 2.4.3
         version: 2.4.3(@swc/core@1.7.39(@swc/helpers@0.5.5))(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+
+  packages/eslint-plugin-custom-rules: {}
 
   packages/leetcode:
     dependencies:
