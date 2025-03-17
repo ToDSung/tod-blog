@@ -32,7 +32,7 @@
   "dependencies": {
     "@linaria/atomic": "6.2.0",
     "@linaria/core": "6.2.0",
-    "@linaria/react": "6.2.1"
+    "@linaria/react": "6.3.0"
   },
   "devDependencies": {
     "@babel/core": "7.26.0",
