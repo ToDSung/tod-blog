@@ -7,7 +7,7 @@
     "plugin:@typescript-eslint/recommended"
   ],
   "parser": "@typescript-eslint/parser",
-  "plugins": ["prettier", "import", "@typescript-eslint"],
+  "plugins": ["prettier", "import", "@typescript-eslint", "custom-rules"],
   "ignorePatterns": ["**/*"],
   "settings": {
     "import/parsers": {
@@ -24,6 +24,10 @@
     "react": {
       "version": "detect"
     }
+  },
+  "rules": {
+    "custom-rules/snake-case-quote-props": "error",
+    "custom-rules/require-bracket-for-snake-case": "error"
   },
   "overrides": [
     {
