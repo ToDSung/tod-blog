@@ -30,7 +30,7 @@
     "types": "tsc --project tsconfig.build.json --declaration"
   },
   "dependencies": {
-    "@linaria/atomic": "6.2.0",
+    "@linaria/atomic": "6.3.0",
     "@linaria/core": "6.2.0",
     "@linaria/react": "6.2.1"
   },
