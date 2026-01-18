@@ -5,5 +5,5 @@ export default {
   ...baseConfig,
   displayName: 'leetcode',
   coverageDirectory: '../../coverage/packages/leetcode',
-  passWithNoTests: true,
+  passWithNoTests: false,
 };

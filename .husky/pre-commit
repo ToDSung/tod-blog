@@ -1,19 +1,24 @@
 npx lint-staged
 
-if [ "$1"=="--amend" ]; then
-    staged_files=$(git diff --cached --name-only HEAD^)
-else
-    staged_files=$(git diff --cached --name-only)
+# Get staged files
+staged_files=$(git diff --cached --name-only)
+
+# Filter files belonging to packages/leetcode and remove prefix
+leetcode_files=$(echo "$staged_files" | grep "^packages/leetcode/" | sed 's|^packages/leetcode/||' | tr '\n' ' ')
+
+if [ -n "$leetcode_files" ]; then
+    echo "Staged leetcode files: $leetcode_files"
+    echo "Running relevant tests for leetcode..."
+    
+    # We use pnpm to execute jest to ensure we use the local version
+    # Note: --findRelatedTests works best when given exact file paths
+    pnpm -F leetcode test --findRelatedTests $leetcode_files
+
+    if [ $? -ne 0 ]; then
+        echo "Pre-commit test failed in leetcode package. Please fix the issues and try again."
+        exit 1
+    fi
 fi
 
-test_files=$(echo "$staged_files" | sed 's/\(.*\)\(\.[^.]*\)$/\1\.\(spec\|test\)\2/')
-
-pnpm -F leetcode test -t $test_files
-
-if [ $? -ne 0 ]; then
-    echo "Pre-commit test failed. Please fix the issues and try again."
-    exit 1
-else
-    echo "Pre-commit test passed. Proceeding with commit."
-    exit 0
-fi
+echo "Pre-commit checks passed. Proceeding with commit."
+exit 0
