@@ -1,4 +1,4 @@
-import Author from './author';
+import type Author from './author';
 
 type Post = {
   slug: string;

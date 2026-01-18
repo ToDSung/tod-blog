@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import type { IconType } from 'react-icons/lib';
 
 interface IconLink {
@@ -18,15 +20,15 @@ type NavbarProps = {
 
 const MainSide = ({ title, tabs }: { title: string; tabs: Tab[] }) => (
   <div className='flex flex-wrap items-center gap-6'>
-    <a href='/'>
+    <Link href='/'>
       <h1 className='cursor-pointer text-2xl font-bold'>{title}</h1>
-    </a>
+    </Link>
     <div className='my-0 hidden text-xl sm:flex'>
       <div className='flex gap-4'>
         {tabs.map(({ name, link }) => (
-          <a href={link} key={name} className='cursor-pointer'>
+          <Link href={link} key={name} className='cursor-pointer'>
             {name}
-          </a>
+          </Link>
         ))}
       </div>
     </div>
@@ -42,9 +44,9 @@ const IconSide = ({
 }) => (
   <div className='flex gap-4'>
     {tabs.map(({ link, icon: Icon }) => (
-      <a href={link} key={link}>
+      <Link href={link} key={link}>
         <Icon className='block text-2xl sm:hidden' />
-      </a>
+      </Link>
     ))}
     {socialMedias.map(({ link, icon: Icon }) => (
       <a href={link} key={link} target='_blank' rel='noopener noreferrer'>
