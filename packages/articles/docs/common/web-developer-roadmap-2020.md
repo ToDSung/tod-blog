@@ -125,8 +125,8 @@ date: '2021-01-01'
 - ES6+ and modular JavaScript
   - 語法學一下，行數可以降低，程式碼可以更簡潔
   - async await
-  - 樣板字面值 Template literals \`${}`
-  - 解構賦值 Destructuring assignment obj.a const { a } = obj
+  - 樣板字面值 Template literals `\${}``
+  - 解構賦值 Destructuring assignment `obj.a const { a } = obj`
   - 可選串連 Optional chaining ?.
   - 展開運算子 Spread syntax ...
 
