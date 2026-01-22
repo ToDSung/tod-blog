@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Typed from 'typed.js';
 
-const typedOptions = {
+const TYPED_OPTIONS = {
   typeSpeed: 50,
   showCursor: false,
 };
@@ -24,7 +24,7 @@ const EntryContent = () => {
     const options = {
       strings: ['This is Tod From Taiwan'],
       onComplete: () => setIsTitleFinished(true),
-      ...typedOptions,
+      ...TYPED_OPTIONS,
     };
 
     titleTyped.current = new Typed(titleElement.current, options);
@@ -42,7 +42,7 @@ const EntryContent = () => {
 
     const options = {
       strings: ['努力嘗試分享的前端工程師\n希望有任何一篇文章能夠幫助到你！'],
-      ...typedOptions,
+      ...TYPED_OPTIONS,
     };
 
     subtitleTyped.current = new Typed(subtitleElement.current, options);
