@@ -1,6 +1,6 @@
 import type Icon from '@/types/icon';
 
-import Typography from '../../../components/Typography';
+import Typography from '@/components/Typography';
 
 interface SkillProps {
   name: string;
