@@ -227,10 +227,8 @@ packages:
 The workspace uses TypeScript project references for better build performance:
 
 - `packages/articles`
-- `packages/components` (referenced but may not exist)
 - `packages/leetcode`
 - `packages/tod-blog`
-- `packages/tod-blog-e2e` (referenced but may not exist)
 
 ---
 
@@ -542,13 +540,6 @@ This skill contains React and Next.js performance optimization guidelines from V
 ---
 
 ## Future Considerations
-
-### Referenced but Missing Packages
-
-The `tsconfig.base.json` references two packages that may not currently exist:
-
-- `packages/components`: Likely intended for shared React components
-- `packages/tod-blog-e2e`: Likely intended for end-to-end tests (Cypress)
 
 ### Potential Improvements
 

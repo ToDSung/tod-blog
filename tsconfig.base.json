@@ -10,19 +10,17 @@
     "target": "ES2020",
     "baseUrl": ".",
     "paths": {
-      "*": ["node_modules"],
+      "*": ["node_modules"]
     },
     "forceConsistentCasingInFileNames": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
+    "noFallthroughCasesInSwitch": true
   },
   "references": [
     { "path": "packages/articles" },
-    { "path": "packages/components" },
     { "path": "packages/leetcode" },
-    { "path": "packages/tod-blog" },
-    { "path": "packages/tod-blog-e2e" },
+    { "path": "packages/tod-blog" }
   ]
 }
