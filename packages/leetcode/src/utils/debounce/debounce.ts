@@ -6,6 +6,7 @@
  * @returns {(...args: Parameters<T>) => void} A new debounced function
  */
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const debounce = <T extends (...args: any[]) => any>(fn: T, delay: number) => {
   let id: ReturnType<typeof setTimeout>;
 

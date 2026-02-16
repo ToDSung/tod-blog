@@ -6,7 +6,7 @@ const regex = /[\[\]\.]/g;
 const get = (
   object: Record<string, unknown>,
   paths: string[] | string,
-  defaultValue?: any
+  defaultValue?: unknown
 ) => {
   if (typeof paths === 'string') {
     return lodashGet(object, paths, defaultValue);

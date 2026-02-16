@@ -3,10 +3,6 @@
  * @return {number}
  */
 
-interface memorized {
-  [key: number]: number;
-}
-
 // Fibonacci
 export const climbStairs: (n: number) => number = n => {
   // recursive

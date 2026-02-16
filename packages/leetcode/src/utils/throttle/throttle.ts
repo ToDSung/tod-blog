@@ -1,4 +1,8 @@
-const throttle = <T extends (...args: any) => any>(fn: T, delay: number) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const throttle = <T extends (...args: any[]) => any>(
+  fn: T,
+  delay: number
+): ((...args: Parameters<T>) => ReturnType<T> | undefined) => {
   let id: ReturnType<typeof setTimeout>;
   let lastExecTime = 0;
 
