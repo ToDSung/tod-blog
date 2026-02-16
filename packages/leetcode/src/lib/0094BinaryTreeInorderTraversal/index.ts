@@ -1,4 +1,4 @@
-import { TreeNode } from '../../structure/TreeNode';
+import type { TreeNode } from '../../structure/TreeNode';
 
 /**
  * Definition for a binary tree node.

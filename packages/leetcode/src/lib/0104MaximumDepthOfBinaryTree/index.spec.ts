@@ -1,4 +1,5 @@
 import { TreeNode } from '../../structure/TreeNode';
+
 import { maxDepth } from '.';
 
 describe('0104 Maximum Depth of Binary Tree', () => {

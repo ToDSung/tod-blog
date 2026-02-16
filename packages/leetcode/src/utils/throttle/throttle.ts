@@ -14,10 +14,13 @@ const throttle = <T extends (...args: any) => any>(fn: T, delay: number) => {
       clearTimeout(id);
     }
 
-    id = setTimeout(() => {
-      lastExecTime = Date.now();
-      fn(...args);
-    }, delay - (now - lastExecTime));
+    id = setTimeout(
+      () => {
+        lastExecTime = Date.now();
+        fn(...args);
+      },
+      delay - (now - lastExecTime)
+    );
   };
 };
 

@@ -4,7 +4,7 @@
  */
 
 export const findShortestSubArray: (nums: number[]) => number = nums => {
-  const results: Record<number, {count:number; start: number}> = {};
+  const results: Record<number, { count: number; start: number }> = {};
   let result = 1;
   let count = 0;
 

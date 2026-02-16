@@ -259,8 +259,8 @@ The workspace uses TypeScript project references for better build performance:
 
 #### Package-Specific ESLint
 
-- `tod-blog`: Has additional `eslint.config.mjs` with Next.js rules
-- `leetcode`: Uses legacy `.eslintrc.json`
+- `tod-blog`: Has additional `eslint.config.mjs` with Next.js and React rules
+- `leetcode`: Has `eslint.config.mjs` with Jest plugin support
 
 ---
 
@@ -544,11 +544,10 @@ This skill contains React and Next.js performance optimization guidelines from V
 ### Potential Improvements
 
 1. **Shared Components Package**: Extract common components from `tod-blog` into a shared package
-2. **E2E Testing**: Implement Cypress tests in `tod-blog-e2e` package
-3. **Unified ESLint Config**: Migrate `leetcode` to flat config for consistency
-4. **CI/CD Pipeline**: Add GitHub Actions for automated testing and deployment
-5. **Storybook**: Add component documentation and visual testing
-6. **Monorepo Build Orchestration**: Consider Turborepo or Nx for better build caching
+2. **E2E Testing**: Implement Cypress tests in a dedicated e2e package
+3. **CI/CD Pipeline**: Add GitHub Actions for automated testing and deployment
+4. **Storybook**: Add component documentation and visual testing
+5. **Monorepo Build Orchestration**: Consider Turborepo or Nx for better build caching
 
 ---
 
