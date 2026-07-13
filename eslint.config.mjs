@@ -1,8 +1,8 @@
 import eslint from '@eslint/js';
-import prettier from 'eslint-plugin-prettier/recommended';
 import importPlugin from 'eslint-plugin-import';
-import tseslint from 'typescript-eslint';
+import prettier from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
+import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   eslint.configs.recommended,
@@ -80,15 +80,23 @@ export default tseslint.config(
     files: ['**/*.js', '**/*.mjs', '**/*.cjs'],
     ...tseslint.configs.disableTypeChecked,
     languageOptions: {
+      ...tseslint.configs.disableTypeChecked.languageOptions,
       globals: {
         ...globals.node,
       },
     },
     rules: {
+      ...tseslint.configs.disableTypeChecked.rules,
       '@typescript-eslint/no-require-imports': 'off',
       '@typescript-eslint/no-var-requires': 'off',
       'no-undef': 'off',
     },
+  },
+  {
+    // Test and Jest config files are excluded from package tsconfigs,
+    // so type-aware parsing cannot resolve them from the repo root.
+    files: ['**/*.spec.ts', '**/*.test.ts', '**/jest.config.ts'],
+    ...tseslint.configs.disableTypeChecked,
   },
   {
     files: ['**/*.d.ts'],
@@ -97,6 +105,14 @@ export default tseslint.config(
     },
   },
   {
-    ignores: ['**/.next/**', '**/dist/**', '**/node_modules/**', '**/build/**'],
+    ignores: [
+      '**/.next/**',
+      '**/dist/**',
+      '**/node_modules/**',
+      '**/build/**',
+      '**/out/**',
+      '**/.docusaurus/**',
+      '**/coverage/**',
+    ],
   }
 );
