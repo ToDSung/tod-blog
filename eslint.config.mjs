@@ -99,6 +99,18 @@ export default tseslint.config(
     ...tseslint.configs.disableTypeChecked,
   },
   {
+    // Storybook and Vitest config/setup files are excluded from package
+    // tsconfigs, so type-aware parsing cannot resolve them from the repo root.
+    files: [
+      '**/.storybook/**/*.ts',
+      '**/.storybook/**/*.tsx',
+      '**/vitest.config.ts',
+      '**/vitest.setup.ts',
+      '**/vitest.shims.d.ts',
+    ],
+    ...tseslint.configs.disableTypeChecked,
+  },
+  {
     files: ['**/*.d.ts'],
     rules: {
       '@typescript-eslint/triple-slash-reference': 'off',
@@ -113,6 +125,7 @@ export default tseslint.config(
       '**/out/**',
       '**/.docusaurus/**',
       '**/coverage/**',
+      '**/storybook-static/**',
     ],
   }
 );
