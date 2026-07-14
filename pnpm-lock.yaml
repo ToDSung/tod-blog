@@ -191,6 +191,9 @@ importers:
       '@codesandbox/sandpack-react':
         specifier: 2.19.10
         version: 2.19.10(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@tod-workspace/ui':
+        specifier: workspace:*
+        version: link:../ui
       dedent:
         specifier: 1.5.3
         version: 1.5.3(babel-plugin-macros@3.1.0)
