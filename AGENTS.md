@@ -64,6 +64,7 @@ This machine: Windows 11, Chinese locale (cp950), PowerShell 5.1 primary shell.
 - PowerShell 5.1: no `&&` / `||` (use `A; if ($?) { B }`), no ternary/`??`/`?.`, default file encoding UTF-16 LE (always pass `-Encoding utf8` when writing files other tools will read), don't use `2>&1` on native executables.
 - Prefer dedicated tools (Read/Grep/Glob/Edit/Write) over shell for file operations; use the Bash tool for POSIX one-liners like `diff -rq`.
 - Paths: repo is `D:\code\tod-blog` (Git Bash: `/d/code/tod-blog`).
+- **pnpm not on agent-shell PATH** (husky hooks need it — commit fails with exit 127 otherwise). Before `git commit` in Git Bash: `export PATH="/c/Users/user/AppData/Roaming/fnm/node-versions/v24.11.1/installation:$PATH"` (version segment changes on Node upgrades — `ls /c/Users/user/AppData/Roaming/fnm/node-versions` for the current one). `gh` is not installed and the remote is SSH: for PRs, push the branch and give the user a prefilled `https://github.com/ToDSung/tod-blog/compare/main...<branch>?quick_pull=1&title=...` link. (Promoted from lessons.md after second occurrence, 2026-07-14.)
 
 ## Linting & formatting
 
