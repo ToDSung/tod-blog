@@ -119,7 +119,7 @@ Overlay 類：`dialog` `sheet` `popover` `tooltip` `dropdown-menu` `alert-dialog
 | `Callout` | Alert 為基底，info/warning/danger/tip variants | 中 |
 | `MarkdownRenderer` | `MarkdownHooks` + remark-gfm + rehype-slug/autolink + `@shikijs/rehype` + prose 樣式 + 元件映射（code→CodeBlock、blockquote→Callout 語法擴充） | **高（本專案核心）** |
 | `ThemeProvider` | next-themes 薄包裝（attribute=`data-theme` + class=`.dark` 雙軌設定收斂於此） | 中 |
-| `ThemeToggle` | DropdownMenu/Switch 組合：切 theme 與 light/dark/system | 中 |
+| `ThemeToggle` | DropdownMenu 裡兩組 RadioItem：切 theme 與 light/dark/system | 中 |
 
 （Auth 相關元件 — PasswordInput / LoginForm / RegisterForm / OtpForm / AuthCard — 依 D8 取消，見 §9。）
 
