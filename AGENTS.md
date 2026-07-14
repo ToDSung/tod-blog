@@ -81,7 +81,7 @@ This machine: Windows 11, Chinese locale (cp950), PowerShell 5.1 primary shell.
 Skills are shared across Claude Code, Codex, and Antigravity:
 
 - **`.agents/skills/` is the single source of truth** (read natively by Codex and Antigravity).
-- **`.claude/skills/` contains full copies** (plain directories, NOT junctions/symlinks — verified 2026-07-11). They do not update automatically.
+- **`.claude/skills/` contains full copies** (plain directories, NOT junctions/symlinks — verified 2026-07-11). They do not update automatically. **Warning:** the skills CLI now symlinks `.claude/skills/<name>` on install (observed 2026-07-14) — after any install, replace the link with a full copy (`rm` the link, then `cp -r` from `.agents/skills/`).
 - After ANY change under `.agents/skills/`, sync: copy the changed skill dir over `.claude/skills/<name>` (delete on both sides when removing), then verify with `diff -rq .agents/skills .claude/skills` (Git Bash). If that diff is non-empty before you started, report it to the user instead of guessing which side wins.
 - `skills-lock.json` tracks installed skills. Install with `npx skills@latest add <owner>/<repo> -a claude-code -a codex -a antigravity -y` (one `-s <name>` per skill; comma lists reportedly not parsed — from prior session experience, unverified against current CLI; if a comma list works, update this line); refresh with `npx skills update`.
-- Known leftover: `.agents/skills/vercel-react-best-practices/` is still on disk/git but absent from the lockfile and `.claude/skills` — deletion candidate, confirm with user first.
+- Resolved 2026-07-14: the former `vercel-react-best-practices` leftover was formally reinstalled via the skills CLI (now in lockfile + `.claude/skills`), together with new installs `vercel-composition-patterns` and `shadcn` (official) — added at owner's request for the packages/ui work (specs/ui-library/).
