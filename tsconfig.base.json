@@ -21,6 +21,7 @@
   "references": [
     { "path": "packages/articles" },
     { "path": "packages/leetcode" },
-    { "path": "packages/tod-blog" }
+    { "path": "packages/tod-blog" },
+    { "path": "packages/ui" }
   ]
 }
