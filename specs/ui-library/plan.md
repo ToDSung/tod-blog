@@ -8,7 +8,9 @@
 
 - 委派 prompt 必含目標動機、機械可查驗收、報告格式（模板照抄）。
 - 每個 Phase 結束跑一次**新 context 審查**（model-dispatch §5）：審查者只拿驗收標準與產出位置。
-- 驗證底線：`npx eslint .` 乾淨、相關 build/測試通過、Storybook story 可渲染。
+- 驗證底線：`npx eslint .` 乾淨、相關 build/測試通過、Storybook story 可渲染；Phase 1.4 之後一律加 `pnpm -F @tod-workspace/ui test` 全綠。
+- **測試紀律（spec D11，owner 不深度 review）**：新增匯出元件的 commit 必同時帶 story；互動元件必同 commit 帶 play test；a11y violation = 測試失敗。委派 prompt 必須把「測試通過」寫進驗收，不接受「元件完成、測試待補」的回報。
+- 產碼 skills 已安裝供所有 agent 使用（2026-07-14）：`vercel-react-best-practices`、`vercel-composition-patterns`（React/Next 模式）、`shadcn`（官方，讀 components.json 注入專案 context）。委派實作任務時在 prompt 中提示 agent 觸發對應 skill。
 - 每個 Phase 的 .R 審查**必附迴歸快檢**：`pnpm -F @tod-workspace/leetcode test` 與 `pnpm -F articles build` 不退步 — 不要等到 Phase 6 才發現根層設定（tsconfig/eslint）壞了其他套件。
 - commit 用 Conventional Commits，每個 Phase 至少一個 commit；不可 `--no-verify`。
 
@@ -27,7 +29,9 @@
 | 1.1 | 建 `packages/ui` 骨架：package.json（name、subpath exports、**`typecheck` script = `tsc --noEmit`**）、tsconfig（**明確 `composite: false`**）、**root `tsconfig.base.json` references 加入 `packages/ui`**、eslint.config.mjs（比照 leetcode 模式，**含 `.storybook/**`/vitest setup 的 `disableTypeChecked` carve-out**）、`shadcn init -b radix`（或手動 components.json）、globals.css theme、`cn()`、安裝 spec §3 依賴 | `pnpm install` 成功；`pnpm -F @tod-workspace/ui typecheck` 過；`npx eslint .` 乾淨 |
 | 1.2 | tod-blog 接線：transpilePackages、app 端 components.json、`@source` 接線、首個 Button import 進一個頁面 | `pnpm -F tod-blog build` 成功且頁面 HTML 含 button 樣式 |
 | 1.3 | Storybook 進駐 `packages/ui`：react-vite、preview 載入 globals.css、**另裝** addon-a11y + addon-vitest（`npx storybook add`）、**`storybook:build` script**、Button story | `pnpm -F @tod-workspace/ui storybook:build` 成功；Button story 渲染、a11y 無 violation；`npx eslint .` 乾淨（`.storybook/*.ts` 落在 carve-out 內） |
-| 1.R | 審查（general-purpose/sonnet，新 context）：逐條驗收 1.1–1.3 | 每條附實跑證據 |
+| 1.4 | **主題系統 + 測試地基**（spec D9/D10/D11）：globals.css 依 spec §4.1 token 層結構建 `professional`（預設，tweakcn 中性 preset 起點）與對照主題 × 亮/暗；`ThemeProvider`/`ThemeToggle`（`src/theme/`）；Storybook globalTypes toolbar（theme + mode 兩個切換器，`withThemeByDataAttribute`/decorator 掛到 preview）；vitest browser mode 接上 addon-vitest、a11y 斷言設為 fail、**`test` script**；ThemeToggle play test | `pnpm -F @tod-workspace/ui test` 全綠；Button story 在 theme × mode 四種組合下渲染且 token 值有變（play test 斷言 computed style 或 `data-theme`/`.dark` 落點）；vitest 版本相容結論回寫 spec §3/§10 |
+| 1.5 | **CI workflow**（spec D12）：`.github/workflows/ci.yml` — push/PR 觸發，跑 `npx eslint .`、ui typecheck、ui test（含 Playwright chromium 安裝）、`storybook:build`、`pnpm -F tod-blog build`、leetcode test、articles build；pnpm + Playwright 快取 | 分支上 CI 全綠；故意弄壞一個 story 驗證 CI 會紅（驗證閘門真的有牙齒後還原） |
+| 1.R | 審查（general-purpose/sonnet，新 context）：逐條驗收 1.1–1.5 | 每條附實跑證據 |
 
 ## Phase 2 — Tier 1 primitives 批次進場（難度：低）
 
@@ -35,11 +39,11 @@
 
 | 批次 | 元件 | 驗收（每批相同） |
 | --- | --- | --- |
-| 2.a 表單 | button* input label textarea checkbox radio-group select switch slider field input-group | CLI 加入成功；每元件 1 story；a11y 綠；eslint 乾淨；storybook build 過 |
+| 2.a 表單 | button* input label textarea checkbox radio-group select switch slider field input-group | CLI 加入成功；每元件 1 story；**互動元件（可點/可輸入/可選）附 play test**；`pnpm -F @tod-workspace/ui test` 全綠（含 a11y）；eslint 乾淨；storybook build 過 |
 | 2.b Overlay | dialog sheet popover tooltip dropdown-menu alert-dialog | 同上 |
 | 2.c 展示 | card badge avatar alert separator skeleton table accordion tabs progress scroll-area | 同上 |
 | 2.d 回饋/導航 | sonner breadcrumb pagination command spinner | 同上 |
-| 2.R | 審查（sonnet，新 context）：抽查 stories 實際渲染 + a11y 報告 | 附 violation 清單（應為空） |
+| 2.R | 審查（sonnet，新 context）：抽查 stories 實際渲染 + a11y 報告；**抽 2 元件在對照主題 × dark 下目視/測試檢查 token 覆蓋完整**（新主題最常漏 chart/sidebar 類次要 token） | 附 violation 清單（應為空）+ 主題抽查證據 |
 
 *button 已在 1.2 進場，此處補齊 story 變體。
 
@@ -69,9 +73,9 @@ Owner 決定本階段不做登入功能。原任務內容（zod schemas、Passwo
 
 ## Phase 6 — 整合驗收（難度：中）
 
-1. `/ui-showcase` 頁完整化：分區展示 Tier 1/2/3（sonnet）。驗收：頁面包含 spec §5 三個 Tier 各至少 3 個元件實例；`pnpm -F tod-blog build` 過且輸出 HTML 含對應區塊。
-2. `storybook:build` 產物供 owner 逐元件驗收；owner 簽核清單 = spec §5 全元件（主觀視覺品質在此關把守）。
-3. 全套驗證：spec §8 六條全跑（主對話執行）。
+1. `/ui-showcase` 頁完整化：分區展示 Tier 1/2/3，**頁首掛 ThemeToggle**（sonnet）。驗收：頁面包含 spec §5 三個 Tier 各至少 3 個元件實例；`pnpm -F tod-blog build` 過且輸出 HTML 含對應區塊；靜態輸出頁上實際切換主題無 FOUC、token 生效（FR4）。
+2. `storybook:build` 產物供 owner 逐元件驗收；owner 簽核清單 = spec §5 全元件 + **professional 主題觀感簽核（D10 微調在此收斂）**（主觀視覺品質在此關把守）。
+3. 全套驗證：spec §8 八條全跑（主對話執行），含 CI 綠。
 4. 收尾：`/code-review`（standards + spec 雙軸）跑本分支；更新 AGENTS.md 路由表加入 specs/ 一行（**需 owner 同意**，maintenance.md §1）。
 
 ## Phase D — 延後的 major 升級（獨立任務池，與主線解耦）
