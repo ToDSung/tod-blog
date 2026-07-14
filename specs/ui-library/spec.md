@@ -36,7 +36,7 @@ Status: **Draft v2**（2026-07-14，納入 owner 三項強化需求：主題切�
 | 類別 | 套件 | 版本 | 備註 |
 | --- | --- | --- | --- |
 | 樣式 | `tailwindcss`（含 `@tailwindcss/node`、`@tailwindcss/postcss`） | ^4.3.2 | CSS-first，無 tailwind.config |
-| 元件 | `shadcn`（CLI） | 4.13.0 | `init -b radix`；`--monorepo` 腳手架假設 Turborepo，需手動適配 |
+| 元件 | `shadcn`（CLI） | 4.13.0 | `init -b radix` 需可偵測的 framework，bare source package 會失敗（實測 2026-07-14）→ 手動寫 components.json 後 `add` 正常。CLI 4.x style 改為 preset 制（`radix-nova`，取代 new-york）；`shadcn` 須列 **runtime dependency**（元件 CSS import `shadcn/tailwind.css`） |
 | Primitive | `radix-ui` | ^1.6.2 | 統一包；React 19 OK |
 | 動畫 | `motion` | ^12.42.2 | import 自 `motion/react`；client-only |
 | 動畫(CSS) | `tw-animate-css` | ^1.4.0 | 取代 tailwindcss-animate |
@@ -47,9 +47,9 @@ Status: **Draft v2**（2026-07-14，納入 owner 三項強化需求：主題切�
 | Markdown | `rehype-slug` + `rehype-autolink-headings` | latest | 標題錨點 |
 | 高亮 | `shiki` + `@shikijs/rehype` | shiki ^4.3.1；`@shikijs/rehype` 版本獨立，取與 shiki 同 major 的最新（安裝時以 registry 為準） | **必須用 fine-grained import**（`shiki/core` + JS engine + 個別語言/主題），否則 bundle 過大 |
 | 排版 | `@tailwindcss/typography` | ^0.5.20 | peerDeps 支援 v4；備選：shadcn `typeset`（實作時比較後擇一） |
-| Icons | `lucide-react` | latest | shadcn 慣用 icon library；「是否為 CLI 4.13 預設」研究未驗證 — Phase 1 `init` 時以 CLI 實際產出為準，若不同則回寫此表 |
+| Icons | `lucide-react` | ^1.24.0 | CLI 4.13 nova preset 實際產出（實測回寫 2026-07-14；注意已進 1.x，非舊 0.x 系列） |
 | 主題 | `next-themes` | ^0.4.6 | attribute 模式掛 `data-theme` + class 模式掛 `.dark`；無 FOUC script；client-only |
-| 測試 | `vitest` + `@vitest/browser` + `playwright` | vitest ^4.1.10（**以 addon-vitest 10.5 宣告的相容範圍為準，安裝時驗證**） | browser mode 跑 story 測試；Windows 上 Playwright 需 `npx playwright install chromium` |
+| 測試 | `vitest` + `@vitest/browser` + `@vitest/browser-playwright` + `playwright` | vitest ^4.1.10（實測相容：addon-vitest 10.5 peer 宣告 `^3 \|\| ^4`，vitest 4 需新 provider 套件 `@vitest/browser-playwright`，config 用 `provider: playwright()`） | browser mode 跑 story 測試；Windows 上 Playwright 需 `npx playwright install chromium` |
 
 ## 4. 架構
 
@@ -157,8 +157,8 @@ Overlay 類：`dialog` `sheet` `popover` `tooltip` `dropdown-menu` `alert-dialog
 ## 10. 未決事項（實作時決定並回寫此文件）
 
 - `@tailwindcss/typography` vs shadcn `typeset`：Phase 3 實作 MarkdownRenderer 時兩者各出一個 story 比較後定案。
-- shadcn CLI 在非 Turborepo workspace 的 `--monorepo` 行為：Phase 1 實測，必要時手動配置兩份 components.json。
-- `@source` 相對路徑基準（依 build 工作目錄）：Phase 1 以 `pnpm -F tod-blog build` 實測定案。
-- professional 主題的具體 token 值：以 tweakcn 中性系 preset 為起點（D10），Phase 1.4 出 Storybook 後由 owner 目視簽核微調方向；對照主題名稱同時定案。
-- vitest 4.x 與 addon-vitest（SB 10.5）相容性：Phase 1.4 安裝時以 addon 的 peerDependencies 為準，若需降 vitest 3.x 則回寫 §3。
+- ~~shadcn CLI 在非 Turborepo workspace 的 `--monorepo` 行為~~（已定案 2026-07-14）：`--monorepo` 只用於腳手架全新專案；在既有 bare package 內 `init` 因 framework 偵測失敗不可用 → 手動配置兩份 components.json。之後 `shadcn add -c packages/ui` 正常，aliases 用套件名（`@tod-workspace/ui/*`）配 tsconfig paths 解析，產出直接落在 `src/components/`。
+- ~~`@source` 相對路徑基準~~（已定案 2026-07-14）：相對於**宣告它的 stylesheet**。tod-blog 的 `styles/globals.css` 用 `@source "../../ui/src"`，`pnpm -F tod-blog build` 實測輸出含 ui 元件 utilities。
+- professional 主題的具體 token 值：graphite/slate 起點已於 Phase 1.4 落地（對照主題定名 **`ocean`**）；owner 目視簽核微調方向仍待 Phase 6。注意：`--destructive` 亮色已因 a11y 對比門檻（4.5:1，destructive button 的 /10 tint 底）壓到 `oklch(0.5 0.19 25)`，微調時勿回淺。
+- ~~vitest 4.x 與 addon-vitest（SB 10.5）相容性~~（已定案 2026-07-14）：相容。vitest 4.1.10 + `@vitest/browser` + vitest 4 新拆的 `@vitest/browser-playwright`（config `provider: playwright()`）；addon-vitest peer 宣告 `^3 || ^4`。已回寫 §3。
 - CI runner 上 Playwright browser 的安裝與快取策略：Phase 1.5 實作時定（`npx playwright install --with-deps chromium`）。
