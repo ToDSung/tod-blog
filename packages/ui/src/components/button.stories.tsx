@@ -43,7 +43,8 @@ export const Clickable: Story = {
   args: { children: 'Click me' },
   play: async ({ args, canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Click me' }));
-    await expect(args.onClick).toHaveBeenCalledOnce();
+    // Deliberately wrong: proves the CI gate fails on a broken story.
+    await expect(args.onClick).toHaveBeenCalledTimes(999);
   },
 };
 
