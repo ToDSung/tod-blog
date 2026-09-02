@@ -130,6 +130,18 @@ export default tseslint.config(
         },
       ],
       'func-style': ['error', 'expression', { allowArrowFunctions: true }],
+      'react/jsx-sort-props': [
+        'error',
+        {
+          callbacksLast: true,
+          ignoreCase: true,
+          reservedFirst: ['key', 'ref'],
+        },
+      ],
+      '@typescript-eslint/no-empty-object-type': [
+        'error',
+        { allowInterfaces: 'with-single-extends' },
+      ],
       'no-restricted-syntax': [
         'error',
         {
