@@ -2,15 +2,14 @@ import { expect, waitFor, within } from 'storybook/test';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Button } from '@tod-workspace/ui/components/button';
-import {
-  DropdownMenu,
+import Button from '@tod-workspace/ui/components/Button';
+import DropdownMenu, {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@tod-workspace/ui/components/dropdown-menu';
+} from '@tod-workspace/ui/components/DropdownMenu';
 
 const meta = {
   title: 'Components/DropdownMenu',

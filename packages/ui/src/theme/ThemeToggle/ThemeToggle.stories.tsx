@@ -2,8 +2,8 @@ import { expect, waitFor, within } from 'storybook/test';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { ThemeProvider } from '@tod-workspace/ui/theme/theme-provider';
-import { ThemeToggle } from '@tod-workspace/ui/theme/theme-toggle';
+import ThemeProvider from '@tod-workspace/ui/theme/ThemeProvider';
+import ThemeToggle from '@tod-workspace/ui/theme/ThemeToggle';
 
 const meta = {
   title: 'Theme/ThemeToggle',

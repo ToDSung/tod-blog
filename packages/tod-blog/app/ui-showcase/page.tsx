@@ -1,4 +1,4 @@
-import { Button } from '@tod-workspace/ui/components/button';
+import Button from '@tod-workspace/ui/components/Button';
 
 export const metadata = {
   title: 'UI Showcase',

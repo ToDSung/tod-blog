@@ -27,13 +27,13 @@ interface ColorThemeContextValue {
 
 const ColorThemeContext = createContext<ColorThemeContextValue | null>(null);
 
-export function useColorTheme(): ColorThemeContextValue {
+export const useColorTheme = (): ColorThemeContextValue => {
   const context = use(ColorThemeContext);
   if (!context) {
     throw new Error('useColorTheme must be used within <ThemeProvider>');
   }
   return context;
-}
+};
 
 const isColorTheme = (value: string | null): value is ColorTheme =>
   value !== null && (COLOR_THEMES as readonly string[]).includes(value);
@@ -51,7 +51,7 @@ const applyColorTheme = (theme: ColorTheme) => {
 // default theme (FR4).
 const bootstrapScript = `try{var t=localStorage.getItem('${STORAGE_KEY}');if(t&&t!=='${DEFAULT_COLOR_THEME}'&&${JSON.stringify([...COLOR_THEMES])}.indexOf(t)>-1)document.documentElement.setAttribute('data-theme',t)}catch(e){}`;
 
-function ColorThemeProvider({ children }: { children: ReactNode }) {
+const ColorThemeProvider = ({ children }: { children: ReactNode }) => {
   const [colorTheme, setColorThemeState] =
     useState<ColorTheme>(DEFAULT_COLOR_THEME);
 
@@ -88,7 +88,7 @@ function ColorThemeProvider({ children }: { children: ReactNode }) {
       {children}
     </ColorThemeContext>
   );
-}
+};
 
 interface ThemeProviderProps {
   children: ReactNode;
@@ -99,7 +99,7 @@ interface ThemeProviderProps {
  * light/dark mode (`.dark` class, system-aware, FOUC-free), while the color
  * theme is an orthogonal `data-theme` attribute managed by ColorThemeProvider.
  */
-export function ThemeProvider({ children }: ThemeProviderProps) {
+const ThemeProvider = ({ children }: ThemeProviderProps) => {
   return (
     <NextThemesProvider
       attribute='class'
@@ -110,4 +110,6 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       <ColorThemeProvider>{children}</ColorThemeProvider>
     </NextThemesProvider>
   );
-}
+};
+
+export default ThemeProvider;

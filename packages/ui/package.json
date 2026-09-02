@@ -8,10 +8,10 @@
   ],
   "exports": {
     "./globals.css": "./src/styles/globals.css",
-    "./components/*": "./src/components/*.tsx",
-    "./composed/*": "./src/composed/*.tsx",
-    "./motion/*": "./src/motion/*.tsx",
-    "./theme/*": "./src/theme/*.tsx",
+    "./components/*": "./src/components/*/index.ts",
+    "./composed/*": "./src/composed/*/index.ts",
+    "./motion/*": "./src/motion/*/index.ts",
+    "./theme/*": "./src/theme/*/index.ts",
     "./hooks/*": "./src/hooks/*.ts",
     "./lib/*": "./src/lib/*.ts"
   },

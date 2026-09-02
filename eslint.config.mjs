@@ -1,6 +1,7 @@
 import eslint from '@eslint/js';
 import importPlugin from 'eslint-plugin-import';
 import prettier from 'eslint-plugin-prettier/recommended';
+import reactPlugin from 'eslint-plugin-react';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
@@ -109,6 +110,50 @@ export default tseslint.config(
       '**/vitest.shims.d.ts',
     ],
     ...tseslint.configs.disableTypeChecked,
+  },
+  {
+    // packages/ui is written with arrow functions only (spec D13,
+    // .agents/docs/ui-conventions.md). These rules must live in the root
+    // config: `npx eslint .`, lint-staged and CI all run from the repo root,
+    // and flat config only loads the config file at the cwd, so a rule in
+    // packages/ui/eslint.config.mjs would never run for them.
+    files: ['packages/ui/src/**/*.ts', 'packages/ui/src/**/*.tsx'],
+    plugins: {
+      react: reactPlugin,
+    },
+    rules: {
+      'react/function-component-definition': [
+        'error',
+        {
+          namedComponents: 'arrow-function',
+          unnamedComponents: 'arrow-function',
+        },
+      ],
+      'func-style': ['error', 'expression', { allowArrowFunctions: true }],
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: "ImportNamespaceSpecifier[local.name='React']",
+          message:
+            "Import React APIs one by one (e.g. import type { ComponentProps } from 'react'), not as a namespace.",
+        },
+        {
+          selector: "TSQualifiedName[left.name='React']",
+          message:
+            'Use the imported type directly (ComponentProps), not React.ComponentProps.',
+        },
+        {
+          selector: "MemberExpression[object.name='React']",
+          message:
+            'Import the React API by name instead of reaching through the React namespace.',
+        },
+        {
+          selector: 'ExportNamedDeclaration:not([declaration]):not([source])',
+          message:
+            'Export inline with `export const` (or `export default` for the main component); no trailing export block. Re-exports with `from` are fine.',
+        },
+      ],
+    },
   },
   {
     files: ['**/*.d.ts'],
