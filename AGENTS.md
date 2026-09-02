@@ -12,6 +12,7 @@ Load these ONLY when the trigger applies. Do not preload them all.
 | Decide: retry vs. change approach, escalate, declare done, or ask the user | [.agents/docs/judgment-rubrics.md](.agents/docs/judgment-rubrics.md) |
 | Write a delegation prompt (search / implement / refactor / research / review) | [.agents/docs/delegation-templates.md](.agents/docs/delegation-templates.md) |
 | Edit any file under `.agents/` or this AGENTS.md itself | [.agents/docs/maintenance.md](.agents/docs/maintenance.md) |
+| Add or modify a component under `packages/ui/src/` (including any `shadcn add`) | [.agents/docs/ui-conventions.md](.agents/docs/ui-conventions.md) |
 | Add a backend / API / server to this repo | [.agents/docs/backend-roadmap.md](.agents/docs/backend-roadmap.md) |
 | Start a long or ambitious session; or something feels off about these docs | [.agents/docs/letter-to-future-sessions.md](.agents/docs/letter-to-future-sessions.md) |
 | Understand why these rules exist | [.agents/docs/harness-diagnosis.md](.agents/docs/harness-diagnosis.md) |

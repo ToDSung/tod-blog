@@ -31,7 +31,8 @@
 | 1.3 | Storybook 進駐 `packages/ui`：react-vite、preview 載入 globals.css、**另裝** addon-a11y + addon-vitest（`npx storybook add`）、**`storybook:build` script**、Button story | `pnpm -F @tod-workspace/ui storybook:build` 成功；Button story 渲染、a11y 無 violation；`npx eslint .` 乾淨（`.storybook/*.ts` 落在 carve-out 內） |
 | 1.4 | **主題系統 + 測試地基**（spec D9/D10/D11）：globals.css 依 spec §4.1 token 層結構建 `professional`（預設，tweakcn 中性 preset 起點）與對照主題 × 亮/暗；`ThemeProvider`/`ThemeToggle`（`src/theme/`）；Storybook globalTypes toolbar（theme + mode 兩個切換器，`withThemeByDataAttribute`/decorator 掛到 preview）；vitest browser mode 接上 addon-vitest、a11y 斷言設為 fail、**`test` script**；ThemeToggle play test | `pnpm -F @tod-workspace/ui test` 全綠；Button story 在 theme × mode 四種組合下渲染且 token 值有變（play test 斷言 computed style 或 `data-theme`/`.dark` 落點）；vitest 版本相容結論回寫 spec §3/§10 |
 | 1.5 | **CI workflow**（spec D12）：`.github/workflows/ci.yml` — push/PR 觸發，跑 `npx eslint .`、ui typecheck、ui test（含 Playwright chromium 安裝）、`storybook:build`、`pnpm -F tod-blog build`、leetcode test、articles build；pnpm + Playwright 快取 | 分支上 CI 全綠；故意弄壞一個 story 驗證 CI 會紅（驗證閘門真的有牙齒後還原） |
-| 1.R | 審查（general-purpose/sonnet，新 context）：逐條驗收 1.1–1.5 | 每條附實跑證據 |
+| 1.6 | **元件規範落地**（spec D13）：寫 `.agents/docs/ui-conventions.md` + AGENTS.md 路由列；`packages/ui/eslint.config.mjs` 加 `react/function-component-definition`；既有 Button/DropdownMenu/ThemeProvider/ThemeToggle 遷成資料夾結構並改 arrow + `export default`；package.json exports 改指 `*/index.ts` | `npx eslint .` 乾淨；ui typecheck 過；`pnpm -F @tod-workspace/ui test` 全綠；`pnpm -F tod-blog build` 成功 |
+| 1.R | 審查（general-purpose/sonnet，新 context）：逐條驗收 1.1–1.6 | 每條附實跑證據 |
 
 ## Phase 2 — Tier 1 primitives 批次進場（難度：低）
 
@@ -39,7 +40,7 @@
 
 | 批次 | 元件 | 驗收（每批相同） |
 | --- | --- | --- |
-| 2.a 表單 | button* input label textarea checkbox radio-group select switch slider field input-group | CLI 加入成功；每元件 1 story；**互動元件（可點/可輸入/可選）附 play test**；`pnpm -F @tod-workspace/ui test` 全綠（含 a11y）；eslint 乾淨；storybook build 過 |
+| 2.a 表單 | button* input label textarea checkbox radio-group select switch slider field input-group | CLI 加入成功；**檔案佈局與匯出形式符合 D13（見 ui-conventions.md §三 後處理步驟）**；每元件 1 story；**互動元件（可點/可輸入/可選）附 play test**；`pnpm -F @tod-workspace/ui test` 全綠（含 a11y）；eslint 乾淨；storybook build 過 |
 | 2.b Overlay | dialog sheet popover tooltip dropdown-menu alert-dialog | 同上 |
 | 2.c 展示 | card badge avatar alert separator skeleton table accordion tabs progress scroll-area | 同上 |
 | 2.d 回饋/導航 | sonner breadcrumb pagination command spinner | 同上 |
