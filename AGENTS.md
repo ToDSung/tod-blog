@@ -15,6 +15,9 @@ Load these ONLY when the trigger applies. Do not preload them all.
 | Add a backend / API / server to this repo | [.agents/docs/backend-roadmap.md](.agents/docs/backend-roadmap.md) |
 | Start a long or ambitious session; or something feels off about these docs | [.agents/docs/letter-to-future-sessions.md](.agents/docs/letter-to-future-sessions.md) |
 | Understand why these rules exist | [.agents/docs/harness-diagnosis.md](.agents/docs/harness-diagnosis.md) |
+| Write or revise any document (`specs/`, `.agents/docs/`, READMEs) | [.agents/docs/writing-standards.md](.agents/docs/writing-standards.md) |
+
+Prose written in this repo — internal documents and replies to the owner alike — follows that writing standard: Taiwan Traditional Chinese usage, sparing Markdown emphasis, every "done" backed by evidence. It builds on the `iso-24495-skill` plain-language skill; read the standard before writing a document, not after.
 
 Lessons learned live in [.agents/docs/lessons.md](.agents/docs/lessons.md) — append new entries there per the format in maintenance.md.
 
@@ -84,5 +87,6 @@ Skills are shared across Claude Code, Codex, and Antigravity:
 - **`.agents/skills/` is the single source of truth** (read natively by Codex and Antigravity).
 - **`.claude/skills/` contains full copies** (plain directories, NOT junctions/symlinks — verified 2026-07-11). They do not update automatically. **Warning:** the skills CLI now symlinks `.claude/skills/<name>` on install (observed 2026-07-14) — after any install, replace the link with a full copy (`rm` the link, then `cp -r` from `.agents/skills/`).
 - After ANY change under `.agents/skills/`, sync: copy the changed skill dir over `.claude/skills/<name>` (delete on both sides when removing), then verify with `diff -rq .agents/skills .claude/skills` (Git Bash). If that diff is non-empty before you started, report it to the user instead of guessing which side wins.
-- `skills-lock.json` tracks installed skills. Install with `npx skills@latest add <owner>/<repo> -a claude-code -a codex -a antigravity -y` (one `-s <name>` per skill; comma lists reportedly not parsed — from prior session experience, unverified against current CLI; if a comma list works, update this line); refresh with `npx skills update`.
+- `iso-24495-skill` is a **local skill**, deliberately not in `skills-lock.json` (owner's call, 2026-09-02): it was cloned from `git@github.com:danyuchn/iso-24495-skill.git` at commit `113656b` and vendored (nested `.git` removed) rather than installed through the skills CLI, so `npx skills update` will not touch it and must not be expected to. To take upstream changes, re-clone into a temp dir, copy the content over both skill dirs by hand, and update the commit noted here. It backs [.agents/docs/writing-standards.md](.agents/docs/writing-standards.md).
+- `skills-lock.json` tracks CLI-installed skills. Install with `npx skills@latest add <owner>/<repo> -a claude-code -a codex -a antigravity -y` (one `-s <name>` per skill; comma lists reportedly not parsed — from prior session experience, unverified against current CLI; if a comma list works, update this line); refresh with `npx skills update`.
 - Resolved 2026-07-14: the former `vercel-react-best-practices` leftover was formally reinstalled via the skills CLI (now in lockfile + `.claude/skills`), together with new installs `vercel-composition-patterns` and `shadcn` (official) — added at owner's request for the packages/ui work (specs/ui-library/).
