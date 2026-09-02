@@ -3,22 +3,21 @@
 import { MonitorIcon, MoonIcon, PaletteIcon, SunIcon } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
-import type { ColorTheme } from '@tod-workspace/ui/theme/theme-provider';
+import type { ColorTheme } from '@tod-workspace/ui/theme/ThemeProvider';
 
-import { Button } from '@tod-workspace/ui/components/button';
-import {
-  DropdownMenu,
+import DropdownMenu, {
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@tod-workspace/ui/components/dropdown-menu';
+} from '@tod-workspace/ui/components/DropdownMenu';
+import IconButton from '@tod-workspace/ui/components/IconButton';
 import {
   COLOR_THEMES,
   useColorTheme,
-} from '@tod-workspace/ui/theme/theme-provider';
+} from '@tod-workspace/ui/theme/ThemeProvider';
 
 const MODES = [
   { value: 'light', label: 'Light', Icon: SunIcon },
@@ -26,16 +25,16 @@ const MODES = [
   { value: 'system', label: 'System', Icon: MonitorIcon },
 ] as const;
 
-export function ThemeToggle() {
+const ThemeToggle = () => {
   const { theme, setTheme } = useTheme();
   const { colorTheme, setColorTheme } = useColorTheme();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant='outline' size='icon' aria-label='Toggle theme'>
+        <IconButton aria-label='Toggle theme' variant='outline'>
           <PaletteIcon />
-        </Button>
+        </IconButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end'>
         <DropdownMenuLabel>Theme</DropdownMenuLabel>
@@ -62,4 +61,6 @@ export function ThemeToggle() {
       </DropdownMenuContent>
     </DropdownMenu>
   );
-}
+};
+
+export default ThemeToggle;

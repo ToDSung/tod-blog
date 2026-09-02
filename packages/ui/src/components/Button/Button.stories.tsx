@@ -2,7 +2,7 @@ import { expect, fn } from 'storybook/test';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Button } from '@tod-workspace/ui/components/button';
+import Button from '@tod-workspace/ui/components/Button';
 
 const meta = {
   title: 'Components/Button',
