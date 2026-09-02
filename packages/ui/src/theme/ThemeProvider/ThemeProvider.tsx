@@ -51,7 +51,11 @@ const applyColorTheme = (theme: ColorTheme) => {
 // default theme (FR4).
 const bootstrapScript = `try{var t=localStorage.getItem('${STORAGE_KEY}');if(t&&t!=='${DEFAULT_COLOR_THEME}'&&${JSON.stringify([...COLOR_THEMES])}.indexOf(t)>-1)document.documentElement.setAttribute('data-theme',t)}catch(e){}`;
 
-const ColorThemeProvider = ({ children }: { children: ReactNode }) => {
+interface ColorThemeProviderProps {
+  children: ReactNode;
+}
+
+const ColorThemeProvider = ({ children }: ColorThemeProviderProps) => {
   const [colorTheme, setColorThemeState] =
     useState<ColorTheme>(DEFAULT_COLOR_THEME);
 
@@ -104,8 +108,8 @@ const ThemeProvider = ({ children }: ThemeProviderProps) => {
     <NextThemesProvider
       attribute='class'
       defaultTheme='system'
-      enableSystem
       disableTransitionOnChange
+      enableSystem
     >
       <ColorThemeProvider>{children}</ColorThemeProvider>
     </NextThemesProvider>
