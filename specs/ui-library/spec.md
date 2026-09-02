@@ -84,7 +84,8 @@ Token 層結構（D9/D10，全部集中在 `globals.css`，單一來源）：
 ### 4.2 跨套件接線（關鍵約束）
 
 - **原始碼直接消費**：ui 不做 build，tod-blog 以 `transpilePackages: ['@tod-workspace/ui']` 直接吃 TS 原始碼（shadcn monorepo 官方模式）。
-- **Tailwind 掃描**：tod-blog 的 `globals.css` 加 `@source "../../ui/src";`（相對路徑以實作時驗證為準）並 import ui 的共用 stylesheet — theme tokens 單一來源在 ui。
+- **Tailwind 掃描**：`@source` 的相對路徑基準是**宣告它的 stylesheet**。tod-blog 的 `styles/globals.css` 用 `@source "../../ui/src";` 並 import ui 的共用 stylesheet — theme tokens 單一來源在 ui。`pnpm -F tod-blog build` 實測輸出含 ui 元件 utilities（2026-07-14）。
+- **shadcn CLI 用法**：元件一律 `shadcn add -c packages/ui`（實測正常）；aliases 用套件名（`@tod-workspace/ui/*`）配 tsconfig paths 解析，產出直接落在 `src/components/`。
 - **兩份 `components.json`**：ui 與 tod-blog 各一份，`style`/`baseColor`/`iconLibrary` 必須一致；app 端 alias 指向 `@tod-workspace/ui/components`。
 - **TypeScript**：ui 的 tsconfig extends base 後需**明確覆寫 `"composite": false`**（`tsconfig.base.json` 預設 `true`，不覆寫就會與本條設計矛盾）；root `tsconfig.base.json` 的 `references` 陣列需加入 `packages/ui` — eslint 的 `packages/*/tsconfig.json` glob 與 TS 專案參照圖是兩套機制，都要接上。驗證用 `tsc --noEmit`（包成 `typecheck` script，見 §8.2）。
 - **ESLint**：ui 的 `eslint.config.mjs` 比照 leetcode 模式 extends root，且**必須**為 tsconfig include 之外的檔案（`.storybook/*.ts`、vitest setup 等）加 `disableTypeChecked` carve-out — Phase 0 已在 leetcode 的 `jest.config.ts` 修過同類 bug；缺這條會從 Phase 1.3 起讓 `npx eslint .` 與 pre-commit hook 全數卡死。
@@ -154,11 +155,12 @@ Overlay 類：`dialog` `sheet` `popover` `tooltip` `dropdown-menu` `alert-dialog
 - Docusaurus 消費 ui 元件（articles 內容未來直接遷回 tod-blog）。
 - major 版本升級（Next 16、ESLint 10、Jest 30、TS 7、Cypress 15 等 — plan.md Phase D 列管）。
 
+### 9.1 已評估不採用
+
+- shadcn `init --monorepo`：只用於腳手架全新專案，在既有 bare package 內因 framework 偵測失敗（實測 2026-07-14）→ 改手寫 components.json。
+- `tailwindcss-animate`：已由 `tw-animate-css` 取代（D6），不要再裝。
+
 ## 10. 未決事項（實作時決定並回寫此文件）
 
 - `@tailwindcss/typography` vs shadcn `typeset`：Phase 3 實作 MarkdownRenderer 時兩者各出一個 story 比較後定案。
-- ~~shadcn CLI 在非 Turborepo workspace 的 `--monorepo` 行為~~（已定案 2026-07-14）：`--monorepo` 只用於腳手架全新專案；在既有 bare package 內 `init` 因 framework 偵測失敗不可用 → 手動配置兩份 components.json。之後 `shadcn add -c packages/ui` 正常，aliases 用套件名（`@tod-workspace/ui/*`）配 tsconfig paths 解析，產出直接落在 `src/components/`。
-- ~~`@source` 相對路徑基準~~（已定案 2026-07-14）：相對於**宣告它的 stylesheet**。tod-blog 的 `styles/globals.css` 用 `@source "../../ui/src"`，`pnpm -F tod-blog build` 實測輸出含 ui 元件 utilities。
 - professional 主題的具體 token 值：graphite/slate 起點已於 Phase 1.4 落地（對照主題定名 **`ocean`**）；owner 目視簽核微調方向仍待 Phase 6。注意：`--destructive` 亮色已因 a11y 對比門檻（4.5:1，destructive button 的 /10 tint 底）壓到 `oklch(0.5 0.19 25)`，微調時勿回淺。
-- ~~vitest 4.x 與 addon-vitest（SB 10.5）相容性~~（已定案 2026-07-14）：相容。vitest 4.1.10 + `@vitest/browser` + vitest 4 新拆的 `@vitest/browser-playwright`（config `provider: playwright()`）；addon-vitest peer 宣告 `^3 || ^4`。已回寫 §3。
-- CI runner 上 Playwright browser 的安裝與快取策略：Phase 1.5 實作時定（`npx playwright install --with-deps chromium`）。

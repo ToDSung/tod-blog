@@ -58,7 +58,7 @@
 | 3.5 | 遷移煙霧測試：取 `packages/articles/blog/` 一篇實際中文文章原文餵入 MarkdownRenderer story | sonnet | 渲染無錯、錨點/表格/程式碼正確（為未來 Docusaurus 遷移鋪路） |
 | 3.R | 審查（sonnet，新 context）+ 實際 `pnpm -F tod-blog build` | 逐條附證據 |
 
-## Phase 4 — ~~Auth 元件~~（已取消，spec D8，2026-07-13）
+## Phase 4 — 已取消（原 Auth 元件，spec D8，2026-07-13）
 
 Owner 決定本階段不做登入功能。原任務內容（zod schemas、PasswordInput、Login/Register/Otp 表單、AuthCard）與 RHF+zod+useMutation 模式保留在 research-ui-tooling.md §2/§4，復啟時以該研究 + spec §9 的版本標註直接開新 Phase，毋須重新研究。編號保留不重排，避免既有引用失效。
 
