@@ -32,7 +32,7 @@ const ThemeToggle = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant='outline' size='icon' aria-label='Toggle theme'>
+        <Button aria-label='Toggle theme' size='icon' variant='outline'>
           <PaletteIcon />
         </Button>
       </DropdownMenuTrigger>
