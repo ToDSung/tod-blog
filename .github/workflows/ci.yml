@@ -43,7 +43,7 @@ jobs:
       - name: Install Playwright chromium
         run: pnpm -F @tod-workspace/ui exec playwright install --with-deps chromium
 
-      - name: Test ui (story render + play + a11y + unit)
+      - name: Test ui (unit + dom + browser)
         run: pnpm -F @tod-workspace/ui test
 
       - name: Build Storybook
