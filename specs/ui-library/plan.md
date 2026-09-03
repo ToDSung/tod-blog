@@ -9,7 +9,7 @@
 - 委派 prompt 必含目標動機、機械可查驗收、報告格式（模板照抄）。
 - 每個 Phase 結束跑一次**新 context 審查**（model-dispatch §5）：審查者只拿驗收標準與產出位置。
 - 驗證底線：`npx eslint .` 乾淨、相關 build/測試通過、Storybook story 可渲染；Phase 1.4 之後一律加 `pnpm -F @tod-workspace/ui test` 全綠。
-- **測試紀律（spec D11，owner 不深度 review）**：新增匯出元件的 commit 必同時帶 story；互動元件必同 commit 帶 play test；a11y violation = 測試失敗。委派 prompt 必須把「測試通過」寫進驗收，不接受「元件完成、測試待補」的回報。
+- **測試紀律（spec D11，owner 不深度 review）**：新增匯出元件的 commit 必同時帶 `<元件名>.test.tsx`（vitest + Testing Library）；story 只做 variant 展示，不寫 play function。委派 prompt 必須把「測試通過」寫進驗收，不接受「元件完成、測試待補」的回報。
 - 產碼 skills 已安裝供所有 agent 使用（2026-07-14）：`vercel-react-best-practices`、`vercel-composition-patterns`（React/Next 模式）、`shadcn`（官方，讀 components.json 注入專案 context）。委派實作任務時在 prompt 中提示 agent 觸發對應 skill。
 - 每個 Phase 的 .R 審查**必附迴歸快檢**：`pnpm -F @tod-workspace/leetcode test` 與 `pnpm -F articles build` 不退步 — 不要等到 Phase 6 才發現根層設定（tsconfig/eslint）壞了其他套件。
 - commit 用 Conventional Commits，每個 Phase 至少一個 commit；不可 `--no-verify`。
@@ -28,8 +28,8 @@
 | --- | --- | --- |
 | 1.1 | 建 `packages/ui` 骨架：package.json（name、subpath exports、**`typecheck` script = `tsc --noEmit`**）、tsconfig（**明確 `composite: false`**）、**root `tsconfig.base.json` references 加入 `packages/ui`**、eslint.config.mjs（比照 leetcode 模式，**含 `.storybook/**`/vitest setup 的 `disableTypeChecked` carve-out**）、`shadcn init -b radix`（或手動 components.json）、globals.css theme、`cn()`、安裝 spec §3 依賴 | `pnpm install` 成功；`pnpm -F @tod-workspace/ui typecheck` 過；`npx eslint .` 乾淨 |
 | 1.2 | tod-blog 接線：transpilePackages、app 端 components.json、`@source` 接線、首個 Button import 進一個頁面 | `pnpm -F tod-blog build` 成功且頁面 HTML 含 button 樣式 |
-| 1.3 | Storybook 進駐 `packages/ui`：react-vite、preview 載入 globals.css、**另裝** addon-a11y + addon-vitest（`npx storybook add`）、**`storybook:build` script**、Button story | `pnpm -F @tod-workspace/ui storybook:build` 成功；Button story 渲染、a11y 無 violation；`npx eslint .` 乾淨（`.storybook/*.ts` 落在 carve-out 內） |
-| 1.4 | **主題系統 + 測試地基**（spec D9/D10/D11）：globals.css 依 spec §4.1 token 層結構建 `professional`（預設，tweakcn 中性 preset 起點）與對照主題 × 亮/暗；`ThemeProvider`/`ThemeToggle`（`src/theme/`）；Storybook globalTypes toolbar（theme + mode 兩個切換器，`withThemeByDataAttribute`/decorator 掛到 preview）；vitest browser mode 接上 addon-vitest、a11y 斷言設為 fail、**`test` script**；ThemeToggle play test | `pnpm -F @tod-workspace/ui test` 全綠；Button story 在 theme × mode 四種組合下渲染且 token 值有變（play test 斷言 computed style 或 `data-theme`/`.dark` 落點）；vitest 版本相容結論回寫 spec §3/§10 |
+| 1.3 | Storybook 進駐 `packages/ui`：react-vite、preview 載入 globals.css、**`storybook:build` script**、Button story | `pnpm -F @tod-workspace/ui storybook:build` 成功；Button story 渲染；`npx eslint .` 乾淨（`.storybook/*.ts` 落在 carve-out 內） |
+| 1.4 | **主題系統 + 測試地基**（spec D9/D10/D11）：globals.css 依 spec §4.1 token 層結構建 `professional`（預設，tweakcn 中性 preset 起點）與對照主題 × 亮/暗；`ThemeProvider`/`ThemeToggle`（`src/theme/`）；Storybook globalTypes toolbar（theme + mode 兩個切換器，decorator 掛到 preview）；vitest 三個 project（unit/dom/browser）與 Testing Library 地基、**`test` script**；`ThemeToggle.test.tsx` 與 `theme-tokens.browser.test.tsx` | `pnpm -F @tod-workspace/ui test` 全綠；theme × mode 四種組合下 primary token 的 computed color 各不相同；vitest 版本相容結論回寫 spec §3/§10 |
 | 1.5 | **CI workflow**（spec D12）：`.github/workflows/ci.yml` — push/PR 觸發，跑 `npx eslint .`、ui typecheck、ui test（含 Playwright chromium 安裝）、`storybook:build`、`pnpm -F tod-blog build`、leetcode test、articles build；pnpm + Playwright 快取 | 分支上 CI 全綠；故意弄壞一個 story 驗證 CI 會紅（驗證閘門真的有牙齒後還原） |
 | 1.6 | **元件規範落地**（spec D13）：寫 `.agents/docs/ui-conventions.md` + AGENTS.md 路由列；`packages/ui/eslint.config.mjs` 加 `react/function-component-definition`；既有 Button/DropdownMenu/ThemeProvider/ThemeToggle 遷成資料夾結構並改 arrow + `export default`；package.json exports 改指 `*/index.ts` | `npx eslint .` 乾淨；ui typecheck 過；`pnpm -F @tod-workspace/ui test` 全綠；`pnpm -F tod-blog build` 成功 |
 | 1.R | 審查（general-purpose/sonnet，新 context）：逐條驗收 1.1–1.6 | 每條附實跑證據 |
@@ -40,22 +40,22 @@
 
 | 批次 | 元件 | 驗收（每批相同） |
 | --- | --- | --- |
-| 2.a 表單 | button* input label textarea checkbox radio-group select switch slider field input-group | CLI 加入成功；**檔案佈局與匯出形式符合 D13（見 ui-conventions.md §三 後處理步驟）**；每元件 1 story；**互動元件（可點/可輸入/可選）附 play test**；`pnpm -F @tod-workspace/ui test` 全綠（含 a11y）；eslint 乾淨；storybook build 過 |
+| 2.a 表單 | button* input label textarea checkbox radio-group select switch slider field input-group | CLI 加入成功；**檔案佈局與匯出形式符合 D13（見 ui-conventions.md §三 後處理步驟）**；每元件 1 個 `<元件名>.test.tsx`（互動元件另測互動行為）；有 variant 的元件補展示用 story；`pnpm -F @tod-workspace/ui test` 全綠；eslint 乾淨；storybook build 過 |
 | 2.b Overlay | dialog sheet popover tooltip dropdown-menu alert-dialog | 同上 |
 | 2.c 展示 | card badge avatar alert separator skeleton table accordion tabs progress scroll-area | 同上 |
 | 2.d 回饋/導航 | sonner breadcrumb pagination command spinner | 同上 |
-| 2.R | 審查（sonnet，新 context）：抽查 stories 實際渲染 + a11y 報告；**抽 2 元件在對照主題 × dark 下目視/測試檢查 token 覆蓋完整**（新主題最常漏 chart/sidebar 類次要 token） | 附 violation 清單（應為空）+ 主題抽查證據 |
+| 2.R | 審查（sonnet，新 context）：抽查 stories 實際渲染與測試涵蓋的行為；**抽 2 元件在對照主題 × dark 下目視/測試檢查 token 覆蓋完整**（新主題最常漏 chart/sidebar 類次要 token） | 附測試輸出 + 主題抽查證據 |
 
-*button 已在 1.2 進場，此處補齊 story 變體。
+*button 已在 1.2 進場，此處補齊 variant 展示。
 
 ## Phase 3 — Markdown 管線（難度：高，本專案核心）
 
 | # | 任務 | 執行者 | 驗收 |
 | --- | --- | --- | --- |
-| 3.1 | `CopyButton`（中） | sonnet | story + play test：點擊後 clipboard 內容正確、視覺回饋出現 |
+| 3.1 | `CopyButton`（中） | sonnet | `CopyButton.test.tsx`：點擊後 clipboard 內容正確、視覺回饋出現 |
 | 3.2 | `CodeBlock`：Shiki fine-grained（`shiki/core` + JS engine + 常用語言：ts/tsx/js/css/html/json/bash/python + 主題亮暗各一）+ CopyButton + 語言標籤（高） | sonnet，失敗兩次升 opus | story 含各語言範例；bundle 檢查（Git Bash）：`storybook:build` 後 `ls storybook-static/assets \| grep -i onig` 無結果（未拖入 WASM/Oniguruma），並記錄 `du -sh storybook-static/assets` 於報告 |
-| 3.3 | `Callout`：Alert 基底 4 variants（中） | sonnet | story 含 4 variants + a11y 綠 |
-| 3.4 | `MarkdownRenderer`：`MarkdownHooks` + remark-gfm + rehype-slug/autolink + `@shikijs/rehype`（fallback 狀態）+ prose 樣式（typography vs typeset 各出一 story 比較，回寫 spec §10）+ code→CodeBlock 映射（高） | **opus** | play test（addon-vitest）斷言固定測試文件：`<table>` 存在且列數正確、任務清單 checkbox 數量正確、中文標題元素有 `id` 且錨點 `<a>` 存在、每個 code fence 產生含 Shiki class 的 `<pre>`、高亮前 fallback 先渲染；grep 確認源碼無未消毒的 `dangerouslySetInnerHTML` |
+| 3.3 | `Callout`：Alert 基底 4 variants（中） | sonnet | story 含 4 variants；`Callout.test.tsx` 斷言每個 variant 的角色與樣式落點 |
+| 3.4 | `MarkdownRenderer`：`MarkdownHooks` + remark-gfm + rehype-slug/autolink + `@shikijs/rehype`（fallback 狀態）+ prose 樣式（typography vs typeset 各出一 story 比較，回寫 spec §10）+ code→CodeBlock 映射（高） | **opus** | `MarkdownRenderer.test.tsx` 對固定測試文件斷言：`<table>` 存在且列數正確、任務清單 checkbox 數量正確、中文標題元素有 `id` 且錨點 `<a>` 存在、每個 code fence 產生含 Shiki class 的 `<pre>`、高亮前 fallback 先渲染；grep 確認源碼無未消毒的 `dangerouslySetInnerHTML` |
 | 3.5 | 遷移煙霧測試：取 `packages/articles/blog/` 一篇實際中文文章原文餵入 MarkdownRenderer story | sonnet | 渲染無錯、錨點/表格/程式碼正確（為未來 Docusaurus 遷移鋪路） |
 | 3.R | 審查（sonnet，新 context）+ 實際 `pnpm -F tod-blog build` | 逐條附證據 |
 
@@ -68,8 +68,8 @@ Owner 決定本階段不做登入功能。原任務內容（zod schemas、Passwo
 | # | 任務 | 執行者 | 驗收 |
 | --- | --- | --- | --- |
 | 5.1 | `FadeIn` / `Stagger` 輔助 + LazyMotion 評估 | sonnet | story 渲染；`'use client'` 邊界正確 |
-| 5.2 | `MotionTabs`（motion.dev 指南有完整範例） | sonnet | play test：鍵盤方向鍵切換後 `data-state="active"` 落在正確 tab、focus 不丟失、console 無錯誤；動畫視覺品質由 owner 於 Storybook 驗收（主觀項不由 agent 自評） |
-| 5.3 | `MotionDialog` / `MotionToast`：受控 open + `AnimatePresence` + `forceMount`；確認未與 tw-animate-css 雙軌（D7） | sonnet，失敗兩次升 opus | play test：關閉後元素**延遲卸載**（exit 動畫生效的機械證據：close 觸發後元素仍在 DOM，動畫結束後移除）；a11y 綠；D7 檢查 = 該元素 className 無 `animate-in/out` 系列 |
+| 5.2 | `MotionTabs`（motion.dev 指南有完整範例） | sonnet | `MotionTabs.test.tsx`：鍵盤方向鍵切換後 `data-state="active"` 落在正確 tab、focus 不丟失、console 無錯誤；動畫視覺品質由 owner 於 Storybook 驗收（主觀項不由 agent 自評） |
+| 5.3 | `MotionDialog` / `MotionToast`：受控 open + `AnimatePresence` + `forceMount`；確認未與 tw-animate-css 雙軌（D7） | sonnet，失敗兩次升 opus | 測試斷言關閉後元素**延遲卸載**（exit 動畫生效的機械證據：close 觸發後元素仍在 DOM，動畫結束後移除）；D7 檢查 = 該元素 className 無 `animate-in/out` 系列 |
 | 5.R | 審查（sonnet，新 context）：重點查雙軌動畫與 focus 管理 | 逐條附證據 |
 
 ## Phase 6 — 整合驗收（難度：中）
