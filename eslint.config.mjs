@@ -106,7 +106,7 @@ export default tseslint.config(
       '**/.storybook/**/*.ts',
       '**/.storybook/**/*.tsx',
       '**/vitest.config.ts',
-      '**/vitest.setup.ts',
+      '**/vitest.setup*.ts',
       '**/vitest.shims.d.ts',
     ],
     ...tseslint.configs.disableTypeChecked,
