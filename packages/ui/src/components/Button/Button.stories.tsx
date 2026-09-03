@@ -43,9 +43,8 @@ export const Disabled: Story = {
 export const Sizes: Story = {
   render: () => (
     <div className='flex items-center gap-2'>
-      <Button size='xs'>xs</Button>
       <Button size='sm'>sm</Button>
-      <Button size='default'>default</Button>
+      <Button size='md'>md</Button>
       <Button size='lg'>lg</Button>
     </div>
   ),
