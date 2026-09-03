@@ -1,6 +1,6 @@
 # Spec: `packages/ui` — 共用 UI Library（@tod-workspace/ui）
 
-Status: **Draft v3**（2026-09-03，測試防線改為 vitest + Testing Library，Storybook 只做展示；Phase 2 尚未開始）
+Status: **Draft v3**（2026-09-04，Phase 2 尚未開始）
 研究依據：[.agents/docs/research-ui-stack.md](../../.agents/docs/research-ui-stack.md)、[.agents/docs/research-ui-tooling.md](../../.agents/docs/research-ui-tooling.md)
 執行計畫：[plan.md](plan.md)
 
@@ -12,25 +12,26 @@ Status: **Draft v3**（2026-09-03，測試防線改為 vitest + Testing Library�
 
 1. **Docusaurus (`packages/articles`) 的內容將遷回 tod-blog** — 因此 `MarkdownRenderer` 不只是展示元件，而是未來內容遷移的基礎設施，必須完整支援中文內容與 articles 現有的 Markdown 慣例（GFM 表格、程式碼區塊、標題錨點）。
 2. 服務對象：**Next.js apps**（tod-blog 與未來新增的 app）。articles (Docusaurus) 不是消費者。
-3. **品質防線是自動化測試，不是人工 review** — owner 明確表示不會深度 review 此專案的程式碼。因此每個元件的正確性必須由機器可跑的測試證明（render 與互動），review 只看驗收證據。這影響所有 Phase 的驗收設計（見 D11/D12）。
+3. **品質防線是自動化測試，不是人工 review** — 此專案的程式碼不會被逐行人工 review。因此每個元件的正確性必須由機器可跑的測試證明（render 與互動），review 只看驗收證據。這影響所有 Phase 的驗收設計（見 D11/D12）。
 
-## 2. 已定案決策（Decision Log）
+## 2. 決策（Decision Log）
 
-| # | 決策 | 理由 | 日期 |
-| --- | --- | --- | --- |
-| D1 | 套件升級採「安全更新」：同 major 升到最新（已完成）；major 升級列入獨立任務（見 plan.md Phase D） | 降低與 UI library 主線互相干擾的風險 | 2026-07-13 |
-| D2 | Primitive 底層用 **Radix**（shadcn CLI `-b radix`；統一包 `radix-ui`，非舊式 `@radix-ui/react-*`） | motion 官方有 Radix 整合指南；生態與範例最成熟；React 19 相容已驗證 | 2026-07-13 |
-| D3 | Storybook **放在 `packages/ui` 內**（`.storybook/` + stories 與元件同目錄） | 單一元件庫不需要獨立殼；官方無「獨立 package」建議 | 2026-07-13 |
-| D4 | Markdown 範圍：**GFM + Shiki 語法高亮 + 複製按鈕 + 標題錨點 + Callout**；KaTeX / mermaid 列為未來擴充 | 先做核心、用現成套件組裝 | 2026-07-13 |
-| D5 | 套件名 `@tod-workspace/ui`，跟隨 `@tod-workspace/leetcode` 慣例 | monorepo 命名一致性 | 2026-07-13 |
-| D6 | 樣式基準：`new-york` style、`cssVariables: true`、OKLCH、`tw-animate-css` | shadcn Tailwind v4 現行預設 | 2026-07-13 |
-| D7 | 動畫所有權規則：每個元件**只選一種**進出場機制 —— 一般 overlay（tooltip/popover/dropdown）用 `tw-animate-css` 的 `data-state` CSS；展示型元件（MotionDialog/MotionTabs/MotionToast）用 motion 的 `AnimatePresence` + `forceMount`。禁止同一元素雙軌動畫 | 研究確認兩機制無官方共用指南，混用會雙重動畫 | 2026-07-13 |
-| D8 | **Auth 元件本階段取消**（LoginForm/RegisterForm/OtpForm/AuthCard/PasswordInput、input-otp，及其依賴 react-hook-form/zod/resolvers/TanStack Query 一併延後） | Owner 決定此 phase 不做登入功能；研究結論（research-ui-tooling.md §2/§4）保留，復啟時直接沿用 | 2026-07-13 |
-| D9 | **主題系統**：token 全走 CSS variables 單一機制；多主題以 `[data-theme="<name>"]` 屬性選擇器覆蓋 `:root` token 區塊；dark mode 維持 `.dark` class，與主題**正交**（theme × mode 矩陣，任一主題皆有亮暗兩態）。App 端用 `next-themes`（attribute 模式）掛切換；ui 匯出 `ThemeProvider` 薄包裝 + `ThemeToggle`。Storybook 用 globalTypes toolbar 切換 theme 與 mode | shadcn 官方 theming 模式（cssVariables: true）天然支援多主題覆蓋；next-themes 是 shadcn 官方 dark mode 建議且支援任意 attribute 值、無 FOUC | 2026-07-14 |
-| D10 | **預設主題 = `professional`**：低飽和中性色（graphite/slate 系）、OKLCH、克制的 radius 與陰影、明確 foreground/background 對比。以 tweakcn 的中性系 preset（如 Graphite）為起點微調；另附至少一個對照主題（名稱實作時定）證明切換機制成立 | Owner 指定專業風格為預設；tweakcn 產出即為 :root/.dark 變數塊，與 D9 架構零轉換成本 | 2026-07-14 |
-| D11 | **測試與展示分家**：測試一律寫成 vitest + Testing Library 的測試檔，Storybook 只做元件展示。(a) 元件測試放 `<元件名>.test.tsx`，與元件同目錄，React Testing Library 跑在 jsdom；(b) 需要真實 CSS 的測試（主題 token 矩陣）另存 `*.browser.test.tsx`，跑在 vitest browser mode（Playwright）；(c) 純邏輯（`cn()`、markdown 元件映射等）用 node 環境的單元測試；(d) story 不寫 play function、不承擔斷言，也不自動變成 render 測試；(e) 不做自動化 a11y 檢查，`@storybook/addon-a11y` 已移除；(f) 統一入口 `pnpm -F @tod-workspace/ui test`，三個 vitest project 一次跑完。視覺回歸（Chromatic / storybook-addon-vis）本階段不做，列未來擴充（§9） | 推翻原本「story 即測試」的作法：play function 會隨元件與互動情境持續膨脹，且把斷言綁死在展示層，改動 story 就會動到測試。分家之後斷言留在 vitest、Storybook 專心當 variant 目錄。a11y 自動檢查由 owner 決定本階段不做 | 2026-09-03 |
-| D12 | **CI 品質閘門**：GitHub Actions workflow（push + PR）跑 eslint / ui typecheck / ui test / storybook build / tod-blog build / leetcode test。CI 是**獨立於產碼 agent 的確定性驗證**，與 plan 的新 context 審查（.R）互補 | 2026 業界對 agent 產碼的共識：驗證者必須與產碼者分離、閘門必須確定性；目前 repo 只有 local hooks，agent 可繞過的面太大 | 2026-07-14 |
-| D13 | **元件檔案佈局與撰寫格式**：一個元件一個 PascalCase 資料夾（`Button/Button.tsx` + `Button.stories.tsx` + `index.ts`）；元件、hook、工具函式一律 arrow function；React API 一條一條具名匯入（禁止 `import * as React` 與 `React.` 前綴）；匯出就地寫，主元件 `export default`、其餘 `export const`，禁止檔尾 `export { … };` 區塊；props 型別用 `interface <元件名>Props` 具名宣告（不寫行內型別、不用 `type`）；props 一律 a-z 排序、事件處理器（`on` 開頭）排在其後，型別宣告、解構參數、JSX 傳值三處同序。細則與 shadcn 後處理步驟見 [.agents/docs/ui-conventions.md](../../.agents/docs/ui-conventions.md) | Owner 指定的可讀性慣例。shadcn CLI 產出的是 kebab-case 平鋪檔 + 宣告式 function，兩者都要後處理，所以規範必須連同後處理步驟一起寫下來，否則 Phase 2 批次會照 CLI 原樣進倉 | 2026-09-02，props 兩條增補於 2026-09-03 |
+| # | 決策 | 理由 |
+| --- | --- | --- |
+| D1 | 套件升級採「安全更新」：同 major 升到最新（已完成）；major 升級列入獨立任務（見 plan.md Phase D） | 降低與 UI library 主線互相干擾的風險 |
+| D2 | Primitive 底層用 **Radix**（shadcn CLI `-b radix`；統一包 `radix-ui`，非舊式 `@radix-ui/react-*`） | motion 官方有 Radix 整合指南；生態與範例最成熟；React 19 相容已驗證 |
+| D3 | Storybook **放在 `packages/ui` 內**（`.storybook/` + stories 與元件同目錄） | 單一元件庫不需要獨立殼；官方無「獨立 package」建議 |
+| D4 | Markdown 範圍：**GFM + Shiki 語法高亮 + 複製按鈕 + 標題錨點 + Callout**；KaTeX / mermaid 列為未來擴充 | 先做核心、用現成套件組裝 |
+| D5 | 套件名 `@tod-workspace/ui`，跟隨 `@tod-workspace/leetcode` 慣例 | monorepo 命名一致性 |
+| D6 | 樣式基準：`new-york` style、`cssVariables: true`、OKLCH、`tw-animate-css` | shadcn Tailwind v4 現行預設 |
+| D7 | 動畫所有權規則：每個元件**只選一種**進出場機制 —— 一般 overlay（tooltip/popover/dropdown）用 `tw-animate-css` 的 `data-state` CSS；展示型元件（MotionDialog/MotionTabs/MotionToast）用 motion 的 `AnimatePresence` + `forceMount`。禁止同一元素雙軌動畫 | 研究確認兩機制無官方共用指南，混用會雙重動畫 |
+| D8 | **Auth 元件本階段取消**（LoginForm/RegisterForm/OtpForm/AuthCard/PasswordInput、input-otp，及其依賴 react-hook-form/zod/resolvers/TanStack Query 一併延後） | 本階段不做登入功能，這些元件與其相依套件都沒有消費者；研究結論（research-ui-tooling.md §2/§4）保留，復啟時直接沿用 |
+| D9 | **主題系統**：token 全走 CSS variables 單一機制；多主題以 `[data-theme="<name>"]` 屬性選擇器覆蓋 `:root` token 區塊；dark mode 維持 `.dark` class，與主題**正交**（theme × mode 矩陣，任一主題皆有亮暗兩態）。App 端用 `next-themes`（attribute 模式）掛切換；ui 匯出 `ThemeProvider` 薄包裝 + `ThemeToggle`。Storybook 用 globalTypes toolbar 切換 theme 與 mode | shadcn 官方 theming 模式（cssVariables: true）天然支援多主題覆蓋；next-themes 是 shadcn 官方 dark mode 建議且支援任意 attribute 值、無 FOUC |
+| D10 | **預設主題 = `professional`**：低飽和中性色（graphite/slate 系）、OKLCH、克制的 radius 與陰影、明確 foreground/background 對比。以 tweakcn 的中性系 preset（如 Graphite）為起點微調；另附至少一個對照主題（名稱實作時定）證明切換機制成立 | tweakcn 產出即為 `:root` / `.dark` 變數塊，與 D9 架構零轉換成本；中性系起點對內容型網站的長文閱讀最不干擾 |
+| D11 | **測試與展示分家**：測試一律寫成 vitest + Testing Library 的測試檔，Storybook 只做元件展示。(a) 元件測試放 `<元件名>.test.tsx`，與元件同目錄，React Testing Library 跑在 jsdom；(b) 需要真實 CSS 的測試（主題 token 矩陣）另存 `*.browser.test.tsx`，跑在 vitest browser mode（Playwright）；(c) 純邏輯（`cn()`、markdown 元件映射等）用 node 環境的單元測試；(d) story 不寫 play function、不承擔斷言，也不自動變成 render 測試；(e) 不做自動化 a11y 檢查，`@storybook/addon-a11y` 已移除；(f) 統一入口 `pnpm -F @tod-workspace/ui test`，三個 vitest project 一次跑完。視覺回歸（Chromatic / storybook-addon-vis）本階段不做，列未來擴充（§9） | play function 會隨元件與互動情境持續膨脹，且把斷言綁死在展示層，改動 story 就會動到測試。斷言留在 vitest、Storybook 專心當 variant 目錄之後，兩邊可以各自改而不互相牽動 |
+| D12 | **CI 品質閘門**：GitHub Actions workflow（push + PR）跑 eslint / ui typecheck / ui test / storybook build / tod-blog build / leetcode test。CI 是**獨立於產碼 agent 的確定性驗證**，與 plan 的新 context 審查（.R）互補 | 2026 業界對 agent 產碼的共識：驗證者必須與產碼者分離、閘門必須確定性；目前 repo 只有 local hooks，agent 可繞過的面太大 |
+| D13 | **元件檔案佈局與撰寫格式**：一個元件一個 PascalCase 資料夾（`Button/Button.tsx` + `Button.stories.tsx` + `index.ts`）；元件、hook、工具函式一律 arrow function；React API 一條一條具名匯入（禁止 `import * as React` 與 `React.` 前綴）；匯出就地寫，主元件 `export default`、其餘 `export const`，禁止檔尾 `export { … };` 區塊；props 型別用 `interface <元件名>Props` 具名宣告（不寫行內型別、不用 `type`）；props 一律 a-z 排序、事件處理器（`on` 開頭）排在其後，型別宣告、解構參數、JSX 傳值三處同序；複合元件的子元件也是一元件一資料夾，巢狀在家族主元件資料夾底下（`DropdownMenu/DropdownMenuItem/`），家族主元件的 `index.ts` 兼當該家族的 barrel，story 與測試則整族共用主元件資料夾裡的那一份。細則與 shadcn 後處理步驟見 [.agents/docs/ui-conventions.md](../../.agents/docs/ui-conventions.md) | shadcn CLI 產出的是 kebab-case 平鋪檔加宣告式 function，兩者都要後處理，所以規範必須連同後處理步驟一起寫下來，否則 Phase 2 批次會照 CLI 原樣進倉。子元件同樣一檔一元件：一個檔塞十五個元件在 review 與定位上都吃虧 |
+| D14 | **按鈕 API**：`Button` 的 size 收斂為 `sm` / `md` / `lg`，預設 `md`（移除 `xs`）；icon-only 按鈕獨立成 `IconButton`，`size` 同三階、`aria-label` 型別上必填，內部組合 `Button` 並以 `size-*` + `p-0` 覆蓋高度與內距，variant 沿用 `buttonVariants` | `default` 沒說出大小，`xs` 在 8px 級距上沒有實際用途，icon 尺寸與文字尺寸擠在同一個 union 讓型別無法表達「圖示按鈕必須有可及名稱」。`IconButton` 組合 `Button` 而不另開一套 cva，按鈕外觀維持單一來源 |
 
 ## 3. 技術棧與版本（研究驗證，2026-07-13）
 
@@ -67,7 +68,7 @@ packages/ui/                        # @tod-workspace/ui
 ├── vitest.setup.dom.ts             # jest-dom matchers + jsdom 缺的 API（Pointer Events、matchMedia、ResizeObserver）
 ├── vitest.setup.browser.ts         # jest-dom matchers + globals.css
 └── src/
-    ├── components/                 # shadcn primitives，一元件一資料夾（Button/Button.tsx + Button.test.tsx + Button.stories.tsx + index.ts，見 D13）
+    ├── components/                 # shadcn primitives，一元件一資料夾（Button/Button.tsx + Button.test.tsx + Button.stories.tsx + index.ts，見 D13）；複合元件的子元件巢狀在家族資料夾底下（DropdownMenu/DropdownMenuItem/）
     ├── composed/                   # 自組元件（markdown/、auth/、code-block…）
     ├── motion/                     # motion 展示元件（MotionDialog…）
     ├── theme/                      # ThemeProvider（next-themes 薄包裝）、ThemeToggle
@@ -105,6 +106,8 @@ Token 層結構（D9/D10，全部集中在 `globals.css`，單一來源）：
 Overlay 類：`dialog` `sheet` `popover` `tooltip` `dropdown-menu` `alert-dialog`
 展示類：`card` `badge` `avatar` `alert` `separator` `skeleton` `table` `accordion` `tabs` `progress` `scroll-area`
 回饋/導航：`sonner`（toast）`breadcrumb` `pagination` `command` `spinner`
+
+`IconButton` 不是 CLI 產出，而是 `Button` 的 icon-only 包裝（D14），但它是按鈕面的一部分，所以同樣放 `src/components/`，不進 `composed/`。
 
 ### Tier 2 — 自組元件（中～高難度）
 
@@ -165,7 +168,7 @@ Overlay 類：`dialog` `sheet` `popover` `tooltip` `dropdown-menu` `alert-dialog
 - shadcn `init --monorepo`：只用於腳手架全新專案，在既有 bare package 內因 framework 偵測失敗（實測 2026-07-14）→ 改手寫 components.json。
 - `tailwindcss-animate`：已由 `tw-animate-css` 取代（D6），不要再裝。
 - Storybook play function 與 `@storybook/addon-vitest` 的「story 即測試」：斷言改由 vitest + Testing Library 承擔（D11），兩者已從 story 與相依中移除。
-- `@storybook/addon-a11y` 的自動化 a11y 檢查：owner 決定本階段不做，addon 已解除安裝。
+- `@storybook/addon-a11y` 的自動化 a11y 檢查：本階段不做，addon 已解除安裝。
 
 ## 10. 未決事項（實作時決定並回寫此文件）
 
