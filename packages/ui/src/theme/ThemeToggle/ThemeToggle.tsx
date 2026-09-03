@@ -5,7 +5,6 @@ import { useTheme } from 'next-themes';
 
 import type { ColorTheme } from '@tod-workspace/ui/theme/ThemeProvider';
 
-import Button from '@tod-workspace/ui/components/Button';
 import DropdownMenu, {
   DropdownMenuContent,
   DropdownMenuLabel,
@@ -14,6 +13,7 @@ import DropdownMenu, {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@tod-workspace/ui/components/DropdownMenu';
+import IconButton from '@tod-workspace/ui/components/IconButton';
 import {
   COLOR_THEMES,
   useColorTheme,
@@ -32,9 +32,9 @@ const ThemeToggle = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button aria-label='Toggle theme' size='icon' variant='outline'>
+        <IconButton aria-label='Toggle theme' variant='outline'>
           <PaletteIcon />
-        </Button>
+        </IconButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end'>
         <DropdownMenuLabel>Theme</DropdownMenuLabel>
