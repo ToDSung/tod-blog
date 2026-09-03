@@ -1,6 +1,6 @@
 # Spec: `packages/ui` — 共用 UI Library（@tod-workspace/ui）
 
-Status: **Draft v2**（2026-07-14，納入 owner 三項強化需求：主題切換、專業預設主題、測試防線；待 owner 核准後進入實作）
+Status: **Draft v3**（2026-09-03，測試防線改為 vitest + Testing Library，Storybook 只做展示；Phase 2 尚未開始）
 研究依據：[.agents/docs/research-ui-stack.md](../../.agents/docs/research-ui-stack.md)、[.agents/docs/research-ui-tooling.md](../../.agents/docs/research-ui-tooling.md)
 執行計畫：[plan.md](plan.md)
 
@@ -12,7 +12,7 @@ Status: **Draft v2**（2026-07-14，納入 owner 三項強化需求：主題切�
 
 1. **Docusaurus (`packages/articles`) 的內容將遷回 tod-blog** — 因此 `MarkdownRenderer` 不只是展示元件，而是未來內容遷移的基礎設施，必須完整支援中文內容與 articles 現有的 Markdown 慣例（GFM 表格、程式碼區塊、標題錨點）。
 2. 服務對象：**Next.js apps**（tod-blog 與未來新增的 app）。articles (Docusaurus) 不是消費者。
-3. **品質防線是自動化測試，不是人工 review** — owner 明確表示不會深度 review 此專案的程式碼。因此每個元件的正確性必須由機器可跑的測試證明（render、互動、a11y），review 只看驗收證據。這影響所有 Phase 的驗收設計（見 D11/D12）。
+3. **品質防線是自動化測試，不是人工 review** — owner 明確表示不會深度 review 此專案的程式碼。因此每個元件的正確性必須由機器可跑的測試證明（render 與互動），review 只看驗收證據。這影響所有 Phase 的驗收設計（見 D11/D12）。
 
 ## 2. 已定案決策（Decision Log）
 
@@ -28,7 +28,7 @@ Status: **Draft v2**（2026-07-14，納入 owner 三項強化需求：主題切�
 | D8 | **Auth 元件本階段取消**（LoginForm/RegisterForm/OtpForm/AuthCard/PasswordInput、input-otp，及其依賴 react-hook-form/zod/resolvers/TanStack Query 一併延後） | Owner 決定此 phase 不做登入功能；研究結論（research-ui-tooling.md §2/§4）保留，復啟時直接沿用 | 2026-07-13 |
 | D9 | **主題系統**：token 全走 CSS variables 單一機制；多主題以 `[data-theme="<name>"]` 屬性選擇器覆蓋 `:root` token 區塊；dark mode 維持 `.dark` class，與主題**正交**（theme × mode 矩陣，任一主題皆有亮暗兩態）。App 端用 `next-themes`（attribute 模式）掛切換；ui 匯出 `ThemeProvider` 薄包裝 + `ThemeToggle`。Storybook 用 globalTypes toolbar 切換 theme 與 mode | shadcn 官方 theming 模式（cssVariables: true）天然支援多主題覆蓋；next-themes 是 shadcn 官方 dark mode 建議且支援任意 attribute 值、無 FOUC | 2026-07-14 |
 | D10 | **預設主題 = `professional`**：低飽和中性色（graphite/slate 系）、OKLCH、克制的 radius 與陰影、明確 foreground/background 對比。以 tweakcn 的中性系 preset（如 Graphite）為起點微調；另附至少一個對照主題（名稱實作時定）證明切換機制成立 | Owner 指定專業風格為預設；tweakcn 產出即為 :root/.dark 變數塊，與 D9 架構零轉換成本 | 2026-07-14 |
-| D11 | **測試是主要品質防線**（owner 不深度 review）：(a) addon-vitest（browser mode, Playwright）把**每個 story 自動變 render 測試**；(b) 所有互動元件必有 play function 互動測試；(c) a11y 檢查跑在 vitest 內、violation = 測試失敗（不只是 addon 面板警告）；(d) 純邏輯（`cn()`、markdown 元件映射等）用 vitest 單元測試；(e) 統一入口 `pnpm -F @tod-workspace/ui test`。視覺回歸（Chromatic / storybook-addon-vis）**本階段不做**，列未來擴充（§9） | 「story 即測試」讓覆蓋率跟元件數自動同步，agent 不能只寫元件不寫測試；a11y 升級為 fail 條件才有強制力；VRT 需要 baseline 管理與外部服務，對單人專案先緩 | 2026-07-14 |
+| D11 | **測試與展示分家**：測試一律寫成 vitest + Testing Library 的測試檔，Storybook 只做元件展示。(a) 元件測試放 `<元件名>.test.tsx`，與元件同目錄，React Testing Library 跑在 jsdom；(b) 需要真實 CSS 的測試（主題 token 矩陣）另存 `*.browser.test.tsx`，跑在 vitest browser mode（Playwright）；(c) 純邏輯（`cn()`、markdown 元件映射等）用 node 環境的單元測試；(d) story 不寫 play function、不承擔斷言，也不自動變成 render 測試；(e) 不做自動化 a11y 檢查，`@storybook/addon-a11y` 已移除；(f) 統一入口 `pnpm -F @tod-workspace/ui test`，三個 vitest project 一次跑完。視覺回歸（Chromatic / storybook-addon-vis）本階段不做，列未來擴充（§9） | 推翻原本「story 即測試」的作法：play function 會隨元件與互動情境持續膨脹，且把斷言綁死在展示層，改動 story 就會動到測試。分家之後斷言留在 vitest、Storybook 專心當 variant 目錄。a11y 自動檢查由 owner 決定本階段不做 | 2026-09-03 |
 | D12 | **CI 品質閘門**：GitHub Actions workflow（push + PR）跑 eslint / ui typecheck / ui test / storybook build / tod-blog build / leetcode test。CI 是**獨立於產碼 agent 的確定性驗證**，與 plan 的新 context 審查（.R）互補 | 2026 業界對 agent 產碼的共識：驗證者必須與產碼者分離、閘門必須確定性；目前 repo 只有 local hooks，agent 可繞過的面太大 | 2026-07-14 |
 | D13 | **元件檔案佈局與撰寫格式**：一個元件一個 PascalCase 資料夾（`Button/Button.tsx` + `Button.stories.tsx` + `index.ts`）；元件、hook、工具函式一律 arrow function；React API 一條一條具名匯入（禁止 `import * as React` 與 `React.` 前綴）；匯出就地寫，主元件 `export default`、其餘 `export const`，禁止檔尾 `export { … };` 區塊；props 型別用 `interface <元件名>Props` 具名宣告（不寫行內型別、不用 `type`）；props 一律 a-z 排序、事件處理器（`on` 開頭）排在其後，型別宣告、解構參數、JSX 傳值三處同序。細則與 shadcn 後處理步驟見 [.agents/docs/ui-conventions.md](../../.agents/docs/ui-conventions.md) | Owner 指定的可讀性慣例。shadcn CLI 產出的是 kebab-case 平鋪檔 + 宣告式 function，兩者都要後處理，所以規範必須連同後處理步驟一起寫下來，否則 Phase 2 批次會照 CLI 原樣進倉 | 2026-09-02，props 兩條增補於 2026-09-03 |
 
@@ -42,7 +42,6 @@ Status: **Draft v2**（2026-07-14，納入 owner 三項強化需求：主題切�
 | 動畫 | `motion` | ^12.42.2 | import 自 `motion/react`；client-only |
 | 動畫(CSS) | `tw-animate-css` | ^1.4.0 | 取代 tailwindcss-animate |
 | 展示 | `storybook` + `@storybook/react-vite` | 10.5.x | essentials/docs/interactions 已內建 core，勿另裝 |
-| 展示 addon | `@storybook/addon-a11y`、`@storybook/addon-vitest` | 隨 SB 10.5 | **非 core 內建，需另裝**（`npx storybook add`）；a11y 驗收 + 互動測試 |
 | Markdown | `react-markdown` | ^10.1.0 | 用 `MarkdownHooks`（支援 async plugin） |
 | Markdown | `remark-gfm` | ^4.0.1 | 表格/任務清單/刪除線/footnotes |
 | Markdown | `rehype-slug` + `rehype-autolink-headings` | latest | 標題錨點 |
@@ -50,7 +49,8 @@ Status: **Draft v2**（2026-07-14，納入 owner 三項強化需求：主題切�
 | 排版 | `@tailwindcss/typography` | ^0.5.20 | peerDeps 支援 v4；備選：shadcn `typeset`（實作時比較後擇一） |
 | Icons | `lucide-react` | ^1.24.0 | CLI 4.13 nova preset 實際產出（實測回寫 2026-07-14；注意已進 1.x，非舊 0.x 系列） |
 | 主題 | `next-themes` | ^0.4.6 | attribute 模式掛 `data-theme` + class 模式掛 `.dark`；無 FOUC script；client-only |
-| 測試 | `vitest` + `@vitest/browser` + `@vitest/browser-playwright` + `playwright` | vitest ^4.1.10（實測相容：addon-vitest 10.5 peer 宣告 `^3 \|\| ^4`，vitest 4 需新 provider 套件 `@vitest/browser-playwright`，config 用 `provider: playwright()`） | browser mode 跑 story 測試；Windows 上 Playwright 需 `npx playwright install chromium` |
+| 測試 | `vitest` + `jsdom` + `@testing-library/react` + `@testing-library/user-event` + `@testing-library/jest-dom` + `@testing-library/dom` | vitest ^4.1.10、jsdom ^30.0.1、RTL ^16.3.2、user-event ^14.6.7、jest-dom ^7.0.1、dom ^10.4.1（安裝實測 2026-09-03） | 元件測試主力；jest-dom 的 matcher 型別靠 `src/vitest.d.ts` 讓 `tsc` 認得 |
+| 測試（browser） | `@vitest/browser` + `@vitest/browser-playwright` + `playwright` | ^4.1.10 / ^4.1.10 / ^1.61.1 | 只服務 `*.browser.test.tsx`（需要真實 CSS 的斷言）；Windows 上需 `npx playwright install chromium` |
 
 ## 4. 架構
 
@@ -63,13 +63,17 @@ packages/ui/                        # @tod-workspace/ui
 ├── eslint.config.mjs               # extends root（比照 leetcode 模式）
 ├── components.json                 # style: new-york, cssVariables: true, base: radix
 ├── .storybook/                     # main.ts (react-vite), preview.ts (載入 globals.css)
+├── vitest.config.ts                # 三個 project：unit(node) / dom(jsdom) / browser(playwright)
+├── vitest.setup.dom.ts             # jest-dom matchers + jsdom 缺的 API（Pointer Events、matchMedia、ResizeObserver）
+├── vitest.setup.browser.ts         # jest-dom matchers + globals.css
 └── src/
-    ├── components/                 # shadcn primitives，一元件一資料夾（Button/Button.tsx + Button.stories.tsx + index.ts，見 D13）
+    ├── components/                 # shadcn primitives，一元件一資料夾（Button/Button.tsx + Button.test.tsx + Button.stories.tsx + index.ts，見 D13）
     ├── composed/                   # 自組元件（markdown/、auth/、code-block…）
     ├── motion/                     # motion 展示元件（MotionDialog…）
     ├── theme/                      # ThemeProvider（next-themes 薄包裝）、ThemeToggle
     ├── lib/                        # cn() 等 utils
-    └── styles/globals.css          # @import "tailwindcss"; @import "tw-animate-css"; @theme inline; token 層（見下）
+    ├── styles/                     # globals.css（token 層，見下）+ theme-tokens.browser.test.tsx
+    └── vitest.d.ts                  # 只為 tsc 註冊 jest-dom matcher 型別
 ```
 
 Token 層結構（D9/D10，全部集中在 `globals.css`，單一來源）：
@@ -122,17 +126,17 @@ Overlay 類：`dialog` `sheet` `popover` `tooltip` `dropdown-menu` `alert-dialog
 ## 6. 功能需求
 
 - **FR1 Markdown**：給任意 Markdown 字串（含中文），client-side 渲染出 GFM 完整結果；程式碼區塊有 Shiki 高亮（載入中顯示 fallback）與複製按鈕；標題自動 id + 錨點連結；不使用 `dangerouslySetInnerHTML` 注入未消毒 HTML。
-- **FR2 Storybook**：每個匯出元件至少一個 story；CopyButton 與互動元件有 play function 互動測試；a11y addon 無 violations；`storybook build` 可產出靜態站供 owner 驗收。
+- **FR2 Storybook**：Storybook 是元件的展示目錄，讓 owner 快速逐一檢視 variant；有 variant、狀態或組合值得目視比較的元件寫 story，一個 variant 一個 story；story 不含 play function 與測試斷言；`storybook build` 可產出靜態站供 owner 驗收。
 - **FR3 消費驗證**：tod-blog 建立 `/ui-showcase` 頁（或等值展示頁）實際 import 使用，`pnpm -F tod-blog build` 通過即為整合驗證。
 - **FR4 主題切換**：ui 匯出 `ThemeProvider`/`ThemeToggle`；切換 `data-theme` 後所有元件的顏色 token 即時生效（無需 re-render hack）；任一主題皆支援亮/暗；static export 下無 FOUC（next-themes 注入 script）；Storybook toolbar 可獨立切換 theme 與 mode，所有 story 在 theme × mode 矩陣下皆可渲染。
-- **FR5 測試防線**（D11）：`pnpm -F @tod-workspace/ui test` 單一指令跑完全部 story render 測試 + play 互動測試 + a11y 斷言 + 單元測試；任何 a11y violation、互動斷言失敗、story render 錯誤都讓該指令非零退出。
+- **FR5 測試防線**（D11）：`pnpm -F @tod-workspace/ui test` 單一指令跑完 unit、dom、browser 三個 vitest project；任何斷言失敗或 render 錯誤都讓該指令非零退出。
 
 ## 7. 非功能需求
 
 - TS strict（承襲 tsconfig.base.json）、`npx eslint .` 全倉乾淨（含 import/order、consistent-type-imports）。
 - Bundle 紀律：Shiki 一律 fine-grained import；motion 元件集中在 `src/motion/` 讓未使用者可被 tree-shake；subpath exports；每個元件一個 `index.ts` re-export（D13），但不做把所有元件收進單一入口的套件級 barrel。
-- a11y：Radix 語意 + a11y 檢查全綠為驗收線，且以測試失敗強制（D11c）。
-- 測試紀律：**元件沒有測試 = 元件不存在** — 任何新增匯出元件的 commit 必須同時帶 story（自動成為 render 測試）；互動元件必須同 commit 帶 play test。
+- a11y：語意正確性由 Radix primitive 提供，本階段不做自動化 a11y 檢查（D11e）。
+- 測試紀律：**元件沒有測試 = 元件不存在** — 任何新增匯出元件的 commit 必須同時帶 `<元件名>.test.tsx`；story 依展示需要決定，不是驗收條件。
 - Conventional Commits、husky hooks 照舊，不得 `--no-verify`；CI（D12）為最終閘門。
 
 ## 8. 驗收標準（機械可查）
@@ -140,8 +144,8 @@ Overlay 類：`dialog` `sheet` `popover` `tooltip` `dropdown-menu` `alert-dialog
 1. `pnpm install` 後 workspace 解析無誤；`npx eslint .` 乾淨。
 2. `pnpm -F @tod-workspace/ui typecheck`（`tsc --noEmit`）通過（`typecheck` script 於 plan Phase 1.1 建立）。
 3. `pnpm -F @tod-workspace/ui storybook:build` 成功，所有 story 可渲染（`storybook:build` script 於 plan Phase 1.3 建立）。
-4. `pnpm -F @tod-workspace/ui test` 全綠（story render + play tests + a11y 斷言 + 單元測試；`test` script 於 plan Phase 1.4 建立）。
-5. 主題矩陣：預設 `professional` 與對照主題 × 亮/暗 四種組合下，全部 story 渲染無錯；`ThemeToggle` 有 play test 證明切換後 document 上的 `data-theme`/`.dark` 正確變化。
+4. `pnpm -F @tod-workspace/ui test` 全綠（unit + dom + browser 三個 project；`test` script 於 plan Phase 1.4 建立）。
+5. 主題矩陣：`src/styles/theme-tokens.browser.test.tsx` 證明 `professional` 與 `ocean` × 亮/暗四種組合下，primary token 解析出四個不同的 computed color；`ThemeToggle.test.tsx` 證明切換後 document 上的 `data-theme`/`.dark` 正確變化。
 6. `pnpm -F tod-blog build` 成功且 showcase 頁包含 ui 元件輸出與 ThemeToggle。
 7. 既有驗證不退步：leetcode 72 tests、articles build。
 8. CI workflow（D12）在分支上全綠。
@@ -160,6 +164,8 @@ Overlay 類：`dialog` `sheet` `popover` `tooltip` `dropdown-menu` `alert-dialog
 
 - shadcn `init --monorepo`：只用於腳手架全新專案，在既有 bare package 內因 framework 偵測失敗（實測 2026-07-14）→ 改手寫 components.json。
 - `tailwindcss-animate`：已由 `tw-animate-css` 取代（D6），不要再裝。
+- Storybook play function 與 `@storybook/addon-vitest` 的「story 即測試」：斷言改由 vitest + Testing Library 承擔（D11），兩者已從 story 與相依中移除。
+- `@storybook/addon-a11y` 的自動化 a11y 檢查：owner 決定本階段不做，addon 已解除安裝。
 
 ## 10. 未決事項（實作時決定並回寫此文件）
 

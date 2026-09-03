@@ -29,11 +29,6 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
-    a11y: {
-      // Spec D11c: a11y violations must fail the vitest run, not just warn
-      // in the addon panel.
-      test: 'error',
-    },
   },
   globalTypes: {
     theme: {
