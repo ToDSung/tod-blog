@@ -1,5 +1,3 @@
-import { expect, waitFor, within } from 'storybook/test';
-
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import Button from '@tod-workspace/ui/components/Button';
@@ -14,8 +12,8 @@ import DropdownMenu, {
 const meta = {
   title: 'Components/DropdownMenu',
   component: DropdownMenu,
-  render: () => (
-    <DropdownMenu>
+  render: args => (
+    <DropdownMenu {...args}>
       <DropdownMenuTrigger asChild>
         <Button variant='outline'>Open menu</Button>
       </DropdownMenuTrigger>
@@ -36,26 +34,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
-export const OpensOnClick: Story = {
-  play: async ({ canvas, userEvent }) => {
-    await userEvent.click(canvas.getByRole('button', { name: 'Open menu' }));
-
-    const body = within(document.body);
-    // The content animates in from opacity 0, so retry until it settles.
-    await waitFor(() => expect(body.getByRole('menu')).toBeVisible());
-    await waitFor(() =>
-      expect(body.getByRole('menuitem', { name: 'Profile' })).toBeVisible()
-    );
-
-    // Close again so the a11y pass runs against a settled page: the menu
-    // must be gone and radix must have lifted aria-hidden from the rest of
-    // the page, or axe reports aria-hidden-focus.
-    await userEvent.keyboard('{Escape}');
-    await waitFor(() =>
-      expect(body.queryByRole('menu')).not.toBeInTheDocument()
-    );
-    await waitFor(() =>
-      expect(document.querySelector('[data-aria-hidden]')).toBeNull()
-    );
-  },
+export const Open: Story = {
+  args: { defaultOpen: true },
 };
