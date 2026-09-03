@@ -1,4 +1,6 @@
 import Button from '@tod-workspace/ui/components/Button';
+import IconButton from '@tod-workspace/ui/components/IconButton';
+import { FaPalette, FaPencilAlt, FaTrash } from 'react-icons/fa';
 
 export const metadata = {
   title: 'UI Showcase',
@@ -18,6 +20,25 @@ const UiShowcasePage = () => {
           <Button variant='ghost'>Ghost</Button>
           <Button variant='destructive'>Destructive</Button>
           <Button variant='link'>Link</Button>
+        </div>
+        <div className='flex flex-wrap items-center gap-4'>
+          <Button size='sm'>Small</Button>
+          <Button size='md'>Medium</Button>
+          <Button size='lg'>Large</Button>
+        </div>
+      </section>
+      <section className='flex flex-col gap-4'>
+        <h2 className='text-xl font-semibold'>IconButton</h2>
+        <div className='flex flex-wrap items-center gap-4'>
+          <IconButton aria-label='Change theme'>
+            <FaPalette />
+          </IconButton>
+          <IconButton aria-label='Edit' variant='outline'>
+            <FaPencilAlt />
+          </IconButton>
+          <IconButton aria-label='Delete' variant='destructive'>
+            <FaTrash />
+          </IconButton>
         </div>
       </section>
     </div>
