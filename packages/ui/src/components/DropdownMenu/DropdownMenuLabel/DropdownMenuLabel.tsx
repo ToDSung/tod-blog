@@ -6,7 +6,7 @@ import type { ComponentProps } from 'react';
 
 import { cn } from '@tod-workspace/ui/lib/utils';
 
-interface DropdownMenuLabelProps extends ComponentProps<
+export interface DropdownMenuLabelProps extends ComponentProps<
   typeof DropdownMenuPrimitive.Label
 > {
   inset?: boolean;

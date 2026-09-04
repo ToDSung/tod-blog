@@ -18,7 +18,7 @@ export const iconButtonVariants = cva('p-0', {
   },
 });
 
-interface IconButtonProps extends ButtonProps {
+export interface IconButtonProps extends ButtonProps {
   'aria-label': string;
 }
 

@@ -15,7 +15,7 @@ export { default } from './Button';
 export * from './Button';
 ```
 
-   家族主元件是唯一例外：它的 `index.ts` 在這兩行後面，把子元件的 default 逐一具名轉出（`export { default as DropdownMenuItem } from './DropdownMenuItem';`），依元件名 a-z 排序。複合元件本來就整組使用，這個 barrel 不影響 tree-shaking；需要單獨拿一個子元件時也可以走它自己的 subpath（`@tod-workspace/ui/components/DropdownMenu/DropdownMenuItem`），`package.json` 的 `./components/*` 樣式已涵蓋巢狀路徑。
+   家族主元件是唯一例外：它的 `index.ts` 在這兩行後面，先把子元件的 default 逐一具名轉出（`export { default as DropdownMenuItem } from './DropdownMenuItem';`），再逐一轉出它們的 props 型別（`export type { DropdownMenuItemProps } from './DropdownMenuItem';`），兩段各自依元件名 a-z 排序。複合元件本來就整組使用，這個 barrel 不影響 tree-shaking；需要單獨拿一個子元件時也可以走它自己的 subpath（`@tod-workspace/ui/components/DropdownMenu/DropdownMenuItem`），`package.json` 的 `./components/*` 樣式已涵蓋巢狀路徑。
 
 4. 禁止套件層級的單一 barrel（spec §7）：每個元件各自是一個 subpath，tree-shaking 才不會被破壞。
 5. 跨資料夾匯入走套件名 subpath，寫到元件名即可：`import Button from '@tod-workspace/ui/components/Button';`。`package.json` 的 exports 已對應這個結構，不必再接一次檔名。
@@ -37,7 +37,7 @@ interface ButtonProps
 }
 ```
 
-   純轉發、沒有自己欄位的子元件照樣寫，只 `extends` 不帶成員的空介面就是它的完整宣告。介面預設不匯出；要被別的元件 `extends` 時就地 `export`（`ButtonProps` 被 `IconButton` 沿用即是此例）。
+   純轉發、沒有自己欄位的子元件照樣寫，只 `extends` 不帶成員的空介面就是它的完整宣告。props 介面一律就地 `export`，消費端包裝或轉發時才有型別可以 `extends`（`IconButton` 就是 `extends ButtonProps`）。
 6. props 一律 a-z 排序，事件處理器（`on` 開頭）排在其後、彼此再 a-z；`key` 與 `ref` 排最前。型別宣告、解構參數、JSX 傳值三處都照同一個順序，`data-*` 與 `aria-*` 一起參與排序，不另外提前。
 
 ## 三、shadcn CLI 的後處理步驟
