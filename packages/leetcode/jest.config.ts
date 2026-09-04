@@ -1,4 +1,4 @@
-/* eslint-disable */
+/* eslint-disable @typescript-eslint/no-require-imports -- jest.config.base.js is CommonJS */
 const baseConfig = require('../../jest.config.base.js');
 
 export default {
