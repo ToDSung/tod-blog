@@ -13,18 +13,14 @@ import {
 } from './constants';
 import { ColorThemeContext } from './useColorTheme';
 
-// Runs before hydration so a static export applies a stored non-default theme
-// instead of flashing the default one. It interpolates only the constants
-// above, so no user input can reach the injected string.
+// Runs before hydration so a static export never flashes the default theme;
+// only the constants above are interpolated, so nothing injectable gets in.
 const BOOTSTRAP_SCRIPT = `try{var t=localStorage.getItem('${COLOR_THEME_STORAGE_KEY}');if(t&&t!=='${DEFAULT_COLOR_THEME}'&&${JSON.stringify([...COLOR_THEMES])}.indexOf(t)>-1)document.documentElement.setAttribute('data-theme',t)}catch(e){}`;
 
 const isColorTheme = (value: string | null): value is ColorTheme =>
   value !== null && (COLOR_THEMES as readonly string[]).includes(value);
 
-// The applied theme lives outside React — in storage and on the html element —
-// so it is read as an external store rather than copied into state by an
-// effect. Only this tab's writes notify; `storage` events are not subscribed
-// to, because another tab's write does not restyle this document.
+// Another tab's write does not restyle this document, so no storage listener.
 const storeListeners = new Set<() => void>();
 
 const subscribeToAppliedTheme = (onStoreChange: () => void) => {
@@ -42,24 +38,19 @@ const readAppliedTheme = (): ColorTheme => {
       return stored;
     }
   } catch {
-    // Storage can be blocked (private mode); the attribute still records what
-    // was applied in this session.
+    // Storage can be blocked (private mode); the attribute is the fallback.
   }
 
   const applied = document.documentElement.getAttribute('data-theme');
   return isColorTheme(applied) ? applied : DEFAULT_COLOR_THEME;
 };
 
-// The server has neither storage nor a document, so it renders the default and
-// leaves BOOTSTRAP_SCRIPT to correct the DOM before hydration.
 const readDefaultTheme = (): ColorTheme => DEFAULT_COLOR_THEME;
 
 export interface ThemeProviderProps {
   children: ReactNode;
 }
 
-// next-themes owns light/dark through the `.dark` class; the color theme is an
-// orthogonal `data-theme` attribute, so it rides on its own context.
 const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const colorTheme = useSyncExternalStore(
     subscribeToAppliedTheme,
@@ -68,8 +59,7 @@ const ThemeProvider = ({ children }: ThemeProviderProps) => {
   );
 
   const setColorTheme = useCallback((theme: ColorTheme) => {
-    // The default theme is the bare `:root` token block, so selecting it means
-    // removing the attribute rather than setting a value.
+    // The default theme is the bare `:root` block, so it removes the attribute.
     if (theme === DEFAULT_COLOR_THEME) {
       document.documentElement.removeAttribute('data-theme');
     } else {

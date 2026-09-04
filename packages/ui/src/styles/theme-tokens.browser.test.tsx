@@ -21,8 +21,7 @@ describe('theme tokens', () => {
   it('resolves a distinct primary color in every theme x mode combination', () => {
     render(<Button>Theme matrix</Button>);
     const button = screen.getByRole('button', { name: 'Theme matrix' });
-    // transition-all would make an immediate computed-style read return the
-    // transition start value instead of the target color.
+    // An immediate computed-style read would return the transition start value.
     button.style.transition = 'none';
 
     const seen = new Set<string>();
