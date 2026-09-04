@@ -1,7 +1,7 @@
 'use client';
 
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useSyncExternalStore } from 'react';
 
 import type { ColorTheme } from './constants';
 import type { ReactNode } from 'react';
@@ -20,31 +20,45 @@ const BOOTSTRAP_SCRIPT = `try{var t=localStorage.getItem('${COLOR_THEME_STORAGE_
 const isColorTheme = (value: string | null): value is ColorTheme =>
   value !== null && (COLOR_THEMES as readonly string[]).includes(value);
 
+// Another tab's write does not restyle this document, so no storage listener.
+const storeListeners = new Set<() => void>();
+
+const subscribeToAppliedTheme = (onStoreChange: () => void) => {
+  storeListeners.add(onStoreChange);
+
+  return () => {
+    storeListeners.delete(onStoreChange);
+  };
+};
+
+const readAppliedTheme = (): ColorTheme => {
+  try {
+    const stored = localStorage.getItem(COLOR_THEME_STORAGE_KEY);
+    if (isColorTheme(stored)) {
+      return stored;
+    }
+  } catch {
+    // Storage can be blocked (private mode); the attribute is the fallback.
+  }
+
+  const applied = document.documentElement.getAttribute('data-theme');
+  return isColorTheme(applied) ? applied : DEFAULT_COLOR_THEME;
+};
+
+const readDefaultTheme = (): ColorTheme => DEFAULT_COLOR_THEME;
+
 export interface ThemeProviderProps {
   children: ReactNode;
 }
 
 const ThemeProvider = ({ children }: ThemeProviderProps) => {
-  const [colorTheme, setColorThemeState] =
-    useState<ColorTheme>(DEFAULT_COLOR_THEME);
-
-  // Reading storage during render would diverge from the server-rendered HTML,
-  // so the stored theme only lands after mount; BOOTSTRAP_SCRIPT keeps the DOM
-  // correct until then.
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem(COLOR_THEME_STORAGE_KEY);
-      if (isColorTheme(stored)) {
-        setColorThemeState(stored);
-      }
-    } catch {
-      // Storage can be blocked (private mode); the default theme still renders.
-    }
-  }, []);
+  const colorTheme = useSyncExternalStore(
+    subscribeToAppliedTheme,
+    readAppliedTheme,
+    readDefaultTheme
+  );
 
   const setColorTheme = useCallback((theme: ColorTheme) => {
-    setColorThemeState(theme);
-
     // The default theme is the bare `:root` block, so it removes the attribute.
     if (theme === DEFAULT_COLOR_THEME) {
       document.documentElement.removeAttribute('data-theme');
@@ -57,6 +71,8 @@ const ThemeProvider = ({ children }: ThemeProviderProps) => {
     } catch {
       // A lost preference is not worth throwing over.
     }
+
+    storeListeners.forEach(notify => notify());
   }, []);
 
   const colorThemeValue = useMemo(
