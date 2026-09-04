@@ -45,3 +45,9 @@ Format and pruning rules are in [maintenance.md](maintenance.md) §3–§4. New 
 - Fix: 把 react 與 react-hooks 的 recommended 併進 root `eslint.config.mjs` 的 `packages/ui/src/**` 區塊，套件層設定只留 parser 接線；用一支故意寫壞的探針檔（條件式 `useState` + 空依賴陣列）驗證 `npx eslint <probe>` 退出碼為 1、訊息含 `react-hooks/rules-of-hooks` 與 `react-hooks/exhaustive-deps`，確認會咬之後刪掉探針。開啟後唯一的既有違規是 `ThemeProvider` 在 effect 裡同步 setState，改用 `useSyncExternalStore` 讀 localStorage/DOM 屬性後 25 個測試全綠。
 - Codified?: written into .agents/docs/ui-conventions.md §四。往後在套件層 eslint 設定加規則前，一律先用 `npx eslint --print-config <該套件的一個檔案>` 從 repo 根目錄確認解析得到。
 
+## 2026-09-04 照著審查者的推理改，加了一段沒有東西能證明的快取
+- Context: F1/F2 的審查回報一條 high finding —— `useSyncExternalStore` 的 snapshot 函式每次 render 都會重跑，所以別的分頁寫了 localStorage 之後，任何一次無關的 re-render 都會把這一頁的 `colorTheme` 掀成新值，但樣式不動。
+- Mistake: 我直接照著改，加了模組層快取加「最後一個訂閱者卸載才清掉」的生命週期，共八行。寫回歸測試要證明它時才發現：拿掉快取，測試照樣過。再用相反的斷言驗一次，畫面顯示的是 `professional 1` 而不是 `ocean 1`，連 `localStorage.getItem` 的呼叫次數都沒增加 —— React 19 在無關的 re-render 上根本沒有重讀 snapshot。那個失敗情境不存在，我為它加的防禦是純粹的過早抽象。
+- Fix: 把快取與那支證明不了東西的測試一起刪掉，註解改成只講程式碼真的保證的事（不訂閱 `storage` 事件的理由）。審查者的 finding 若是「推理出來的失敗情境」而非實跑證據，先寫一支會紅的測試證明它存在，證不出來就不要改 —— 兩種版本行為相同時，少的那個版本才是對的。
+- Codified?: no（判斷原則，暫不升級成規則）。
+

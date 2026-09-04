@@ -45,7 +45,7 @@ describe('ThemeProvider', () => {
     expect(root).not.toHaveAttribute('data-theme');
   });
 
-  it('restores a persisted color theme after mount', async () => {
+  it('restores a persisted color theme', async () => {
     localStorage.setItem(COLOR_THEME_STORAGE_KEY, 'ocean');
 
     renderProbe();
