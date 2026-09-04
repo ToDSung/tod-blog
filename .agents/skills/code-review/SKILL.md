@@ -54,6 +54,7 @@ Each smell reads *what it is* → *how to fix*; match it against the diff:
 - **Message Chains** — long `a.b().c().d()` navigation the caller shouldn't depend on. → hide the walk behind one method on the first object.
 - **Middle Man** — a class or function that mostly just delegates onward, including a hook or helper that exists only to be called once by its owner. → cut it, call the real target direct.
 - **Refused Bequest** — a subclass or implementer that ignores or overrides most of what it inherits. → drop the inheritance, use composition.
+- **Redundant Comment** — a comment that restates the code or an official API's normal behaviour, a section-header comment, commented-out code, or an `eslint-disable` / `@ts-expect-error` without a reason. Apply the deletion test to every comment in the diff: would a reader be misled without it? → delete it, or cut it to one line that states the why (rule: `.agents/docs/code-comments.md`).
 
 ### 4. Spawn both sub-agents in parallel
 
