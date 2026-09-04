@@ -1,7 +1,6 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { FlatCompat } from '@eslint/eslintrc';
 import tseslint from 'typescript-eslint';
 
 import rootConfig from '../../eslint.config.mjs';
@@ -9,17 +8,10 @@ import rootConfig from '../../eslint.config.mjs';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
+// Rules live in the root eslint.config.mjs — flat config only reads the cwd's
+// file, and lint always runs from the repo root. This file is parser wiring.
 export default [
   ...rootConfig,
-  ...compat.extends(
-    'plugin:react/recommended',
-    'plugin:react/jsx-runtime',
-    'plugin:react-hooks/recommended'
-  ),
   {
     // TypeScript source files (included in tsconfig.json)
     files: ['src/**/*.ts', 'src/**/*.tsx'],
