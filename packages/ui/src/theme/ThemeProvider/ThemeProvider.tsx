@@ -1,109 +1,73 @@
 'use client';
 
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
-import {
-  createContext,
-  use,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import type { ColorTheme } from './constants';
 import type { ReactNode } from 'react';
 
-export const COLOR_THEMES = ['professional', 'ocean'] as const;
+import {
+  COLOR_THEMES,
+  COLOR_THEME_STORAGE_KEY,
+  DEFAULT_COLOR_THEME,
+} from './constants';
+import { ColorThemeContext } from './useColorTheme';
 
-export type ColorTheme = (typeof COLOR_THEMES)[number];
-
-export const DEFAULT_COLOR_THEME: ColorTheme = 'professional';
-
-const STORAGE_KEY = 'tod-ui-color-theme';
-
-interface ColorThemeContextValue {
-  colorTheme: ColorTheme;
-  setColorTheme: (theme: ColorTheme) => void;
-}
-
-const ColorThemeContext = createContext<ColorThemeContextValue | null>(null);
-
-export const useColorTheme = (): ColorThemeContextValue => {
-  const context = use(ColorThemeContext);
-  if (!context) {
-    throw new Error('useColorTheme must be used within <ThemeProvider>');
-  }
-  return context;
-};
+// Runs before hydration so a static export applies a stored non-default theme
+// instead of flashing the default one. It interpolates only the constants
+// above, so no user input can reach the injected string.
+const BOOTSTRAP_SCRIPT = `try{var t=localStorage.getItem('${COLOR_THEME_STORAGE_KEY}');if(t&&t!=='${DEFAULT_COLOR_THEME}'&&${JSON.stringify([...COLOR_THEMES])}.indexOf(t)>-1)document.documentElement.setAttribute('data-theme',t)}catch(e){}`;
 
 const isColorTheme = (value: string | null): value is ColorTheme =>
   value !== null && (COLOR_THEMES as readonly string[]).includes(value);
 
-const applyColorTheme = (theme: ColorTheme) => {
-  if (theme === DEFAULT_COLOR_THEME) {
-    document.documentElement.removeAttribute('data-theme');
-  } else {
-    document.documentElement.setAttribute('data-theme', theme);
-  }
-};
-
-// Self-authored constant (no user input reaches it): restores a persisted
-// non-default theme before hydration so static export cannot flash the
-// default theme (FR4).
-const bootstrapScript = `try{var t=localStorage.getItem('${STORAGE_KEY}');if(t&&t!=='${DEFAULT_COLOR_THEME}'&&${JSON.stringify([...COLOR_THEMES])}.indexOf(t)>-1)document.documentElement.setAttribute('data-theme',t)}catch(e){}`;
-
-interface ColorThemeProviderProps {
+export interface ThemeProviderProps {
   children: ReactNode;
 }
 
-const ColorThemeProvider = ({ children }: ColorThemeProviderProps) => {
+// next-themes owns light/dark through the `.dark` class; the color theme is an
+// orthogonal `data-theme` attribute, so it rides on its own context.
+const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [colorTheme, setColorThemeState] =
     useState<ColorTheme>(DEFAULT_COLOR_THEME);
 
+  // Reading storage during render would diverge from the server-rendered HTML,
+  // so the stored theme only lands after mount; BOOTSTRAP_SCRIPT keeps the DOM
+  // correct until then.
   useEffect(() => {
-    let stored: string | null = null;
     try {
-      stored = localStorage.getItem(STORAGE_KEY);
+      const stored = localStorage.getItem(COLOR_THEME_STORAGE_KEY);
+      if (isColorTheme(stored)) {
+        setColorThemeState(stored);
+      }
     } catch {
-      /* storage unavailable */
-    }
-    if (isColorTheme(stored)) {
-      setColorThemeState(stored);
+      // Storage can be blocked (private mode); the default theme still renders.
     }
   }, []);
 
   const setColorTheme = useCallback((theme: ColorTheme) => {
     setColorThemeState(theme);
-    applyColorTheme(theme);
+
+    // The default theme is the bare `:root` token block, so selecting it means
+    // removing the attribute rather than setting a value.
+    if (theme === DEFAULT_COLOR_THEME) {
+      document.documentElement.removeAttribute('data-theme');
+    } else {
+      document.documentElement.setAttribute('data-theme', theme);
+    }
+
     try {
-      localStorage.setItem(STORAGE_KEY, theme);
+      localStorage.setItem(COLOR_THEME_STORAGE_KEY, theme);
     } catch {
-      /* storage unavailable */
+      // A lost preference is not worth throwing over.
     }
   }, []);
 
-  const value = useMemo(
+  const colorThemeValue = useMemo(
     () => ({ colorTheme, setColorTheme }),
     [colorTheme, setColorTheme]
   );
 
-  return (
-    <ColorThemeContext value={value}>
-      <script dangerouslySetInnerHTML={{ __html: bootstrapScript }} />
-      {children}
-    </ColorThemeContext>
-  );
-};
-
-interface ThemeProviderProps {
-  children: ReactNode;
-}
-
-/**
- * App-side entry point for the theme system (spec D9): next-themes owns the
- * light/dark mode (`.dark` class, system-aware, FOUC-free), while the color
- * theme is an orthogonal `data-theme` attribute managed by ColorThemeProvider.
- */
-const ThemeProvider = ({ children }: ThemeProviderProps) => {
   return (
     <NextThemesProvider
       attribute='class'
@@ -111,7 +75,10 @@ const ThemeProvider = ({ children }: ThemeProviderProps) => {
       disableTransitionOnChange
       enableSystem
     >
-      <ColorThemeProvider>{children}</ColorThemeProvider>
+      <ColorThemeContext value={colorThemeValue}>
+        <script dangerouslySetInnerHTML={{ __html: BOOTSTRAP_SCRIPT }} />
+        {children}
+      </ColorThemeContext>
     </NextThemesProvider>
   );
 };
