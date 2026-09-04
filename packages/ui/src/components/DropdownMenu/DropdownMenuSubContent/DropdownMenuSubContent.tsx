@@ -6,7 +6,7 @@ import type { ComponentProps } from 'react';
 
 import { cn } from '@tod-workspace/ui/lib/utils';
 
-interface DropdownMenuSubContentProps extends ComponentProps<
+export interface DropdownMenuSubContentProps extends ComponentProps<
   typeof DropdownMenuPrimitive.SubContent
 > {}
 

@@ -7,7 +7,7 @@ import type { ComponentProps } from 'react';
 
 import { cn } from '@tod-workspace/ui/lib/utils';
 
-interface DropdownMenuCheckboxItemProps extends ComponentProps<
+export interface DropdownMenuCheckboxItemProps extends ComponentProps<
   typeof DropdownMenuPrimitive.CheckboxItem
 > {
   inset?: boolean;
