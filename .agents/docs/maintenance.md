@@ -6,7 +6,7 @@ Covers: AGENTS.md, CLAUDE.md, `.agents/docs/*`, `.agents/skills/*`. Purpose: let
 
 **May edit directly (just report it after editing):**
 - Appending a lesson to [lessons.md](lessons.md) (format per §3).
-- Correcting an "environment fact" (model name, tool parameter, path) that measurement has disproven — must include the verification method and date at the point of change.
+- Correcting an "environment fact" (model name, tool parameter, path) that measurement has disproven — must include the verification method and the date you measured it, at the point of change. That date is the provenance of a measurement, not a record of when a decision was made; §3 still forbids the latter.
 - Fixing typos, broken links, stale filename references.
 
 **Ask the user first:**
@@ -36,6 +36,8 @@ After hitting a snag (wasted >10 minutes, or the same kind of mistake happens a 
 ```
 
 Criterion for "Codified?": if the same kind of snag happens a second time → propose upgrading it into a formal rule in AGENTS.md or the relevant docs file (the upgrade itself follows the permission tiers in §1).
+
+When you do upgrade one, write only the rule. Do not annotate it with where it came from, who approved it, or the date it was promoted — that provenance belongs to the lessons.md entry and to git, and inside a governance file it just makes the reader work out which half of the sentence is the rule. Same for any other rule you add or change here: state it in the present tense and let git carry the history.
 
 ## 4. Pruning cycle
 
