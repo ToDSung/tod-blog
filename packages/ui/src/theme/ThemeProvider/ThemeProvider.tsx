@@ -1,7 +1,7 @@
 'use client';
 
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useSyncExternalStore } from 'react';
 
 import type { ColorTheme } from './constants';
 import type { ReactNode } from 'react';
@@ -21,6 +21,39 @@ const BOOTSTRAP_SCRIPT = `try{var t=localStorage.getItem('${COLOR_THEME_STORAGE_
 const isColorTheme = (value: string | null): value is ColorTheme =>
   value !== null && (COLOR_THEMES as readonly string[]).includes(value);
 
+// The applied theme lives outside React — in storage and on the html element —
+// so it is read as an external store rather than copied into state by an
+// effect. Only this tab's writes notify; `storage` events are not subscribed
+// to, because another tab's write does not restyle this document.
+const storeListeners = new Set<() => void>();
+
+const subscribeToAppliedTheme = (onStoreChange: () => void) => {
+  storeListeners.add(onStoreChange);
+
+  return () => {
+    storeListeners.delete(onStoreChange);
+  };
+};
+
+const readAppliedTheme = (): ColorTheme => {
+  try {
+    const stored = localStorage.getItem(COLOR_THEME_STORAGE_KEY);
+    if (isColorTheme(stored)) {
+      return stored;
+    }
+  } catch {
+    // Storage can be blocked (private mode); the attribute still records what
+    // was applied in this session.
+  }
+
+  const applied = document.documentElement.getAttribute('data-theme');
+  return isColorTheme(applied) ? applied : DEFAULT_COLOR_THEME;
+};
+
+// The server has neither storage nor a document, so it renders the default and
+// leaves BOOTSTRAP_SCRIPT to correct the DOM before hydration.
+const readDefaultTheme = (): ColorTheme => DEFAULT_COLOR_THEME;
+
 export interface ThemeProviderProps {
   children: ReactNode;
 }
@@ -28,26 +61,13 @@ export interface ThemeProviderProps {
 // next-themes owns light/dark through the `.dark` class; the color theme is an
 // orthogonal `data-theme` attribute, so it rides on its own context.
 const ThemeProvider = ({ children }: ThemeProviderProps) => {
-  const [colorTheme, setColorThemeState] =
-    useState<ColorTheme>(DEFAULT_COLOR_THEME);
-
-  // Reading storage during render would diverge from the server-rendered HTML,
-  // so the stored theme only lands after mount; BOOTSTRAP_SCRIPT keeps the DOM
-  // correct until then.
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem(COLOR_THEME_STORAGE_KEY);
-      if (isColorTheme(stored)) {
-        setColorThemeState(stored);
-      }
-    } catch {
-      // Storage can be blocked (private mode); the default theme still renders.
-    }
-  }, []);
+  const colorTheme = useSyncExternalStore(
+    subscribeToAppliedTheme,
+    readAppliedTheme,
+    readDefaultTheme
+  );
 
   const setColorTheme = useCallback((theme: ColorTheme) => {
-    setColorThemeState(theme);
-
     // The default theme is the bare `:root` token block, so selecting it means
     // removing the attribute rather than setting a value.
     if (theme === DEFAULT_COLOR_THEME) {
@@ -61,6 +81,8 @@ const ThemeProvider = ({ children }: ThemeProviderProps) => {
     } catch {
       // A lost preference is not worth throwing over.
     }
+
+    storeListeners.forEach(notify => notify());
   }, []);
 
   const colorThemeValue = useMemo(
