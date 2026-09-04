@@ -47,7 +47,7 @@
 
 ## 五、範例：`ThemeProvider.tsx` 的六段註解怎麼判
 
-以 [ThemeProvider.tsx](../../packages/ui/src/theme/ThemeProvider/ThemeProvider.tsx) 目前的 16 行註解為例，逐段套第一、二節：
+以 [ThemeProvider.tsx](../../packages/ui/src/theme/ThemeProvider/ThemeProvider.tsx) 清理前的 16 行註解為例，逐段套第一、二節：
 
 | 註解（摘要） | 判定 | 理由 |
 | --- | --- | --- |
@@ -59,7 +59,7 @@
 | `setColorTheme` 裡「預設主題等於移除屬性」 | 留，一行 | 取捨看不出來（第一節 2） |
 | 第二個 `catch` 裡「偏好遺失不值得丟例外」 | 留，一行 | 空 `catch` 要有理由（第一節 3） |
 
-結果是 16 行變 6 行。這份判定只是範例，不是待辦：既有註解在下一次改到該檔時順手清，不另開清理任務。
+結果是 16 行變 6 行，該檔已照這份判定清完。`packages/ui` 其餘檔案也已逐則套過第四節，留下的都落在第一節五種情況；`packages/leetcode` 的既有註解不另開清理任務，改到該檔時順手清。
 
 ## 六、強制力現況
 
@@ -75,4 +75,4 @@ lint 防線設在 root [eslint.config.mjs](../../eslint.config.mjs)，全 repo �
 grep -rhE --include='*.ts' --include='*.tsx' '^\s*(//|/\*|\*)' packages/ui/src | wc -l
 ```
 
-`packages/ui/src` 註解 22 行、程式碼 1387 行；`packages/leetcode/src` 註解 305 行、程式碼 2386 行。這個數字只是趨勢指標，不是門檻：一則必要的 workaround 註解比十則重述都有價值。
+`packages/ui/src` 註解 11 行、程式碼 1387 行；`packages/leetcode/src` 註解 305 行、程式碼 2386 行。這個數字只是趨勢指標，不是門檻：一則必要的 workaround 註解比十則重述都有價值。
