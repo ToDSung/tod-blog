@@ -9,7 +9,7 @@
 - 委派 prompt 必含目標動機、機械可查驗收、報告格式（模板照抄）。
 - 每個 Phase 結束跑一次**新 context 審查**（model-dispatch §5）：審查者只拿驗收標準與產出位置。
 - 驗證底線：`npx eslint .` 乾淨、相關 build/測試通過、Storybook story 可渲染；Phase 1.4 之後一律加 `pnpm -F @tod-workspace/ui test` 全綠。
-- **測試紀律（spec D11，owner 不深度 review）**：新增匯出元件的 commit 必同時帶 `<元件名>.test.tsx`（vitest + Testing Library）；story 只做 variant 展示，不寫 play function。委派 prompt 必須把「測試通過」寫進驗收，不接受「元件完成、測試待補」的回報。
+- **測試紀律（spec D11）**：新增匯出元件的 commit 必同時帶 `<元件名>.test.tsx`（vitest + Testing Library）；story 只做 variant 展示，不寫 play function。委派 prompt 必須把「測試通過」寫進驗收，不接受「元件完成、測試待補」的回報。
 - 產碼 skills 已安裝供所有 agent 使用（2026-07-14）：`vercel-react-best-practices`、`vercel-composition-patterns`（React/Next 模式）、`shadcn`（官方，讀 components.json 注入專案 context）。委派實作任務時在 prompt 中提示 agent 觸發對應 skill。
 - 每個 Phase 的 .R 審查**必附迴歸快檢**：`pnpm -F @tod-workspace/leetcode test` 與 `pnpm -F articles build` 不退步 — 不要等到 Phase 6 才發現根層設定（tsconfig/eslint）壞了其他套件。
 - commit 用 Conventional Commits，每個 Phase 至少一個 commit；不可 `--no-verify`。
@@ -59,9 +59,9 @@
 | 3.5 | 遷移煙霧測試：取 `packages/articles/blog/` 一篇實際中文文章原文餵入 MarkdownRenderer story | sonnet | 渲染無錯、錨點/表格/程式碼正確（為未來 Docusaurus 遷移鋪路） |
 | 3.R | 審查（sonnet，新 context）+ 實際 `pnpm -F tod-blog build` | 逐條附證據 |
 
-## Phase 4 — 已取消（原 Auth 元件，spec D8，2026-07-13）
+## Phase 4 — 已取消（原 Auth 元件，spec D8）
 
-Owner 決定本階段不做登入功能。原任務內容（zod schemas、PasswordInput、Login/Register/Otp 表單、AuthCard）與 RHF+zod+useMutation 模式保留在 research-ui-tooling.md §2/§4，復啟時以該研究 + spec §9 的版本標註直接開新 Phase，毋須重新研究。編號保留不重排，避免既有引用失效。
+本階段不做登入功能。原任務內容（zod schemas、PasswordInput、Login/Register/Otp 表單、AuthCard）與 RHF+zod+useMutation 模式保留在 research-ui-tooling.md §2/§4，復啟時以該研究 + spec §9 的版本標註直接開新 Phase，毋須重新研究。編號保留不重排，避免既有引用失效。
 
 ## Phase 5 — Motion 展示元件（難度：高）
 
