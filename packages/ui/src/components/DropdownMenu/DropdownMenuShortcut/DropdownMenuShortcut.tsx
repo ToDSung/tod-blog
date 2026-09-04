@@ -4,7 +4,7 @@ import type { ComponentProps } from 'react';
 
 import { cn } from '@tod-workspace/ui/lib/utils';
 
-interface DropdownMenuShortcutProps extends ComponentProps<'span'> {}
+export interface DropdownMenuShortcutProps extends ComponentProps<'span'> {}
 
 const DropdownMenuShortcut = ({
   className,

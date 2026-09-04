@@ -7,7 +7,7 @@ import type { ComponentProps } from 'react';
 
 import { cn } from '@tod-workspace/ui/lib/utils';
 
-interface DropdownMenuSubTriggerProps extends ComponentProps<
+export interface DropdownMenuSubTriggerProps extends ComponentProps<
   typeof DropdownMenuPrimitive.SubTrigger
 > {
   inset?: boolean;
