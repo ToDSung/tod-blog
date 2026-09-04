@@ -2,6 +2,7 @@ import eslint from '@eslint/js';
 import importPlugin from 'eslint-plugin-import';
 import prettier from 'eslint-plugin-prettier/recommended';
 import reactPlugin from 'eslint-plugin-react';
+import reactHooks from 'eslint-plugin-react-hooks';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
@@ -112,16 +113,21 @@ export default tseslint.config(
     ...tseslint.configs.disableTypeChecked,
   },
   {
-    // packages/ui is written with arrow functions only (spec D13,
-    // .agents/docs/ui-conventions.md). These rules must live in the root
-    // config: `npx eslint .`, lint-staged and CI all run from the repo root,
-    // and flat config only loads the config file at the cwd, so a rule in
-    // packages/ui/eslint.config.mjs would never run for them.
+    // Everything that gates packages/ui: spec D13's arrow-function and export
+    // conventions on top of react and react-hooks. These must live in the root
+    // config, because flat config only loads the config file at the cwd and
+    // `npx eslint .`, lint-staged and CI all run from the repo root.
     files: ['packages/ui/src/**/*.ts', 'packages/ui/src/**/*.tsx'],
     plugins: {
       react: reactPlugin,
+      'react-hooks': reactHooks,
     },
     rules: {
+      ...reactPlugin.configs.flat.recommended.rules,
+      ...reactPlugin.configs.flat['jsx-runtime'].rules,
+      ...reactHooks.configs['recommended-latest'].rules,
+      // The preset ships this one as a warning, and nothing fails on warnings.
+      'react-hooks/exhaustive-deps': 'error',
       'react/function-component-definition': [
         'error',
         {

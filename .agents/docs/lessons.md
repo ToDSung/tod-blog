@@ -38,3 +38,10 @@ Format and pruning rules are in [maintenance.md](maintenance.md) §3–§4. New 
 - Mistake: `useColorThemeState` 與四個 util 都只有一個呼叫點（`grep -rn useColorThemeState packages` 只命中 `ThemeProvider.tsx:17`）。規範只寫了「放哪裡」沒寫「幾個呼叫點才值得拆」，於是 `code-review` skill 的 Speculative Generality 與 Middle Man 兩個 smell 被「repo 規範優先」壓掉，review 抓不到。
 - Fix: 規範改成先講門檻再講佈局：一個檔案用到的就留在那個檔案、不匯出；第二個檔案要用才搬出來；判斷用刪除測試。`code-review` 的兩個 smell 補上「單一呼叫點」的具體形式。程式碼另外修。
 - Codified?: written into .agents/docs/ui-conventions.md §一 第 7 至 9 條、.agents/skills/code-review/SKILL.md 步驟 3.
+
+## 2026-09-04 套件層設定裡的 react-hooks 規則從未生效，Phase 1 全程沒有 hook 防線
+- Context: Phase 1.R 審查用 `npx eslint --print-config packages/ui/src/components/Button/Button.tsx` 從 repo 根目錄核對 D13 規則是否真的擋得住。
+- Mistake: D13 那五類規則確實在 root 設定裡，但 `packages/ui/eslint.config.mjs` 透過 FlatCompat 掛的 `plugin:react/recommended` 與 `plugin:react-hooks/recommended` 在 print-config 輸出裡零命中 — 這是「flat config 只讀 cwd 設定」的第三次踩坑，前兩次分別是規則沒生效與 `--fix` 改壞 19 個檔案。這次的形態是：Phase 1 從頭到尾沒有任何 hook 誤用防線，而唯一會生效的跑法（從套件目錄跑 eslint）正好是 ui-conventions 明令禁止的那條。
+- Fix: 把 react 與 react-hooks 的 recommended 併進 root `eslint.config.mjs` 的 `packages/ui/src/**` 區塊，套件層設定只留 parser 接線；用一支故意寫壞的探針檔（條件式 `useState` + 空依賴陣列）驗證 `npx eslint <probe>` 退出碼為 1、訊息含 `react-hooks/rules-of-hooks` 與 `react-hooks/exhaustive-deps`，確認會咬之後刪掉探針。開啟後唯一的既有違規是 `ThemeProvider` 在 effect 裡同步 setState，改用 `useSyncExternalStore` 讀 localStorage/DOM 屬性後 25 個測試全綠。
+- Codified?: written into .agents/docs/ui-conventions.md §四。往後在套件層 eslint 設定加規則前，一律先用 `npx eslint --print-config <該套件的一個檔案>` 從 repo 根目錄確認解析得到。
+
