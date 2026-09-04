@@ -20,6 +20,9 @@ export * from './Button';
 4. 禁止套件層級的單一 barrel（spec §7）：每個元件各自是一個 subpath，tree-shaking 才不會被破壞。
 5. 跨資料夾匯入走套件名 subpath，寫到元件名即可：`import Button from '@tod-workspace/ui/components/Button';`。`package.json` 的 exports 已對應這個結構，不必再接一次檔名。
 6. 每個匯出元件至少一個測試檔（家族子元件由主元件的測試檔一起涵蓋）；story 只在有 variant 值得展示時才寫。兩者的規則見第五節。
+7. 函式、hook 與常數要不要獨立成檔，看呼叫點數，不看「這段邏輯能不能取名字」。只在一個檔案裡用到的東西就寫在那個檔案裡，不匯出、不另開檔案；有第二個檔案要用才搬出來。想單獨測它也不是搬出來的理由：測試走元件的介面，能從外面觀察到的行為才需要測。判斷方法是刪除測試：把這個抽象刪掉，內容是回到一個呼叫點，還是散到好幾個檔案重複？回到一個呼叫點就不該抽。
+8. 達到門檻才搬出來的東西放在該元件資料夾底下，不塞進共用的 `src/lib`：常數是單一檔 `constants.ts`，工具函式與 hook 各自一個資料夾（`utils/`、`useColorTheme/`，各配一個 `index.ts`），`utils/` 裡一個函式一個檔、檔名同函式名，context 跟著讀它的那個 hook 走。這些檔案彼此用相對路徑匯入；要給別的元件用的，由元件的 `index.ts` 在原本兩行後面另起一段一併轉出，只給元件內部用的不轉。
+9. 不為了拆檔另立只給內部用的私有子元件或 hook。provider 元件自己持有 state、effect 與 context value，一個元件一段 JSX；對外只匯出讀 context 的那個 hook。
 
 ## 二、撰寫格式
 
@@ -55,9 +58,9 @@ interface ButtonProps
 
 有 lint 防線的規則全部設在 root [eslint.config.mjs](../../eslint.config.mjs) 針對 `packages/ui/src/**` 的區塊：`func-style` 與 `react/function-component-definition` 管 arrow function，`no-restricted-syntax` 的四個 selector 擋 `import * as React`、`React.` 前綴與檔尾匯出區塊，`react/jsx-sort-props`（`callbacksLast`、`ignoreCase`、`reservedFirst: ['key', 'ref']`）管 JSX 上的 props 順序。同區塊把 `@typescript-eslint/no-empty-object-type` 放寬為 `allowInterfaces: 'with-single-extends'`，讓純轉發的空 props 介面合法。
 
-規則必須放在 root 而不是 `packages/ui/eslint.config.mjs`：flat config 只讀取 cwd 的那一份設定檔，而 `npx eslint .`、lint-staged 與 CI 都從 repo 根目錄跑，放在套件層的規則對它們形同不存在（`npx eslint --print-config` 實測，2026-09-02）。
+規則必須放在 root 而不是 `packages/ui/eslint.config.mjs`：flat config 只讀取 cwd 的那一份設定檔，而 `npx eslint .`、lint-staged 與 CI 都從 repo 根目錄跑，放在套件層的規則對它們形同不存在（`npx eslint --print-config` 實測，2026-09-02）。更不要從 `packages/ui` 目錄跑 `npx eslint --fix`：那份設定把 `@tod-workspace/ui/*` 判成不同的 import 群組，一次 `--fix` 就會把整棵 `src/` 的 import 順序改成 root 設定不接受的樣子，連你沒碰過的檔案一起改。lint 一律從 repo 根目錄跑。
 
-只靠本檔與 review 把關的有四處：第一節的檔案佈局、第二節第五條的 `interface` 命名與位置、型別宣告與解構參數的排序（`react/jsx-sort-props` 只看 JSX），以及第五節的測試檔是否存在。介面成員排序要機械化得裝 `eslint-plugin-perfectionist`，目前不加這個相依。檔案佈局若日後漏網次數變多，升級選項是 `eslint-plugin-check-file` 的 `filename-naming-convention` 與 `folder-naming-convention`。
+只靠本檔與 review 把關的有五處：第一節的檔案佈局、第一節第七條的呼叫點門檻、第二節第五條的 `interface` 命名與位置、型別宣告與解構參數的排序（`react/jsx-sort-props` 只看 JSX），以及第五節的測試檔是否存在。介面成員排序要機械化得裝 `eslint-plugin-perfectionist`，目前不加這個相依。檔案佈局若日後漏網次數變多，升級選項是 `eslint-plugin-check-file` 的 `filename-naming-convention` 與 `folder-naming-convention`。呼叫點門檻沒有 lint 可接：`knip` 只抓零使用的匯出，ESLint 沒有「只被呼叫一次」的規則，所以這條由 `code-review` skill 的 Speculative Generality 與 Middle Man 兩個 smell 把關。
 
 ## 五、測試
 
@@ -75,7 +78,3 @@ interface ButtonProps
 1. 尺寸一律 `sm` / `md` / `lg` 三階，預設值 `md`，不再有 `xs`。cva 的 `defaultVariants` 與解構參數的預設值要寫同一個值。
 2. 只有圖示、沒有文字的按鈕用 `IconButton`，不要拿 `Button` 自己補方形 className。`IconButton` 內部就是 `Button` 加一組 `size-*` 與 `p-0`，variant 沿用 `buttonVariants`，所以按鈕外觀只有一個來源。
 3. `IconButton` 的 `aria-label` 是必填 prop（型別上就要求），因為它沒有可見文字可以當可及名稱。
-
-## 七、已知缺口
-
-`ThemeProvider` 沒有自己的測試檔，目前只被 `ThemeToggle.test.tsx` 間接覆蓋。它是不可視的 context 包裝，`useColorTheme` 的錯誤路徑與 localStorage 還原邏輯還沒有直接測試。
