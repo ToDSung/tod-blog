@@ -26,3 +26,15 @@ Format and pruning rules are in [maintenance.md](maintenance.md) §3–§4. New 
 - Mistake: the rule looked installed but never fired. A deliberately broken `Button.tsx` (function declaration) passed `npx eslint .` with exit 0. `npx eslint --print-config packages/ui/src/components/Button/Button.tsx` from the repo root reported `react/function-component-definition: None` — ESLint 9 flat config resolves exactly one config file, the one at the cwd, so `packages/*/eslint.config.mjs` is dead weight for `npx eslint .`, lint-staged and CI, which all run from the repo root.
 - Fix: put any rule that must gate commits/CI in the root `eslint.config.mjs` under a `files: ['packages/<pkg>/**']` block, then prove it bites with a throwaway probe file (`npx eslint <probe>` must exit 1) before deleting the probe. Package-level configs still work when eslint is run from inside that package (`pnpm -F tod-blog eslint:fix`).
 - Codified?: written into .agents/docs/ui-conventions.md §4.
+
+## 2026-09-04 從套件目錄跑 eslint --fix 改寫了 19 個沒要動的檔案
+- Context: 重構 `packages/ui` 的 `ThemeProvider`，在 `packages/ui` 目錄下跑 `npx eslint src --fix` 想順手修 import 順序。
+- Mistake: 套件層設定把 `@tod-workspace/ui/*` 判成跟 root 設定不同的 import 群組，`--fix` 於是把整棵 `src/` 的 import 重排，`git status` 冒出 19 個我沒編輯過的檔案；回到根目錄再 lint 就變成 57 個 `import/order` 錯誤。這是 2026-09-02「flat config 只讀 cwd 設定」那條的第二次踩坑，這次會實際改壞檔案。
+- Fix: `git checkout -- <那些檔案>` 還原，只留自己編輯的檔案，再從 repo 根目錄跑 `npx eslint . --fix`。lint 與 fix 一律從根目錄跑。
+- Codified?: written into .agents/docs/ui-conventions.md §四.
+
+## 2026-09-04 規範把單一呼叫點的抽象寫成範例，等於替過早抽象背書
+- Context: 重構 `ThemeProvider` 時把 state 邏輯抽成 `useColorThemeState`、四個 localStorage 與 DOM 操作各自拆成 `utils/` 一函式一檔，再把這個佈局寫進 ui-conventions 第一節當規則與範例。
+- Mistake: `useColorThemeState` 與四個 util 都只有一個呼叫點（`grep -rn useColorThemeState packages` 只命中 `ThemeProvider.tsx:17`）。規範只寫了「放哪裡」沒寫「幾個呼叫點才值得拆」，於是 `code-review` skill 的 Speculative Generality 與 Middle Man 兩個 smell 被「repo 規範優先」壓掉，review 抓不到。
+- Fix: 規範改成先講門檻再講佈局：一個檔案用到的就留在那個檔案、不匯出；第二個檔案要用才搬出來；判斷用刪除測試。`code-review` 的兩個 smell 補上「單一呼叫點」的具體形式。程式碼另外修。
+- Codified?: written into .agents/docs/ui-conventions.md §一 第 7 至 9 條、.agents/skills/code-review/SKILL.md 步驟 3.
