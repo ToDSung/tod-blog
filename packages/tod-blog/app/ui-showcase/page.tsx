@@ -1,5 +1,6 @@
 import Button from '@tod-workspace/ui/components/Button';
 import IconButton from '@tod-workspace/ui/components/IconButton';
+import ThemeToggle from '@tod-workspace/ui/theme/ThemeToggle';
 import { FaPalette, FaPencilAlt, FaTrash } from 'react-icons/fa';
 
 export const metadata = {
@@ -10,7 +11,10 @@ export const metadata = {
 const UiShowcasePage = () => {
   return (
     <div className='flex w-full flex-col gap-8 py-8'>
-      <h1 className='text-2xl font-bold'>UI Showcase</h1>
+      <header className='flex items-center justify-between gap-4'>
+        <h1 className='text-2xl font-bold'>UI Showcase</h1>
+        <ThemeToggle />
+      </header>
       <section className='flex flex-col gap-4'>
         <h2 className='text-xl font-semibold'>Button</h2>
         <div className='flex flex-wrap items-center gap-4'>
