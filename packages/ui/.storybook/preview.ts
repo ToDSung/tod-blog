@@ -2,11 +2,7 @@ import '../src/styles/globals.css';
 
 import type { Decorator, Preview } from '@storybook/react-vite';
 
-/**
- * Theme (data-theme attribute) and mode (.dark class) are orthogonal (spec
- * D9); both toolbars apply to the documentElement so portaled content
- * (dropdowns, dialogs) is themed too.
- */
+// Both toolbars apply to documentElement so portaled content is themed too.
 const withThemeAndMode: Decorator = (Story, context) => {
   const { theme, mode } = context.globals;
   const root = document.documentElement;
