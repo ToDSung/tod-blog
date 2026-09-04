@@ -1,5 +1,7 @@
 import eslint from '@eslint/js';
+import comments from '@eslint-community/eslint-plugin-eslint-comments/configs';
 import importPlugin from 'eslint-plugin-import';
+import jsdoc from 'eslint-plugin-jsdoc';
 import prettier from 'eslint-plugin-prettier/recommended';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
@@ -10,6 +12,27 @@ export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   prettier,
+  comments.recommended,
+  {
+    linterOptions: {
+      reportUnusedDisableDirectives: 'error',
+    },
+    rules: {
+      '@eslint-community/eslint-comments/disable-enable-pair': [
+        'error',
+        { allowWholeFile: true },
+      ],
+      '@eslint-community/eslint-comments/require-description': 'error',
+      '@typescript-eslint/ban-ts-comment': [
+        'error',
+        {
+          'ts-expect-error': 'allow-with-description',
+          minimumDescriptionLength: 10,
+        },
+      ],
+      'no-warning-comments': ['error', { location: 'anywhere' }],
+    },
+  },
   {
     plugins: {
       import: importPlugin,
@@ -113,12 +136,11 @@ export default tseslint.config(
     ...tseslint.configs.disableTypeChecked,
   },
   {
-    // Everything that gates packages/ui: spec D13's arrow-function and export
-    // conventions on top of react and react-hooks. These must live in the root
-    // config, because flat config only loads the config file at the cwd and
-    // `npx eslint .`, lint-staged and CI all run from the repo root.
+    // Rules gating packages/ui live here, not in its package config: flat
+    // config only loads the cwd's file (ui-conventions.md §4).
     files: ['packages/ui/src/**/*.ts', 'packages/ui/src/**/*.tsx'],
     plugins: {
+      jsdoc,
       react: reactPlugin,
       'react-hooks': reactHooks,
     },
@@ -128,6 +150,9 @@ export default tseslint.config(
       ...reactHooks.configs['recommended-latest'].rules,
       // The preset ships this one as a warning, and nothing fails on warnings.
       'react-hooks/exhaustive-deps': 'error',
+      'jsdoc/informative-docs': 'error',
+      'jsdoc/no-blank-blocks': 'error',
+      'jsdoc/no-types': 'error',
       'react/function-component-definition': [
         'error',
         {
