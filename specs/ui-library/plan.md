@@ -9,7 +9,7 @@
 - 委派 prompt 必含目標動機、機械可查驗收、報告格式（模板照抄）。
 - 每個 Phase 結束跑一次**新 context 審查**（model-dispatch §5）：審查者只拿驗收標準與產出位置。
 - 驗證底線：`npx eslint .` 乾淨、相關 build/測試通過、Storybook story 可渲染；Phase 1.4 之後一律加 `pnpm -F @tod-workspace/ui test` 全綠。
-- **測試紀律（spec D11）**：新增匯出元件的 commit 必同時帶 `<元件名>.test.tsx`（vitest + Testing Library）；story 只做 variant 展示，不寫 play function。委派 prompt 必須把「測試通過」寫進驗收，不接受「元件完成、測試待補」的回報。
+- **測試紀律（spec D11）**：新增匯出元件的 commit 必同時帶 `<元件名>.test.tsx`（vitest + Testing Library）與 `<元件名>.stories.tsx`（至少一個 `Default`，只展示該元件自己的 props，不寫 play function）。委派 prompt 必須把「測試通過」寫進驗收，不接受「元件完成、測試待補」的回報。
 - 產碼 skills 已安裝供所有 agent 使用（2026-07-14）：`vercel-react-best-practices`、`vercel-composition-patterns`（React/Next 模式）、`shadcn`（官方，讀 components.json 注入專案 context）。委派實作任務時在 prompt 中提示 agent 觸發對應 skill。
 - 每個 Phase 的 .R 審查**必附迴歸快檢**：`pnpm -F @tod-workspace/leetcode test` 與 `pnpm -F articles build` 不退步 — 不要等到 Phase 6 才發現根層設定（tsconfig/eslint）壞了其他套件。
 - commit 用 Conventional Commits，每個 Phase 至少一個 commit；不可 `--no-verify`。
@@ -40,7 +40,7 @@
 
 | 批次 | 元件 | 驗收（每批相同） |
 | --- | --- | --- |
-| 2.a 表單 | button* input label textarea checkbox radio-group select switch slider field input-group | CLI 加入成功；**檔案佈局與匯出形式符合 D13（見 ui-conventions.md §三 後處理步驟）**；每元件 1 個 `<元件名>.test.tsx`（互動元件另測互動行為）；有 variant 的元件補展示用 story；`pnpm -F @tod-workspace/ui test` 全綠；eslint 乾淨；storybook build 過 |
+| 2.a 表單 | button* input label textarea checkbox radio-group select switch slider field input-group | CLI 加入成功；**檔案佈局與匯出形式符合 D13（見 ui-conventions.md §三 後處理步驟）**；每元件 1 個 `<元件名>.test.tsx`（互動元件另測互動行為）與 1 個 `<元件名>.stories.tsx`（至少一個 `Default`）；`pnpm -F @tod-workspace/ui test` 全綠；eslint 乾淨；storybook build 過 |
 | 2.b Overlay | dialog sheet popover tooltip dropdown-menu alert-dialog | 同上 |
 | 2.c 展示 | card badge avatar alert separator skeleton table accordion tabs progress scroll-area | 同上 |
 | 2.d 回饋/導航 | sonner breadcrumb pagination command spinner | 同上 |
