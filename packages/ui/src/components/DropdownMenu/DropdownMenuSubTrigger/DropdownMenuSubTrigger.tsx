@@ -1,11 +1,10 @@
 'use client';
 
+import { cn } from 'cn';
 import { ChevronRightIcon } from 'lucide-react';
 import { DropdownMenu as DropdownMenuPrimitive } from 'radix-ui';
 
 import type { ComponentProps } from 'react';
-
-import { cn } from '@tod-workspace/ui/lib/utils';
 
 export interface DropdownMenuSubTriggerProps extends ComponentProps<
   typeof DropdownMenuPrimitive.SubTrigger

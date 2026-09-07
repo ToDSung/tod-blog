@@ -1,8 +1,8 @@
 'use client';
 
-import type { ComponentProps } from 'react';
+import { cn } from 'cn';
 
-import { cn } from '@tod-workspace/ui/lib/utils';
+import type { ComponentProps } from 'react';
 
 export interface DropdownMenuShortcutProps extends ComponentProps<'span'> {}
 
