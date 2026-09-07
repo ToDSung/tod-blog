@@ -74,5 +74,9 @@ packages/tod-blog/public/sitemap-0.xml
 packages/mui-with-linaria/storybook-static/*
 storybook-static/
 
+# vitest browser-mode failure artifacts
+.vitest-attachments/
+**/__screenshots__/
+
 # agent governance backups
 .agents/backup/
