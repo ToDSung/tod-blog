@@ -62,3 +62,9 @@ Format and pruning rules are in [maintenance.md](maintenance.md) §3–§4. New 
 - Mistake: `shadcn add -c packages/ui label --dry-run` 印出 `Dependencies (1) + cn`，`--view` 的原始碼是 `import { cn } from "cn"`。這不是本地設定問題：上游 registry item 自己就把 `cn` 列進 `dependencies`（`https://ui.shadcn.com/r/styles/radix-nova/label.json` 直接看得到），`button`、`input`、`card`、`dialog`、`accordion` 五個抽查全部一樣，而 CLI 的 alias 改寫只認 `@/lib/utils` 形狀的匯入，components.json 的 `aliases.utils` 攔不到。也就是說 Phase 2 剩下的每個元件都會踩。另一個訊號：`node_modules/.pnpm` 裡留著 `cn@0.2.5`，但 `packages/ui/package.json` 與 `pnpm-lock.yaml` 都沒有它 —— 先前某次 add 應該裝過又被還原，而那次沒留下任何紀錄，所以這一輪才會重新問一次同樣的問題。
 - Fix: 順著上游走，裝官方的 `cn`（`pnpm -F @tod-workspace/ui add cn`，同時移除 `clsx` 與 `tailwind-merge`），刪掉 `src/lib/utils.ts` 與它的測試，十三個元件的匯入改成 `import { cn } from 'cn';`，跟 registry 原始碼一模一樣。CLI 仍然只跑 `--dry-run` 與 `--view`，理由改成佈局與寫法不合本 repo 規範，不再是為了擋這個套件。
 - Codified?: written into .agents/docs/ui-conventions.md §三
+
+## 2026-09-07 委派 prompt 指定錯行為，測試就測到原生繼承來的那一份
+- Context: 委派 `Label` 實作時，prompt 寫「點擊 label 會把焦點移到關聯控制項，這是 Radix 相對於原生 `<label>` 多做的事，值得斷言」。
+- Mistake: 前半句對、後半句錯。點擊聚焦是原生 `<label for>` 與 jsdom 本來就有的語意；Radix Label 真正多做的是 `onMouseDown` 在 `event.detail > 1` 時 `preventDefault()`，擋掉雙擊選字（`node_modules/.pnpm/@radix-ui+react-label@2.1.1_*/node_modules/@radix-ui/react-label/dist/index.mjs:14-17`）。實作 agent 照著寫，測試全綠，但把元件換成裸 `<label>` 一樣全綠 —— 測試通過的理由跟這個元件無關。審查 agent 寫了一支裸 `<label>` 的探針實跑才抓到。
+- Fix: 補一條斷言雙擊被 `preventDefault` 的測試，然後把 `Label.tsx` 暫時降級成裸 `<label>` 跑一次，確認只有這條變紅（`Tests 1 failed | 38 passed`），再還原。往後寫「這是某某 primitive 多做的行為」之前先讀該套件的 dist 原始碼確認；包裝第三方 primitive 的元件，測試至少要有一條在拿掉該 primitive 後會紅。
+- Codified?: no（判斷原則，暫不升級成規則）
