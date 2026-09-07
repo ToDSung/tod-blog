@@ -28,7 +28,7 @@ Status: Phase 1（腳手架、跨套件接線、主題系統、測試地基、CI
 | D8 | **Auth 元件本階段取消**（LoginForm/RegisterForm/OtpForm/AuthCard/PasswordInput、input-otp，及其依賴 react-hook-form/zod/resolvers/TanStack Query 一併延後） | 本階段不做登入功能，這些元件與其相依套件都沒有消費者；研究結論（research-ui-tooling.md §2/§4）保留，復啟時直接沿用 |
 | D9 | **主題系統**：token 全走 CSS variables 單一機制；多主題以 `[data-theme="<name>"]` 屬性選擇器覆蓋 `:root` token 區塊；dark mode 維持 `.dark` class，與主題**正交**（theme × mode 矩陣，任一主題皆有亮暗兩態）。App 端用 `next-themes`（attribute 模式）掛切換；ui 匯出 `ThemeProvider` 薄包裝 + `ThemeToggle`。Storybook 用 globalTypes toolbar 切換 theme 與 mode | shadcn 官方 theming 模式（cssVariables: true）天然支援多主題覆蓋；next-themes 是 shadcn 官方 dark mode 建議且支援任意 attribute 值、無 FOUC |
 | D10 | **預設主題 = `professional`**：低飽和中性色（graphite/slate 系）、OKLCH、克制的 radius 與陰影、明確 foreground/background 對比。以 tweakcn 的中性系 preset（如 Graphite）為起點微調；另附至少一個對照主題（名稱實作時定）證明切換機制成立 | tweakcn 產出即為 `:root` / `.dark` 變數塊，與 D9 架構零轉換成本；中性系起點對內容型網站的長文閱讀最不干擾 |
-| D11 | **測試與展示分家**：測試一律寫成 vitest + Testing Library 的測試檔，Storybook 只做元件展示。(a) 元件測試放 `<元件名>.test.tsx`，與元件同目錄，React Testing Library 跑在 jsdom；(b) 需要真實 CSS 的測試（主題 token 矩陣）另存 `*.browser.test.tsx`，跑在 vitest browser mode（Playwright）；(c) 純邏輯（`cn()`、markdown 元件映射等）用 node 環境的單元測試；(d) story 不寫 play function、不承擔斷言，也不自動變成 render 測試；(e) 不做自動化 a11y 檢查，`@storybook/addon-a11y` 已移除；(f) 統一入口 `pnpm -F @tod-workspace/ui test`，三個 vitest project 一次跑完。視覺回歸（Chromatic / storybook-addon-vis）本階段不做，列未來擴充（§9） | play function 會隨元件與互動情境持續膨脹，且把斷言綁死在展示層，改動 story 就會動到測試。斷言留在 vitest、Storybook 專心當 variant 目錄之後，兩邊可以各自改而不互相牽動 |
+| D11 | **測試與展示分家**：測試一律寫成 vitest + Testing Library 的測試檔，Storybook 只做元件展示。(a) 元件測試放 `<元件名>.test.tsx`，與元件同目錄，React Testing Library 跑在 jsdom；(b) 需要真實 CSS 的測試（主題 token 矩陣）另存 `*.browser.test.tsx`，跑在 vitest browser mode（Playwright）；(c) 純邏輯（markdown 元件映射等）用 node 環境的單元測試；(d) story 不寫 play function、不承擔斷言，也不自動變成 render 測試；(e) 不做自動化 a11y 檢查，`@storybook/addon-a11y` 已移除；(f) 統一入口 `pnpm -F @tod-workspace/ui test`，三個 vitest project 一次跑完。視覺回歸（Chromatic / storybook-addon-vis）本階段不做，列未來擴充（§9） | play function 會隨元件與互動情境持續膨脹，且把斷言綁死在展示層，改動 story 就會動到測試。斷言留在 vitest、Storybook 專心當 variant 目錄之後，兩邊可以各自改而不互相牽動 |
 | D12 | **CI 品質閘門**：GitHub Actions workflow（push + PR）跑 eslint / ui typecheck / ui test / storybook build / tod-blog build / leetcode test。CI 是**獨立於產碼 agent 的確定性驗證**，與 plan 的新 context 審查（.R）互補 | 2026 業界對 agent 產碼的共識：驗證者必須與產碼者分離、閘門必須確定性；目前 repo 只有 local hooks，agent 可繞過的面太大 |
 | D13 | **元件檔案佈局與撰寫格式**：一個元件一個 PascalCase 資料夾（`Button/Button.tsx` + `Button.stories.tsx` + `index.ts`）；元件、hook、工具函式一律 arrow function；React API 一條一條具名匯入（禁止 `import * as React` 與 `React.` 前綴）；匯出就地寫，主元件 `export default`、其餘 `export const`，禁止檔尾 `export { … };` 區塊；props 型別用 `interface <元件名>Props` 具名宣告並匯出（不寫行內型別、不用 `type`）；props 一律 a-z 排序、事件處理器（`on` 開頭）排在其後，型別宣告、解構參數、JSX 傳值三處同序；複合元件的子元件也是一元件一資料夾，巢狀在家族主元件資料夾底下（`DropdownMenu/DropdownMenuItem/`），家族主元件的 `index.ts` 兼當該家族的 barrel，子元件的 default 與 props 型別都由它轉出，story 與測試則整族共用主元件資料夾裡的那一份。細則與 shadcn 後處理步驟見 [.agents/docs/ui-conventions.md](../../.agents/docs/ui-conventions.md) | shadcn CLI 產出的是 kebab-case 平鋪檔加宣告式 function，兩者都要後處理，所以規範必須連同後處理步驟一起寫下來，否則 Phase 2 批次會照 CLI 原樣進倉。子元件同樣一檔一元件：一個檔塞十五個元件在 review 與定位上都吃虧 |
 | D14 | **按鈕 API**：`Button` 的 size 收斂為 `sm` / `md` / `lg`，預設 `md`（移除 `xs`）；icon-only 按鈕獨立成 `IconButton`，`size` 同三階、`aria-label` 型別上必填，內部組合 `Button` 並以 `size-*` + `p-0` 覆蓋高度與內距，variant 沿用 `buttonVariants` | `default` 沒說出大小，`xs` 在 8px 級距上沒有實際用途，icon 尺寸與文字尺寸擠在同一個 union 讓型別無法表達「圖示按鈕必須有可及名稱」。`IconButton` 組合 `Button` 而不另開一套 cva，按鈕外觀維持單一來源 |
@@ -38,6 +38,7 @@ Status: Phase 1（腳手架、跨套件接線、主題系統、測試地基、CI
 | 類別 | 套件 | 版本 | 備註 |
 | --- | --- | --- | --- |
 | 樣式 | `tailwindcss`（含 `@tailwindcss/node`、`@tailwindcss/postcss`） | ^4.3.2 | CSS-first，無 tailwind.config |
+| 類名合併 | `cn` | ^0.2.6 | shadcn 官方套件，取代 `clsx` + `tailwind-merge`；元件比照上游 registry 寫 `import { cn } from 'cn'`，不自建 wrapper |
 | 元件 | `shadcn`（CLI） | 4.13.0 | `init -b radix` 需可偵測的 framework，bare source package 會失敗（實測 2026-07-14）→ 手動寫 components.json 後 `add` 正常。CLI 4.x style 改為 preset 制（`radix-nova`，取代 new-york）；`shadcn` 須列 **runtime dependency**（元件 CSS import `shadcn/tailwind.css`） |
 | Primitive | `radix-ui` | ^1.6.2 | 統一包；React 19 OK |
 | 動畫 | `motion` | ^12.42.2 | import 自 `motion/react`；client-only |
@@ -72,7 +73,6 @@ packages/ui/                        # @tod-workspace/ui
     ├── composed/                   # 自組元件（markdown/、auth/、code-block…）
     ├── motion/                     # motion 展示元件（MotionDialog…）
     ├── theme/                      # ThemeProvider（next-themes 薄包裝）、ThemeToggle
-    ├── lib/                        # cn() 等 utils
     ├── styles/                     # globals.css（token 層，見下）+ theme-tokens.browser.test.tsx
     └── vitest.d.ts                  # 只為 tsc 註冊 jest-dom matcher 型別
 ```

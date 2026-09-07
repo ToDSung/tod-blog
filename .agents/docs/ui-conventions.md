@@ -45,14 +45,18 @@ interface ButtonProps
 
 ## 三、shadcn CLI 的後處理步驟
 
-`shadcn add -c packages/ui <name>` 產出的是 `src/components/<kebab-case>.tsx`，內容是宣告式 `function`。CLI 不認得本檔的規範，所以每次 add 之後必做：
+`cn` 用官方套件：npm 上的 [`cn`](https://github.com/shadcn-ui/cn)，shadcn 本人維護，定位是 `clsx` + `tailwind-merge` 的替代品。元件比照上游 registry 寫 `import { cn } from 'cn';`，本專案不自建 wrapper。`src/lib/` 目前沒有 util，components.json 的 `aliases.utils` 是 CLI schema 的必填欄位（`components` 與 `utils` required，`ui`/`lib`/`hooks` optional），留著佔位。
 
-1. 建 `src/components/<PascalCase>/`，把產出的檔案搬進去並改名為 `<PascalCase>.tsx`。
+CLI 一律只用 `--dry-run` 與 `--view` 跑，拿它印出的原始碼當範本，自己把檔案寫進去。不加這兩個旗標直接跑 `shadcn add`，檔案會落成 CLI 自己的佈局與寫法（見下），相依也會不經審視地寫進 `packages/ui/package.json` 與 `pnpm-lock.yaml`。
+
+`--view` 印出的是 `src/components/<kebab-case>.tsx`，內容是宣告式 `function`。CLI 不認得本檔的規範，所以每次抄進來之後必做：
+
+1. 建 `src/components/<PascalCase>/`，把內容寫成 `<PascalCase>.tsx`。
 2. 套用第二節：改成 arrow function、拆掉 React 命名空間、刪檔尾匯出區塊、把行內 props 型別抽成 `interface`、重排 props 順序。
 3. 複合元件（CLI 一個檔塞十幾個子元件）按第一節第二條拆開：每個子元件一個巢狀資料夾，`'use client'` 與該子元件真正用到的 import 逐檔補齊，主元件的 `index.ts` 當家族 barrel。
 4. 補 `index.ts` 與 `<PascalCase>.test.tsx`；元件有 variant 時再補 `<PascalCase>.stories.tsx`。
 
-`npx eslint . --fix` 會修掉第二節裡機械可修的部分（見第四節），其餘手動改。驗收：`npx eslint .` 無輸出，`pnpm -F @tod-workspace/ui typecheck` 與 `pnpm -F @tod-workspace/ui test` 全綠。
+驗收前用 `git status --porcelain` 確認只有新元件資料夾底下的檔案，`packages/ui/package.json` 與 `pnpm-lock.yaml` 沒被動到。`npx eslint . --fix` 會修掉第二節裡機械可修的部分（見第四節），其餘手動改。驗收：`npx eslint .` 無輸出，`pnpm -F @tod-workspace/ui typecheck` 與 `pnpm -F @tod-workspace/ui test` 全綠。
 
 ## 四、強制力現況
 

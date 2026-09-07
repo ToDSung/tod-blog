@@ -56,3 +56,9 @@ Format and pruning rules are in [maintenance.md](maintenance.md) §3–§4. New 
 - Mistake: 六段裡有三段在解釋 `useSyncExternalStore` 第三個參數、`getServerSnapshot` 與 next-themes 的正常用法，官方文件就有。規則只寫在 Claude 的記憶檔 `code-comment-minimalism`，Codex 與 Antigravity 讀不到，repo 內沒有任何文件能讓 `code-review` 的 Standards 軸引用，`ui-conventions.md` 也完全沒提註解。
 - Fix: 規則寫進 `.agents/docs/code-comments.md`（刪除測試、可寫的五種與不能寫的八種、ThemeProvider 逐段判定），AGENTS.md 加路由；調查證據記在 `.agents/docs/research-code-comments.md`。lint 防線接進 root `eslint.config.mjs`（disable 要理由、`@ts-expect-error` 描述至少 10 字、擋 `TODO`、ui 套件擋重述型 JSDoc），用探針檔證明七條規則各命中一次後刪掉探針；`code-review` 加 Redundant Comment smell；`.claude/hooks/lint-edited-file.mjs` 在每次 Edit/Write 後對該檔跑 eslint。
 - Codified?: written into .agents/docs/code-comments.md
+
+## 2026-09-07 shadcn registry 改用外部 `cn` 套件，本地 wrapper 跟著退場
+- Context: Phase 2.a 第三個元件 `label` 進場前，先用 `--dry-run` 看 CLI 會做什麼。
+- Mistake: `shadcn add -c packages/ui label --dry-run` 印出 `Dependencies (1) + cn`，`--view` 的原始碼是 `import { cn } from "cn"`。這不是本地設定問題：上游 registry item 自己就把 `cn` 列進 `dependencies`（`https://ui.shadcn.com/r/styles/radix-nova/label.json` 直接看得到），`button`、`input`、`card`、`dialog`、`accordion` 五個抽查全部一樣，而 CLI 的 alias 改寫只認 `@/lib/utils` 形狀的匯入，components.json 的 `aliases.utils` 攔不到。也就是說 Phase 2 剩下的每個元件都會踩。另一個訊號：`node_modules/.pnpm` 裡留著 `cn@0.2.5`，但 `packages/ui/package.json` 與 `pnpm-lock.yaml` 都沒有它 —— 先前某次 add 應該裝過又被還原，而那次沒留下任何紀錄，所以這一輪才會重新問一次同樣的問題。
+- Fix: 順著上游走，裝官方的 `cn`（`pnpm -F @tod-workspace/ui add cn`，同時移除 `clsx` 與 `tailwind-merge`），刪掉 `src/lib/utils.ts` 與它的測試，十三個元件的匯入改成 `import { cn } from 'cn';`，跟 registry 原始碼一模一樣。CLI 仍然只跑 `--dry-run` 與 `--view`，理由改成佈局與寫法不合本 repo 規範，不再是為了擋這個套件。
+- Codified?: written into .agents/docs/ui-conventions.md §三
