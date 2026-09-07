@@ -1,11 +1,10 @@
 'use client';
 
+import { cn } from 'cn';
 import { CheckIcon } from 'lucide-react';
 import { DropdownMenu as DropdownMenuPrimitive } from 'radix-ui';
 
 import type { ComponentProps } from 'react';
-
-import { cn } from '@tod-workspace/ui/lib/utils';
 
 export interface DropdownMenuRadioItemProps extends ComponentProps<
   typeof DropdownMenuPrimitive.RadioItem

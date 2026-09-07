@@ -1,10 +1,9 @@
 'use client';
 
+import { cn } from 'cn';
 import { DropdownMenu as DropdownMenuPrimitive } from 'radix-ui';
 
 import type { ComponentProps } from 'react';
-
-import { cn } from '@tod-workspace/ui/lib/utils';
 
 export interface DropdownMenuItemProps extends ComponentProps<
   typeof DropdownMenuPrimitive.Item
