@@ -79,6 +79,7 @@ This machine: Windows 11, Chinese locale (cp950), PowerShell 5.1 primary shell.
 
 ## Git hooks & commits
 
+- **Commit only when the user asks.** Finish the change, verify it, report what you did, and leave the result in the working tree for the user to read; the user decides when it becomes a commit. The same holds for anything that rewrites or publishes history (`commit --amend`, `rebase`, `reset`, `push`). Subagents never commit — say so in the delegation prompt (see [.agents/docs/delegation-templates.md](.agents/docs/delegation-templates.md)).
 - **Conventional Commits required** — enforced by commitlint (husky `commit-msg` hook).
 - `pre-commit` runs lint-staged; if any staged file is under `packages/leetcode/`, it also runs `pnpm -F leetcode test --findRelatedTests` on those files. (`-F leetcode` filters by directory name and is equivalent to `-F @tod-workspace/leetcode` — both are valid; do not "fix" one into the other.) A failing related test blocks the commit. Never bypass hooks (`--no-verify`) without explicit user approval.
 

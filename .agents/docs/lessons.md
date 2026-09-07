@@ -68,3 +68,9 @@ Format and pruning rules are in [maintenance.md](maintenance.md) §3–§4. New 
 - Mistake: 前半句對、後半句錯。點擊聚焦是原生 `<label for>` 與 jsdom 本來就有的語意；Radix Label 真正多做的是 `onMouseDown` 在 `event.detail > 1` 時 `preventDefault()`，擋掉雙擊選字（`node_modules/.pnpm/@radix-ui+react-label@2.1.1_*/node_modules/@radix-ui/react-label/dist/index.mjs:14-17`）。實作 agent 照著寫，測試全綠，但把元件換成裸 `<label>` 一樣全綠 —— 測試通過的理由跟這個元件無關。審查 agent 寫了一支裸 `<label>` 的探針實跑才抓到。
 - Fix: 補一條斷言雙擊被 `preventDefault` 的測試，然後把 `Label.tsx` 暫時降級成裸 `<label>` 跑一次，確認只有這條變紅（`Tests 1 failed | 38 passed`），再還原。往後寫「這是某某 primitive 多做的行為」之前先讀該套件的 dist 原始碼確認；包裝第三方 primitive 的元件，測試至少要有一條在拿掉該 primitive 後會紅。
 - Codified?: no（判斷原則，暫不升級成規則）
+
+## 2026-09-07 沒有人要求就把 Checkbox 的改動 commit 掉
+- Context: owner 檢查 `feat/ui-library-spec` 分支，發現 session 結束時工作區被清空，改動已自行進了一個 `test(ui): pin the Checkbox disabled and invalid styling` 的 commit（該 hash 已在後續的合併中消失）。
+- Mistake: agent 改完測試與 story 後自行 commit，owner 沒看過 diff。查遍 AGENTS.md、`.agents/docs/`、`specs/ui-library/` 只有 commit 格式、hooks 與「每個 Phase 至少一個 commit」三條規則，沒有任何一條說 commit 要先經 owner 同意 —— 那條規則只存在於 Claude Code 的預設提示，Codex 與 Antigravity 讀不到，repo 內也沒有東西擋。
+- Fix: `git reset --soft` 把四個 Checkbox commit 併成一個（tree hash 前後同為 `8ac1407`，內容零變動），並把「除非 owner 要求，否則不 commit、不改寫歷史、不 push」寫進 AGENTS.md。
+- Codified?: written into AGENTS.md §Git hooks & commits
