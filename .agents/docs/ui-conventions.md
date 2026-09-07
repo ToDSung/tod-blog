@@ -19,7 +19,7 @@ export * from './Button';
 
 4. 禁止套件層級的單一 barrel（spec §7）：每個元件各自是一個 subpath，tree-shaking 才不會被破壞。
 5. 跨資料夾匯入走套件名 subpath，寫到元件名即可：`import Button from '@tod-workspace/ui/components/Button';`。`package.json` 的 exports 已對應這個結構，不必再接一次檔名。
-6. 每個匯出元件至少一個測試檔（家族子元件由主元件的測試檔一起涵蓋）；story 只在有 variant 值得展示時才寫。兩者的規則見第五節。
+6. 每個匯出元件都有一個測試檔與一個 story 檔，家族子元件由主元件的那一份一起涵蓋；沒有畫面的 provider 類元件不寫 story。兩者的規則見第五節。
 7. 函式、hook 與常數要不要獨立成檔，看呼叫點數，不看「這段邏輯能不能取名字」。只在一個檔案裡用到的東西就寫在那個檔案裡，不匯出、不另開檔案；有第二個檔案要用才搬出來。想單獨測它也不是搬出來的理由：測試走元件的介面，能從外面觀察到的行為才需要測。判斷方法是刪除測試：把這個抽象刪掉，內容是回到一個呼叫點，還是散到好幾個檔案重複？回到一個呼叫點就不該抽。
 8. 達到門檻才搬出來的東西放在該元件資料夾底下，不塞進共用的 `src/lib`：常數是單一檔 `constants.ts`，工具函式與 hook 各自一個資料夾（`utils/`、`useColorTheme/`，各配一個 `index.ts`），`utils/` 裡一個函式一個檔、檔名同函式名，context 跟著讀它的那個 hook 走。這些檔案彼此用相對路徑匯入；要給別的元件用的，由元件的 `index.ts` 在原本兩行後面另起一段一併轉出，只給元件內部用的不轉。
 9. 不為了拆檔另立只給內部用的私有子元件或 hook。provider 元件自己持有 state、effect 與 context value，一個元件一段 JSX；對外只匯出讀 context 的那個 hook。
@@ -54,7 +54,7 @@ CLI 一律只用 `--dry-run` 與 `--view` 跑，拿它印出的原始碼當範�
 1. 建 `src/components/<PascalCase>/`，把內容寫成 `<PascalCase>.tsx`。
 2. 套用第二節：改成 arrow function、拆掉 React 命名空間、刪檔尾匯出區塊、把行內 props 型別抽成 `interface`、重排 props 順序。
 3. 複合元件（CLI 一個檔塞十幾個子元件）按第一節第二條拆開：每個子元件一個巢狀資料夾，`'use client'` 與該子元件真正用到的 import 逐檔補齊，主元件的 `index.ts` 當家族 barrel。
-4. 補 `index.ts` 與 `<PascalCase>.test.tsx`；元件有 variant 時再補 `<PascalCase>.stories.tsx`。
+4. 補 `index.ts`、`<PascalCase>.test.tsx` 與 `<PascalCase>.stories.tsx`。
 
 驗收前用 `git status --porcelain` 確認只有新元件資料夾底下的檔案，`packages/ui/package.json` 與 `pnpm-lock.yaml` 沒被動到。`npx eslint . --fix` 會修掉第二節裡機械可修的部分（見第四節），其餘手動改。驗收：`npx eslint .` 無輸出，`pnpm -F @tod-workspace/ui typecheck` 與 `pnpm -F @tod-workspace/ui test` 全綠。
 
@@ -74,7 +74,7 @@ CLI 一律只用 `--dry-run` 與 `--view` 跑，拿它印出的原始碼當範�
 
 1. 元件測試放 `<PascalCase>.test.tsx`，與元件同資料夾，用 React Testing Library 跑 jsdom。查詢走 role 與可及名稱（`getByRole`），不加 test id。家族子元件不各自建測試檔，斷言寫在主元件的測試檔裡，用真實組合渲染。
 2. 需要真實 CSS 的測試（讀 computed style、驗 token 落點）改名 `<名稱>.browser.test.tsx`，會被分到 browser project 用 Playwright 跑；純邏輯模組用 `<名稱>.test.ts`，跑 node 環境。三種檔名對應 `vitest.config.ts` 的三個 project，`pnpm -F @tod-workspace/ui test` 一次跑完。
-3. story 不寫 play function、不放斷言。有 variant、狀態或組合值得目視比較時才寫 `<PascalCase>.stories.tsx`，一個 variant 一個 story；沒有 variant 的元件可以不寫。
+3. 每個元件都有 `<PascalCase>.stories.tsx`，與元件同資料夾，家族子元件由主元件的那一份涵蓋，至少要有一個 `Default`。story 不寫 play function、不放斷言，展示的是這個元件自己的 props：一個 variant、一個狀態各一個 story，沒有 variant 的元件就只有 `Default`。不為了讓某段樣式看得見而硬湊跟別的元件的組合，那種組合展示留給真正的組合元件。沒有畫面的 provider 類元件不寫 story。
 4. jsdom 缺的瀏覽器 API（Pointer Events、`matchMedia`、`ResizeObserver`）集中補在 `vitest.setup.dom.ts`，不要在個別測試檔重複 stub。
 5. Radix 的選單在同一個測試裡重開之前，先等前一個選單從 DOM 卸載，否則下一次點擊會被吞掉。範例見 [ThemeToggle.test.tsx](../../packages/ui/src/theme/ThemeToggle/ThemeToggle.test.tsx) 的 `selectItem`。
 6. 本階段不做自動化 a11y 檢查（D11e），`@storybook/addon-a11y` 已移除，不要再裝回來。
