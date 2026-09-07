@@ -1,9 +1,9 @@
 import { cva } from 'class-variance-authority';
+import { cn } from 'cn';
 
 import type { ButtonProps } from '@tod-workspace/ui/components/Button';
 
 import Button from '@tod-workspace/ui/components/Button';
-import { cn } from '@tod-workspace/ui/lib/utils';
 
 export const iconButtonVariants = cva('p-0', {
   variants: {
