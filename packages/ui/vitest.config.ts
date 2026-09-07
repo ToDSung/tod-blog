@@ -37,7 +37,17 @@ export default defineConfig({
         // Tailwind is only needed here: these tests read computed styles, so
         // the real token CSS has to be compiled and loaded.
         plugins: [tailwindcss()],
-        resolve: { alias },
+        resolve: { alias, dedupe: ['react', 'react-dom'] },
+        // Without this, Vite inlines a second React copy into the Testing
+        // Library chunk and any dependency rendering hooks (lucide) crashes.
+        optimizeDeps: {
+          include: [
+            'react',
+            'react-dom',
+            'react-dom/client',
+            'react/jsx-dev-runtime',
+          ],
+        },
         test: {
           name: 'browser',
           include: ['src/**/*.browser.test.{ts,tsx}'],
