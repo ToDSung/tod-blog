@@ -6,7 +6,7 @@ Covers: AGENTS.md, CLAUDE.md, `.agents/docs/*`, `.agents/skills/*`. Purpose: let
 
 **May edit directly (just report it after editing):**
 - Appending a lesson to [lessons.md](lessons.md) (format per §3).
-- Correcting an "environment fact" (model name, tool parameter, path) that measurement has disproven — must include the verification method and date at the point of change.
+- Correcting an "environment fact" (model name, tool parameter, path) that measurement has disproven — must include the verification method and the date you measured it, at the point of change. That date is the provenance of a measurement, not a record of when a decision was made; §3 still forbids the latter.
 - Fixing typos, broken links, stale filename references.
 
 **Ask the user first:**
@@ -17,9 +17,8 @@ Covers: AGENTS.md, CLAUDE.md, `.agents/docs/*`, `.agents/skills/*`. Purpose: let
 
 ## 2. Change process (steps cannot be skipped)
 
-1. **Backup** (Git Bash, one line, `cp` won't create the directory itself so `mkdir -p` is required):
-   `mkdir -p .agents/backup/$(date +%F) && cp <file> .agents/backup/$(date +%F)/`
-2. Make the change. For large new content → open a new file + add one line to AGENTS.md's routing table; don't stuff long content into the body of AGENTS.md itself.
+1. Check the file has no uncommitted changes already (`git status --short <file>`) — git is the backup, and a dirty file means someone else's work is in there. If it is dirty, tell the user before adding to it.
+2. Make the change. For large new content → open a new file + add one line to AGENTS.md's routing table; don't stuff long content into the body of AGENTS.md itself. `.agents/docs/` holds standing rules only; one-off artifacts (research findings, review reports) go in `.agents/research/` and stay out of the routing table.
 3. **Read-back**: re-read the changed file to confirm it's complete and links are valid (referenced files actually exist).
 4. Cross-agent sync check: if you changed `.agents/skills/`, sync `.claude/skills/` too (see the "Cross-agent skills" section in AGENTS.md).
 
@@ -37,10 +36,11 @@ After hitting a snag (wasted >10 minutes, or the same kind of mistake happens a 
 
 Criterion for "Codified?": if the same kind of snag happens a second time → propose upgrading it into a formal rule in AGENTS.md or the relevant docs file (the upgrade itself follows the permission tiers in §1).
 
+When you do upgrade one, write only the rule. Do not annotate it with where it came from, who approved it, or the date it was promoted — that provenance belongs to the lessons.md entry and to git, and inside a governance file it just makes the reader work out which half of the sentence is the rule. Same for any other rule you add or change here: state it in the present tense and let git carry the history.
+
 ## 4. Pruning cycle
 
-- lessons.md exceeds **30 entries or 300 lines** → do a consolidation pass: merge duplicates, remove entries that have already been codified (the rule already lives in a formal file, the lessons file doesn't need to keep a copy too), mark entries unseen for over a year in a since-changed environment as stale and delete them. Back up first (§2 step 1).
-- `.agents/backup/` keeps only the most recent **3 backups** per file; delete anything older.
+- lessons.md exceeds **30 entries or 300 lines** → do a consolidation pass: merge duplicates, remove entries that have already been codified (the rule already lives in a formal file, the lessons file doesn't need to keep a copy too), mark entries unseen for over a year in a since-changed environment as stale and delete them.
 - AGENTS.md exceeds **150 lines** → check what content can be extracted into a docs file plus a one-line route.
 
 ## 5. Conflict resolution

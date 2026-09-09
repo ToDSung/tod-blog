@@ -4,10 +4,11 @@
 const nextConfig = {
   output: 'export',
 
+  transpilePackages: ['@tod-workspace/ui'],
+
   eslint: {
     ignoreDuringBuilds: true,
   },
 };
 
-// eslint-disable-next-line no-undef
 module.exports = nextConfig;

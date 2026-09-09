@@ -1,4 +1,6 @@
-@import "tailwindcss";
+/* Tailwind itself is imported (once) via the ui package's stylesheet. */
+@import "@tod-workspace/ui/globals.css";
+@source "../../ui/src";
 
 @theme {
   --color-fountain-blue: #4DB6AC;

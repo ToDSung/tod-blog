@@ -56,7 +56,7 @@ Do not: do not "opportunistically" fix bugs or change anything beyond formatting
 Goal: research "{question}", to support {what downstream decision}.
 Source priority: official docs > source code > high-credibility blogs; every conclusion must cite a source URL or file:line.
 Recency requirement: {e.g., information applicable to Next.js 15 / React 19; articles predating 2024 must be verified as still valid}.
-Output: write to Markdown at {.agents/docs/research-{topic}.md}, including: TL;DR (≤5 lines), an options comparison table, recommendation with rationale, and a list of open questions.
+Output: write to Markdown at {.agents/research/{topic}.md}, including: TL;DR (≤5 lines), an options comparison table, recommendation with rationale, and a list of open questions.
 Acceptance criteria: the TL;DR must let someone who hasn't read the full document make a decision directly; mark anything not found as "not found" rather than leaving it blank or guessing.
 ```
 

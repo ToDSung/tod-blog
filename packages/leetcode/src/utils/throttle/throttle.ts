@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- generic must accept any function signature
 const throttle = <T extends (...args: any[]) => any>(
   fn: T,
   delay: number

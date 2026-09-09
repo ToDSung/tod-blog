@@ -12,9 +12,14 @@ Load these ONLY when the trigger applies. Do not preload them all.
 | Decide: retry vs. change approach, escalate, declare done, or ask the user | [.agents/docs/judgment-rubrics.md](.agents/docs/judgment-rubrics.md) |
 | Write a delegation prompt (search / implement / refactor / research / review) | [.agents/docs/delegation-templates.md](.agents/docs/delegation-templates.md) |
 | Edit any file under `.agents/` or this AGENTS.md itself | [.agents/docs/maintenance.md](.agents/docs/maintenance.md) |
+| Add or modify a component under `packages/ui/src/` (including any `shadcn add`) | [.agents/docs/ui-conventions.md](.agents/docs/ui-conventions.md) |
+| Write or modify source code in any package (comments, JSDoc, `eslint-disable`, `@ts-expect-error`) | [.agents/docs/code-comments.md](.agents/docs/code-comments.md) |
 | Add a backend / API / server to this repo | [.agents/docs/backend-roadmap.md](.agents/docs/backend-roadmap.md) |
 | Start a long or ambitious session; or something feels off about these docs | [.agents/docs/letter-to-future-sessions.md](.agents/docs/letter-to-future-sessions.md) |
 | Understand why these rules exist | [.agents/docs/harness-diagnosis.md](.agents/docs/harness-diagnosis.md) |
+| Write or revise any document (`specs/`, `.agents/docs/`, READMEs) | [.agents/docs/writing-standards.md](.agents/docs/writing-standards.md) |
+
+Prose written in this repo — internal documents and replies to the owner alike — follows that writing standard: Taiwan Traditional Chinese usage, sparing Markdown emphasis, every "done" backed by evidence. It builds on the `iso-24495-skill` plain-language skill; read the standard before writing a document, not after.
 
 Lessons learned live in [.agents/docs/lessons.md](.agents/docs/lessons.md) — append new entries there per the format in maintenance.md.
 
@@ -64,6 +69,7 @@ This machine: Windows 11, Chinese locale (cp950), PowerShell 5.1 primary shell.
 - PowerShell 5.1: no `&&` / `||` (use `A; if ($?) { B }`), no ternary/`??`/`?.`, default file encoding UTF-16 LE (always pass `-Encoding utf8` when writing files other tools will read), don't use `2>&1` on native executables.
 - Prefer dedicated tools (Read/Grep/Glob/Edit/Write) over shell for file operations; use the Bash tool for POSIX one-liners like `diff -rq`.
 - Paths: repo is `D:\code\tod-blog` (Git Bash: `/d/code/tod-blog`).
+- **pnpm not on agent-shell PATH** (husky hooks need it — commit fails with exit 127 otherwise). Before `git commit` in Git Bash: `export PATH="/c/Users/user/AppData/Roaming/fnm/node-versions/v24.11.1/installation:$PATH"` (version segment changes on Node upgrades — `ls /c/Users/user/AppData/Roaming/fnm/node-versions` for the current one). `gh` is not installed and the remote is SSH: for PRs, push the branch and give the user a prefilled `https://github.com/ToDSung/tod-blog/compare/main...<branch>?quick_pull=1&title=...` link.
 
 ## Linting & formatting
 
@@ -73,6 +79,7 @@ This machine: Windows 11, Chinese locale (cp950), PowerShell 5.1 primary shell.
 
 ## Git hooks & commits
 
+- **Commit only when the user asks.** Finish the change, verify it, report what you did, and leave the result in the working tree for the user to read; the user decides when it becomes a commit. The same holds for anything that rewrites or publishes history (`commit --amend`, `rebase`, `reset`, `push`). Subagents never commit — say so in the delegation prompt (see [.agents/docs/delegation-templates.md](.agents/docs/delegation-templates.md)).
 - **Conventional Commits required** — enforced by commitlint (husky `commit-msg` hook).
 - `pre-commit` runs lint-staged; if any staged file is under `packages/leetcode/`, it also runs `pnpm -F leetcode test --findRelatedTests` on those files. (`-F leetcode` filters by directory name and is equivalent to `-F @tod-workspace/leetcode` — both are valid; do not "fix" one into the other.) A failing related test blocks the commit. Never bypass hooks (`--no-verify`) without explicit user approval.
 
@@ -81,7 +88,7 @@ This machine: Windows 11, Chinese locale (cp950), PowerShell 5.1 primary shell.
 Skills are shared across Claude Code, Codex, and Antigravity:
 
 - **`.agents/skills/` is the single source of truth** (read natively by Codex and Antigravity).
-- **`.claude/skills/` contains full copies** (plain directories, NOT junctions/symlinks — verified 2026-07-11). They do not update automatically.
-- After ANY change under `.agents/skills/`, sync: copy the changed skill dir over `.claude/skills/<name>` (delete on both sides when removing), then verify with `diff -rq .agents/skills .claude/skills` (Git Bash). If that diff is non-empty before you started, report it to the user instead of guessing which side wins.
-- `skills-lock.json` tracks installed skills. Install with `npx skills@latest add <owner>/<repo> -a claude-code -a codex -a antigravity -y` (one `-s <name>` per skill; comma lists reportedly not parsed — from prior session experience, unverified against current CLI; if a comma list works, update this line); refresh with `npx skills update`.
-- Known leftover: `.agents/skills/vercel-react-best-practices/` is still on disk/git but absent from the lockfile and `.claude/skills` — deletion candidate, confirm with user first.
+- **`.claude/skills/` is generated, not edited** — it is gitignored and rebuilt from `.agents/skills/` by `scripts/sync-skills.mjs`. Run `pnpm skills:sync` after any change under `.agents/skills/` and after any `npx skills` install; `pnpm install` runs it too. It deletes each target directory before copying, so a symlink the skills CLI leaves behind is replaced by a real copy.
+- `iso-24495-skill` is a **local skill**, deliberately not in `skills-lock.json`: it was cloned from `git@github.com:danyuchn/iso-24495-skill.git` at commit `113656b` and vendored (nested `.git` removed) rather than installed through the skills CLI, so `npx skills update` will not touch it and must not be expected to. To take upstream changes, re-clone into a temp dir, copy the content over `.agents/skills/iso-24495-skill/`, run `pnpm skills:sync`, and update the commit noted here. It backs [.agents/docs/writing-standards.md](.agents/docs/writing-standards.md).
+- `skills-lock.json` tracks CLI-installed skills. Install with `npx skills@latest add <owner>/<repo> -a claude-code -a codex -a antigravity -y` (one `-s <name>` per skill; comma lists reportedly not parsed — from prior session experience, unverified against current CLI; if a comma list works, update this line); refresh with `npx skills update`.
+- `vercel-react-best-practices`, `vercel-composition-patterns` and `shadcn` (official) are CLI-installed: all three are in `skills-lock.json` and have full copies under `.claude/skills`. They serve the `packages/ui` work (specs/ui-library/).

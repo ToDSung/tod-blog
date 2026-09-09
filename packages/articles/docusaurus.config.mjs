@@ -12,7 +12,7 @@ const config = {
   markdown: {
     format: 'mdx',
     mermaid: true,
-    preprocessor: ({ filePath, fileContent }) => {
+    preprocessor: ({ fileContent }) => {
       return fileContent;
     },
     mdx1Compat: {
@@ -39,7 +39,7 @@ const config = {
           sidebarPath: './sidebars.js',
           editUrl:
             'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-          routeBasePath: '/'
+          routeBasePath: '/',
         },
         blog: {
           showReadingTime: true,
@@ -74,7 +74,7 @@ const config = {
             position: 'left',
             label: 'Tutorial',
           },
-          {to: '/blog', label: 'Blog', position: 'left'},
+          { to: '/blog', label: 'Blog', position: 'left' },
           {
             href: 'https://github.com/ToDSung',
             label: 'GitHub',

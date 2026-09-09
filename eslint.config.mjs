@@ -1,13 +1,38 @@
 import eslint from '@eslint/js';
-import prettier from 'eslint-plugin-prettier/recommended';
+import comments from '@eslint-community/eslint-plugin-eslint-comments/configs';
 import importPlugin from 'eslint-plugin-import';
-import tseslint from 'typescript-eslint';
+import jsdoc from 'eslint-plugin-jsdoc';
+import prettier from 'eslint-plugin-prettier/recommended';
+import reactPlugin from 'eslint-plugin-react';
+import reactHooks from 'eslint-plugin-react-hooks';
 import globals from 'globals';
+import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   prettier,
+  comments.recommended,
+  {
+    linterOptions: {
+      reportUnusedDisableDirectives: 'error',
+    },
+    rules: {
+      '@eslint-community/eslint-comments/disable-enable-pair': [
+        'error',
+        { allowWholeFile: true },
+      ],
+      '@eslint-community/eslint-comments/require-description': 'error',
+      '@typescript-eslint/ban-ts-comment': [
+        'error',
+        {
+          'ts-expect-error': 'allow-with-description',
+          minimumDescriptionLength: 10,
+        },
+      ],
+      'no-warning-comments': ['error', { location: 'anywhere' }],
+    },
+  },
   {
     plugins: {
       import: importPlugin,
@@ -80,14 +105,97 @@ export default tseslint.config(
     files: ['**/*.js', '**/*.mjs', '**/*.cjs'],
     ...tseslint.configs.disableTypeChecked,
     languageOptions: {
+      ...tseslint.configs.disableTypeChecked.languageOptions,
       globals: {
         ...globals.node,
       },
     },
     rules: {
+      ...tseslint.configs.disableTypeChecked.rules,
       '@typescript-eslint/no-require-imports': 'off',
       '@typescript-eslint/no-var-requires': 'off',
       'no-undef': 'off',
+    },
+  },
+  {
+    // Test and Jest config files are excluded from package tsconfigs,
+    // so type-aware parsing cannot resolve them from the repo root.
+    files: ['**/*.spec.ts', '**/*.test.ts', '**/jest.config.ts'],
+    ...tseslint.configs.disableTypeChecked,
+  },
+  {
+    // Storybook and Vitest config/setup files are excluded from package
+    // tsconfigs, so type-aware parsing cannot resolve them from the repo root.
+    files: [
+      '**/.storybook/**/*.ts',
+      '**/.storybook/**/*.tsx',
+      '**/vitest.config.ts',
+      '**/vitest.setup*.ts',
+      '**/vitest.shims.d.ts',
+    ],
+    ...tseslint.configs.disableTypeChecked,
+  },
+  {
+    // Rules gating packages/ui live here, not in its package config: flat
+    // config only loads the cwd's file (ui-conventions.md §4).
+    files: ['packages/ui/src/**/*.ts', 'packages/ui/src/**/*.tsx'],
+    plugins: {
+      jsdoc,
+      react: reactPlugin,
+      'react-hooks': reactHooks,
+    },
+    rules: {
+      ...reactPlugin.configs.flat.recommended.rules,
+      ...reactPlugin.configs.flat['jsx-runtime'].rules,
+      ...reactHooks.configs['recommended-latest'].rules,
+      // The preset ships this one as a warning, and nothing fails on warnings.
+      'react-hooks/exhaustive-deps': 'error',
+      'jsdoc/informative-docs': 'error',
+      'jsdoc/no-blank-blocks': 'error',
+      'jsdoc/no-types': 'error',
+      'react/function-component-definition': [
+        'error',
+        {
+          namedComponents: 'arrow-function',
+          unnamedComponents: 'arrow-function',
+        },
+      ],
+      'func-style': ['error', 'expression', { allowArrowFunctions: true }],
+      'react/jsx-sort-props': [
+        'error',
+        {
+          callbacksLast: true,
+          ignoreCase: true,
+          reservedFirst: ['key', 'ref'],
+        },
+      ],
+      '@typescript-eslint/no-empty-object-type': [
+        'error',
+        { allowInterfaces: 'with-single-extends' },
+      ],
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: "ImportNamespaceSpecifier[local.name='React']",
+          message:
+            "Import React APIs one by one (e.g. import type { ComponentProps } from 'react'), not as a namespace.",
+        },
+        {
+          selector: "TSQualifiedName[left.name='React']",
+          message:
+            'Use the imported type directly (ComponentProps), not React.ComponentProps.',
+        },
+        {
+          selector: "MemberExpression[object.name='React']",
+          message:
+            'Import the React API by name instead of reaching through the React namespace.',
+        },
+        {
+          selector: 'ExportNamedDeclaration:not([declaration]):not([source])',
+          message:
+            'Export inline with `export const` (or `export default` for the main component); no trailing export block. Re-exports with `from` are fine.',
+        },
+      ],
     },
   },
   {
@@ -97,6 +205,15 @@ export default tseslint.config(
     },
   },
   {
-    ignores: ['**/.next/**', '**/dist/**', '**/node_modules/**', '**/build/**'],
+    ignores: [
+      '**/.next/**',
+      '**/dist/**',
+      '**/node_modules/**',
+      '**/build/**',
+      '**/out/**',
+      '**/.docusaurus/**',
+      '**/coverage/**',
+      '**/storybook-static/**',
+    ],
   }
 );
