@@ -80,3 +80,7 @@ storybook-static/
 
 # agent governance backups
 .agents/backup/
+
+# generated from .agents/skills by scripts/sync-skills.mjs
+.claude/skills/
+.claude/settings.local.json
