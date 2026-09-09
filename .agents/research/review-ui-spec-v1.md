@@ -1,8 +1,8 @@
 # Adversarial Review: specs/ui-library/spec.md + plan.md (v1)
 
 Reviewer stance: find how this fails, not confirm it works. Scope: `specs/ui-library/spec.md`,
-`specs/ui-library/plan.md`, cross-checked against `.agents/docs/research-ui-stack.md`,
-`.agents/docs/research-ui-tooling.md`, and repo reality (`package.json` files, `next.config.js`,
+`specs/ui-library/plan.md`, cross-checked against `.agents/research/research-ui-stack.md`,
+`.agents/research/research-ui-tooling.md`, and repo reality (`package.json` files, `next.config.js`,
 `eslint.config.mjs`, `tsconfig*.json`, `.husky/`, `AGENTS.md`). No files modified.
 
 Date of review: 2026-07-13.

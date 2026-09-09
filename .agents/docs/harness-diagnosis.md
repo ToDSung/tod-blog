@@ -25,7 +25,7 @@ This document is the basis for all subsequent governance files that follow. The 
 
 **Fix (now codified, see [model-dispatch.md](model-dispatch.md) for details):**
 
-- Large reads, repo scans, web lookups, and batch file edits are always delegated to a subagent (Explore / general-purpose); the main conversation only receives conclusions and `file:line` references.
+- Broad searches and independent batch work go to a subagent; the main conversation receives conclusions and `file:line` references, not file dumps. The current boundary is [model-dispatch.md](model-dispatch.md) §1 — it is narrower than what this diagnosis originally proposed, because cold-start delegation turned out to have its own failure mode.
 - Never Read: `pnpm-lock.yaml`, `node_modules/`, `out/`, `build/`, `.next/`. To check a dependency version, use `Grep` or read that package's own `package.json`.
 - Before reading a file, first think "do I need the whole file or just a section?"; for files over 300 lines, locate with Grep first, then read with an offset/limit.
 
