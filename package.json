@@ -9,7 +9,8 @@
   "scripts": {
     "commitlint": "commitlint --edit",
     "lintStaged": "lint-staged",
-    "prepare": "husky"
+    "prepare": "husky && node scripts/sync-skills.mjs",
+    "skills:sync": "node scripts/sync-skills.mjs"
   },
   "dependencies": {
     "next": "^15.5.20",
