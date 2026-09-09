@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "deny": [
+      "Read(./pnpm-lock.yaml)",
+      "Read(./**/node_modules/**)",
+      "Read(./packages/tod-blog/out/**)",
+      "Read(./packages/tod-blog/.next/**)",
+      "Read(./packages/articles/build/**)",
+      "Read(./packages/articles/.docusaurus/**)",
+      "Read(./packages/ui/dist/**)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .claude/hooks/lint-edited-file.mjs",
+            "asyncRewake": true,
+            "timeout": 120,
+            "statusMessage": "ESLint on edited file"
+          }
+        ]
+      }
+    ]
+  }
+}
