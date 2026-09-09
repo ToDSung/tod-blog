@@ -74,3 +74,9 @@ Format and pruning rules are in [maintenance.md](maintenance.md) §3–§4. New 
 - Mistake: agent 改完測試與 story 後自行 commit，owner 沒看過 diff。查遍 AGENTS.md、`.agents/docs/`、`specs/ui-library/` 只有 commit 格式、hooks 與「每個 Phase 至少一個 commit」三條規則，沒有任何一條說 commit 要先經 owner 同意 —— 那條規則只存在於 Claude Code 的預設提示，Codex 與 Antigravity 讀不到，repo 內也沒有東西擋。
 - Fix: `git reset --soft` 把四個 Checkbox commit 併成一個（tree hash 前後同為 `8ac1407`，內容零變動），並把「除非 owner 要求，否則不 commit、不改寫歷史、不 push」寫進 AGENTS.md。
 - Codified?: written into AGENTS.md §Git hooks & commits
+
+## 2026-09-09 cva 用 `[&_span]` 調子元素尺寸，同時打中 Radix 的 Indicator
+- Context: `RadioGroupItem` 加 sm/md/lg 三階，圓點大小寫成 cva 的 `[&_span]:size-*`。
+- Mistake: Radix 的 `RadioGroup.Indicator` 本身就是一個 `span`，所以 `[&_span]:size-2` 同時套到 Indicator 與圓點，把 Indicator 的盒子縮成 8px 卡在左上角。圓點當時是 `absolute` 加 `-translate-x-1/2 -translate-y-1/2`，位置不受 Indicator 的盒子影響，所以畫面正常、八條 browser 測試也全綠；只有在試著把定位簡化成 flex 置中時，圓點跑成月牙形才露出來。
+- Fix: 給圓點自己的 `data-slot='radio-group-dot'`，選擇器改成 `[&_[data-slot=radio-group-dot]]:size-*`（`Switch` 的 `[&_[data-slot=switch-thumb]]` 已經是這個寫法）。Indicator 盒子正確之後，`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2` 那串整組可刪。抓法是在 browser project 寫一支暫時的測試，用 `page.screenshot({ path })` 把元件放大渲染成 PNG 直接看，看完刪掉。
+- Codified?: proposed（ui-conventions.md §三 加一條：cva 的後代選擇器一律命中 `data-slot`，不要用元素名）
