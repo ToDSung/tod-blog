@@ -17,9 +17,8 @@ Covers: AGENTS.md, CLAUDE.md, `.agents/docs/*`, `.agents/skills/*`. Purpose: let
 
 ## 2. Change process (steps cannot be skipped)
 
-1. **Backup** (Git Bash, one line, `cp` won't create the directory itself so `mkdir -p` is required):
-   `mkdir -p .agents/backup/$(date +%F) && cp <file> .agents/backup/$(date +%F)/`
-2. Make the change. For large new content → open a new file + add one line to AGENTS.md's routing table; don't stuff long content into the body of AGENTS.md itself.
+1. Check the file has no uncommitted changes already (`git status --short <file>`) — git is the backup, and a dirty file means someone else's work is in there. If it is dirty, tell the user before adding to it.
+2. Make the change. For large new content → open a new file + add one line to AGENTS.md's routing table; don't stuff long content into the body of AGENTS.md itself. `.agents/docs/` holds standing rules only; one-off artifacts (research findings, review reports) go in `.agents/research/` and stay out of the routing table.
 3. **Read-back**: re-read the changed file to confirm it's complete and links are valid (referenced files actually exist).
 4. Cross-agent sync check: if you changed `.agents/skills/`, sync `.claude/skills/` too (see the "Cross-agent skills" section in AGENTS.md).
 
@@ -41,8 +40,7 @@ When you do upgrade one, write only the rule. Do not annotate it with where it c
 
 ## 4. Pruning cycle
 
-- lessons.md exceeds **30 entries or 300 lines** → do a consolidation pass: merge duplicates, remove entries that have already been codified (the rule already lives in a formal file, the lessons file doesn't need to keep a copy too), mark entries unseen for over a year in a since-changed environment as stale and delete them. Back up first (§2 step 1).
-- `.agents/backup/` keeps only the most recent **3 backups** per file; delete anything older.
+- lessons.md exceeds **30 entries or 300 lines** → do a consolidation pass: merge duplicates, remove entries that have already been codified (the rule already lives in a formal file, the lessons file doesn't need to keep a copy too), mark entries unseen for over a year in a since-changed environment as stale and delete them.
 - AGENTS.md exceeds **150 lines** → check what content can be extracted into a docs file plus a one-line route.
 
 ## 5. Conflict resolution

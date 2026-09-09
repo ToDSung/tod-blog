@@ -4,7 +4,7 @@
 
 一句話版本：預設不寫註解；只有程式碼本身講不出來的事才寫，而且一行寫完。
 
-背景是 owner 主要以 agent 開發，而 agent 預設會替每段程式碼加解釋。這些註解重述程式碼、重述官方文件、很快過期，讀的成本高於寫的成本。調查依據與 lint 方案見 [research-code-comments.md](research-code-comments.md)。
+背景是 owner 主要以 agent 開發，而 agent 預設會替每段程式碼加解釋。這些註解重述程式碼、重述官方文件、很快過期，讀的成本高於寫的成本。調查依據與 lint 方案見 [research-code-comments.md](../research/research-code-comments.md)。
 
 ## 一、可以寫的五種情況
 

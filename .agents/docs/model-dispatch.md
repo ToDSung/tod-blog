@@ -1,28 +1,38 @@
 # Model Dispatch Rules (model-dispatch)
 
-Applies to: Claude Code's main conversation (the "commander"). Codex / Antigravity have no equivalent subagent mechanism; when they read this file, they only need to follow the spirit of "the commander doesn't do the work itself" — use built-in search/subtask features instead of pulling large amounts of file content into the main conversation.
+Applies to: Claude Code's main conversation. Codex / Antigravity have no equivalent subagent mechanism; when they read this file, they only need §2 onwards — the reporting contract, the escalation path, and the rule that verification cannot be self-verification.
 
-## 0. Environment facts (measured 2026-07-11; if stale, update per maintenance.md)
+## 0. Environment facts (measured 2026-09-09 against the Agent tool schema in the session prompt; if stale, update per maintenance.md)
 
-- Subagent types available to the Agent tool: `general-purpose` (all tools), `Explore` (read-only search), `Plan` (planning), `claude-code-guide` (Claude Code/API questions).
-- The Agent tool's `model` parameter accepts: `haiku`, `sonnet`, `opus` (`fable` only appears in special sessions — don't rely on it when writing rules; if specifying it fails, fall back to `opus`).
-- **Honest disclosure: this harness's Agent tool has no per-subagent effort/thinking parameter.** Reasoning effort follows the session setting, controlled by the user via the model menu. Any requirement in a document to "run at maximum effort" can only be approximated by choosing a stronger model.
+- Subagent types available to the Agent tool: `claude` (catch-all, all tools), `general-purpose` (all tools), `Explore` (read-only search), `Plan` (planning), `claude-code-guide` (Claude Code/API questions).
+- The Agent tool's `model` parameter accepts: `haiku`, `sonnet`, `opus`, `fable`.
+- It also takes `isolation` (`worktree` gives the subagent its own git worktree) and `run_in_background` (subagents run in the background by default).
+- **There is still no per-subagent effort/thinking parameter.** Reasoning effort follows the session setting, controlled by the user via the model menu. Any requirement in a document to "run at maximum effort" can only be approximated by choosing a stronger model.
 - A subagent is a cold start: it cannot see the main conversation, so the prompt must be self-contained (full paths, background, acceptance criteria).
 
-## 1. The commander doesn't do the work itself
+## 1. Delegation is the exception, not the default
 
-The main conversation's context is the scarcest resource. The following work is always delegated to a subagent; the main conversation only receives conclusions:
+The main conversation does the work. Context compaction and session resume make a long main thread cheaper than a cold-start subagent, and a subagent that cannot see the conversation acts on a second-hand brief: when the prompt names the wrong behaviour, nothing in the subagent's context contradicts it.
+
+Delegate only in these three cases:
+
+1. **Broad search** — the answer needs sweeping many files or naming conventions and only the conclusion matters.
+2. **Independent batch work** that runs in parallel and whose acceptance criteria are mechanically checkable.
+3. **Fresh-context verification** — §5 requires a reviewer who did not write the thing.
+
+Outside those three, do it yourself, however many files it touches. A delegation prompt longer than the change it describes is the signal not to delegate.
+
+The session's own instructions may forbid the Agent tool unless the user asks for it. Those instructions win: ask the user rather than delegating against them.
+
+When you do delegate, this is who gets what:
 
 | Work | Delegate to | model |
 | --- | --- | --- |
 | Scanning the repo, finding files, answering "where is X / how does X work" | Explore | haiku (broad scope or first attempt failed → sonnet) |
 | Extensive web research, reading documentation | general-purpose | sonnet |
 | Batch mechanical edits (changing imports, renaming, applying lint fixes) | general-purpose | sonnet |
-| Implementing a well-scoped feature/bug fix | general-purpose | sonnet |
 | Architecture decisions, cross-package refactor planning | Plan | opus |
 | Reviewing someone else's output | general-purpose (fresh context) | sonnet |
-
-Exception where the main conversation handles it directly: a small change that **simultaneously satisfies "≤3 files" and "<500 lines need to be read before making the change"**, a precise single-file edit, or discussion with the user. If either condition is not met, delegate.
 
 ## 2. The three required parts of a delegation (none optional)
 

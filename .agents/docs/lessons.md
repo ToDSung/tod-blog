@@ -54,7 +54,7 @@ Format and pruning rules are in [maintenance.md](maintenance.md) §3–§4. New 
 ## 2026-09-04 agent 註解重述官方 API 用法，而「只寫 why」的規則只存在 Claude 個人記憶
 - Context: owner 反映 AI 註解過多。盤點 `packages/ui/src/theme/ThemeProvider/ThemeProvider.tsx` 的六段共 16 行註解，以及 `packages/leetcode/src` 的 305 行註解與 7 處沒理由的 `eslint-disable`。
 - Mistake: 六段裡有三段在解釋 `useSyncExternalStore` 第三個參數、`getServerSnapshot` 與 next-themes 的正常用法，官方文件就有。規則只寫在 Claude 的記憶檔 `code-comment-minimalism`，Codex 與 Antigravity 讀不到，repo 內沒有任何文件能讓 `code-review` 的 Standards 軸引用，`ui-conventions.md` 也完全沒提註解。
-- Fix: 規則寫進 `.agents/docs/code-comments.md`（刪除測試、可寫的五種與不能寫的八種、ThemeProvider 逐段判定），AGENTS.md 加路由；調查證據記在 `.agents/docs/research-code-comments.md`。lint 防線接進 root `eslint.config.mjs`（disable 要理由、`@ts-expect-error` 描述至少 10 字、擋 `TODO`、ui 套件擋重述型 JSDoc），用探針檔證明七條規則各命中一次後刪掉探針；`code-review` 加 Redundant Comment smell；`.claude/hooks/lint-edited-file.mjs` 在每次 Edit/Write 後對該檔跑 eslint。
+- Fix: 規則寫進 `.agents/docs/code-comments.md`（刪除測試、可寫的五種與不能寫的八種、ThemeProvider 逐段判定），AGENTS.md 加路由；調查證據記在 `.agents/research/research-code-comments.md`。lint 防線接進 root `eslint.config.mjs`（disable 要理由、`@ts-expect-error` 描述至少 10 字、擋 `TODO`、ui 套件擋重述型 JSDoc），用探針檔證明七條規則各命中一次後刪掉探針；`code-review` 加 Redundant Comment smell；`.claude/hooks/lint-edited-file.mjs` 在每次 Edit/Write 後對該檔跑 eslint。
 - Codified?: written into .agents/docs/code-comments.md
 
 ## 2026-09-07 shadcn registry 改用外部 `cn` 套件，本地 wrapper 跟著退場

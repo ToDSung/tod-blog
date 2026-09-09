@@ -54,7 +54,7 @@ Before delivering any change:
 1. **Changed JS/TS** → `npx eslint .` is clean for that scope; changed leetcode → the relevant tests pass.
 2. **Changed a tod-blog page** → `pnpm -F tod-blog build` succeeds (the static export has zero tolerance for server-only APIs; the build is the only cheap behavioral verification).
 3. **Changed articles content** → `pnpm -F articles build` succeeds (Docusaurus will catch broken links).
-4. **Changed a `.agents/` governance file** → follow [maintenance.md](maintenance.md): backup first, read-back after.
+4. **Changed a `.agents/` governance file** → follow [maintenance.md](maintenance.md): clean tree before, read-back after.
 5. **Wrote a new rule/document** → ask yourself "could a Sonnet that hasn't read this conversation follow it?" — an observable definition: it doesn't need to ask any clarifying questions and can produce output that passes the acceptance criteria. If any part would require guessing, add a concrete example.
 
 - ✅ Positive example: after changing one shared component in `components/`, you ran the tod-blog build and confirmed the three pages referencing it all exported successfully.
