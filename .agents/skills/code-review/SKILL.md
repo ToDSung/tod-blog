@@ -50,10 +50,11 @@ Each smell reads *what it is* → *how to fix*; match it against the diff:
 - **Repeated Switches** — the same `switch`/`if`-cascade on the same type recurs across the change. → replace with polymorphism, or one map both sites share.
 - **Shotgun Surgery** — one logical change forces scattered edits across many files in the diff. → gather what changes together into one module.
 - **Divergent Change** — one file or module is edited for several unrelated reasons. → split so each module changes for one reason.
-- **Speculative Generality** — abstraction, parameters, or hooks added for needs the spec doesn't have. → delete it; inline back until a real need shows.
+- **Speculative Generality** — abstraction, parameters, or hooks added for needs the spec doesn't have. The commonest form is an exported function, hook, or file with exactly one call site — count the callers (`grep`) before judging. → delete it; inline back until a second caller shows.
 - **Message Chains** — long `a.b().c().d()` navigation the caller shouldn't depend on. → hide the walk behind one method on the first object.
-- **Middle Man** — a class or function that mostly just delegates onward. → cut it, call the real target direct.
+- **Middle Man** — a class or function that mostly just delegates onward, including a hook or helper that exists only to be called once by its owner. → cut it, call the real target direct.
 - **Refused Bequest** — a subclass or implementer that ignores or overrides most of what it inherits. → drop the inheritance, use composition.
+- **Redundant Comment** — a comment that restates the code or an official API's normal behaviour, a section-header comment, commented-out code, or an `eslint-disable` / `@ts-expect-error` without a reason. Apply the deletion test to every comment in the diff: would a reader be misled without it? → delete it, or cut it to one line that states the why (rule: `.agents/docs/code-comments.md`).
 
 ### 4. Spawn both sub-agents in parallel
 
