@@ -1,7 +1,6 @@
 import lodashGet from 'lodash/get';
 
-// eslint-disable-next-line no-useless-escape
-const regex = /[\[\]\.]/g;
+const regex = /[[\].]/g;
 
 const get = (
   object: Record<string, unknown>,

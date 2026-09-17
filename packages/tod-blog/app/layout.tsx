@@ -1,5 +1,6 @@
 import '@/styles/globals.css';
 
+import ThemeProvider from '@tod-workspace/ui/theme/ThemeProvider';
 import { Caveat } from 'next/font/google';
 
 import type { ReactNode } from 'react';
@@ -33,18 +34,20 @@ interface RootLayoutProps {
 
 const RootLayout = ({ children }: RootLayoutProps) => {
   return (
-    <html lang='en'>
+    <html suppressHydrationWarning lang='en'>
       <head />
       <body className={caveat.className}>
-        <main
-          id='app'
-          className='bg-default-canvas text-default-text flex min-h-screen justify-center px-2 text-justify'
-        >
-          <Navbar />
-          <div className='relative mt-[3.2rem] flex w-full justify-center sm:w-[80vw]'>
-            {children}
-          </div>
-        </main>
+        <ThemeProvider>
+          <main
+            id='app'
+            className='bg-default-canvas text-default-text flex min-h-screen justify-center px-2 text-justify'
+          >
+            <Navbar />
+            <div className='relative mt-[3.2rem] flex w-full justify-center sm:w-[80vw]'>
+              {children}
+            </div>
+          </main>
+        </ThemeProvider>
       </body>
     </html>
   );

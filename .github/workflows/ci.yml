@@ -1,0 +1,59 @@
+# Quality gate (spec D12): deterministic verification independent of whichever
+# agent produced the code. Local hooks can be bypassed; this cannot.
+name: CI
+
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint (repo-wide)
+        run: npx eslint .
+
+      - name: Typecheck ui
+        run: pnpm -F @tod-workspace/ui typecheck
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+
+      - name: Install Playwright chromium
+        run: pnpm -F @tod-workspace/ui exec playwright install --with-deps chromium
+
+      - name: Test ui (unit + dom + browser)
+        run: pnpm -F @tod-workspace/ui test
+
+      - name: Build Storybook
+        run: pnpm -F @tod-workspace/ui storybook:build
+
+      - name: Build tod-blog (static export)
+        run: pnpm -F tod-blog build
+
+      - name: Test leetcode
+        run: pnpm -F @tod-workspace/leetcode test
+
+      - name: Build articles
+        run: pnpm -F articles build

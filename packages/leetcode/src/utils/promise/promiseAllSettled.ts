@@ -22,7 +22,7 @@ const promiseAllSettled = <T>(args: Promise<T>[]): Promise<Return<T>[]> => {
             resolve(result);
           }
         },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- a rejection reason has no type
         (error: any) => {
           result[index] = { status: 'rejected', reason: error };
           completedCount++;
