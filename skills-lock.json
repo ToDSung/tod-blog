@@ -55,6 +55,12 @@
       "skillPath": "skills/productivity/handoff/SKILL.md",
       "computedHash": "87e353708ab36062eac54ddb593a97ca553c0cb4bfa1ed1fdaf68520700723f1"
     },
+    "i-have-adhd": {
+      "source": "ayghri/i-have-adhd",
+      "sourceType": "github",
+      "skillPath": "skills/i-have-adhd/SKILL.md",
+      "computedHash": "2be8f3214ebd0907429eafacc95c1cc3b4f21fe9d1892a30df9be7f32dc09d65"
+    },
     "implement": {
       "source": "mattpocock/skills",
       "sourceType": "github",
