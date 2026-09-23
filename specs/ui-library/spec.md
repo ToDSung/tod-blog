@@ -110,6 +110,8 @@ Overlay 類：`dialog` `sheet` `popover` `tooltip` `dropdown-menu` `alert-dialog
 
 `IconButton` 不是 CLI 產出，而是 `Button` 的 icon-only 包裝（D14），但它是按鈕面的一部分，所以同樣放 `src/components/`，不進 `composed/`。
 
+`field` 只收 `Field`、`FieldLabel`、`FieldDescription`、`FieldError` 四個；上游其餘子元件（`FieldSet`、`FieldLegend`、`FieldGroup`、`FieldContent`、`FieldTitle`、`FieldSeparator`）與 `responsive` 排列、選項卡片樣式，在出現使用情境前不收。`FieldError` 只吃 `children`，不收上游的 `errors` 陣列。
+
 ### Tier 2 — 自組元件（中～高難度）
 
 | 元件 | 組裝方式 | 難度 |
