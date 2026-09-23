@@ -116,6 +116,7 @@ Overlay 類：`dialog` `sheet` `popover` `tooltip` `dropdown-menu` `alert-dialog
 
 | 元件 | 組裝方式 | 難度 |
 | --- | --- | --- |
+| `TextField` | Field + FieldLabel + Input + FieldDescription + FieldError；以 `useId` 自動接上 `htmlFor`、`aria-describedby`、`aria-invalid`，對外只給 `label`、`description`、`error`；`error` 出現時取代 `description`，輸入框下方固定保留一行高度，避免錯誤出現或消失時版面跳動 | 低 |
 | `CopyButton` | Button + `navigator.clipboard` + 成功狀態回饋 | 中 |
 | `CodeBlock` | Shiki（fine-grained）輸出 + CopyButton + 語言標籤 | 高 |
 | `Callout` | Alert 為基底，info/warning/danger/tip variants | 中 |
