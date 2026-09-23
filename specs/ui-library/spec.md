@@ -112,6 +112,8 @@ Overlay 類：`dialog` `sheet` `popover` `tooltip` `dropdown-menu` `alert-dialog
 
 `field` 只收 `Field`、`FieldLabel`、`FieldDescription`、`FieldError` 四個；上游其餘子元件（`FieldSet`、`FieldLegend`、`FieldGroup`、`FieldContent`、`FieldTitle`、`FieldSeparator`）與 `responsive` 排列、選項卡片樣式，在出現使用情境前不收。`FieldError` 只吃 `children`，不收上游的 `errors` 陣列。
 
+`input-group` 不收 `InputGroupTextarea`、`InputGroupText` 與 `block-start`、`block-end` 排列；框內的文字直接放進 `InputGroupAddon`。尺寸由外框 `InputGroup` 的 `size`（`sm` / `md` / `lg`，高度與 Input 相同）決定，框內輸入文字與按鈕跟著縮放；只有圖示的框內按鈕用另加的 `InputGroupIconButton`（`aria-label` 必填）。focus、無效、停用、唯讀四種狀態都畫在外框上，樣子和單獨的 Input 相同。
+
 `table` 暫緩，Phase 2.c 先不做。
 
 `breadcrumb` 與 `pagination` 暫緩，Phase 2.d 先不做。
