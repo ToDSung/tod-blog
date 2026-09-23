@@ -1,6 +1,6 @@
 # Spec: `packages/ui` — 共用 UI Library（@tod-workspace/ui）
 
-Status: Phase 1（腳手架、跨套件接線、主題系統、測試地基、CI、元件規範）已完成並通過審查；Phase 2 起尚未開始。
+Status: Phase 1（腳手架、跨套件接線、主題系統、測試地基、CI、元件規範）已完成並通過審查。Phase 2 進行中：2.a 表單批次已完成，2.b–2.d 只有 `DropdownMenu`、`Separator` 已進場；Tier 2 的 `TextField` 已提前完成。Phase 3 起尚未開始。
 研究依據：[.agents/research/research-ui-stack.md](../../.agents/research/research-ui-stack.md)、[.agents/research/research-ui-tooling.md](../../.agents/research/research-ui-tooling.md)
 執行計畫：[plan.md](plan.md)
 
@@ -33,6 +33,7 @@ Status: Phase 1（腳手架、跨套件接線、主題系統、測試地基、CI
 | D13 | **元件檔案佈局與撰寫格式**：一個元件一個 PascalCase 資料夾（`Button/Button.tsx` + `Button.stories.tsx` + `index.ts`）；元件、hook、工具函式一律 arrow function；React API 一條一條具名匯入（禁止 `import * as React` 與 `React.` 前綴）；匯出就地寫，主元件 `export default`、其餘 `export const`，禁止檔尾 `export { … };` 區塊；props 型別用 `interface <元件名>Props` 具名宣告並匯出（不寫行內型別、不用 `type`）；props 一律 a-z 排序、事件處理器（`on` 開頭）排在其後，型別宣告、解構參數、JSX 傳值三處同序；複合元件的子元件也是一元件一資料夾，巢狀在家族主元件資料夾底下（`DropdownMenu/DropdownMenuItem/`），家族主元件的 `index.ts` 兼當該家族的 barrel，子元件的 default 與 props 型別都由它轉出，story 與測試則整族共用主元件資料夾裡的那一份。細則與 shadcn 後處理步驟見 [.agents/docs/ui-conventions.md](../../.agents/docs/ui-conventions.md) | shadcn CLI 產出的是 kebab-case 平鋪檔加宣告式 function，兩者都要後處理，所以規範必須連同後處理步驟一起寫下來，否則 Phase 2 批次會照 CLI 原樣進倉。子元件同樣一檔一元件：一個檔塞十五個元件在 review 與定位上都吃虧 |
 | D14 | **按鈕 API**：`Button` 的 size 收斂為 `sm` / `md` / `lg`，預設 `md`（移除 `xs`）；icon-only 按鈕獨立成 `IconButton`，`size` 同三階、`aria-label` 型別上必填，內部組合 `Button` 並以 `size-*` + `p-0` 覆蓋高度與內距，variant 沿用 `buttonVariants` | `default` 沒說出大小，`xs` 在 8px 級距上沒有實際用途，icon 尺寸與文字尺寸擠在同一個 union 讓型別無法表達「圖示按鈕必須有可及名稱」。`IconButton` 組合 `Button` 而不另開一套 cva，按鈕外觀維持單一來源 |
 | D15 | **RadioGroupItem 的選取樣式不跟 nova preset**：選取時不填底色，用 `data-checked:border-primary` 加一顆 `bg-primary` 圓點；`aria-invalid` 在選取態維持 destructive 邊框，不回 primary | nova 的 radio 是填滿整顆圓再挖一個前景色的洞，跟同一張表單裡的 Checkbox（填滿方塊）在視覺重量上太接近；radio 是使用者靠形狀認出來的控制項，為辨識度偏離 preset 划算 |
+| D16 | **模態 overlay 的層次不跟 nova preset**：遮罩用 `bg-black/50`，不加 `backdrop-blur`；內容框在 `ring-1 ring-foreground/10` 之外加 `shadow-lg`。`Dialog`、`AlertDialog`、`Sheet` 共用這組數值 | nova 的遮罩是 `bg-black/10`、內容框沒有陰影；在 professional 亮色主題下 `--popover` 與 `--background` 的亮度只差 1.6%，框與頁面幾乎分不開。模態元件要讓人一眼看出「現在只能處理這個框」，層次必須明顯 |
 
 ## 3. 技術棧與版本（研究驗證，2026-07-13）
 
@@ -113,6 +114,8 @@ Overlay 類：`dialog` `sheet` `popover` `tooltip` `dropdown-menu` `alert-dialog
 `field` 只收 `Field`、`FieldLabel`、`FieldDescription`、`FieldError` 四個；上游其餘子元件（`FieldSet`、`FieldLegend`、`FieldGroup`、`FieldContent`、`FieldTitle`、`FieldSeparator`）與 `responsive` 排列、選項卡片樣式，在出現使用情境前不收。`FieldError` 只吃 `children`，不收上游的 `errors` 陣列。
 
 `input-group` 不收 `InputGroupTextarea` 與 `block-start`、`block-end` 排列。尺寸由外框 `InputGroup` 的 `size`（`sm` / `md` / `lg`，高度與 Input 相同）決定，框內輸入文字與按鈕跟著縮放；只有圖示的框內按鈕用另加的 `InputGroupIconButton`（`aria-label` 必填）。
+
+`dialog` 收上游全部子元件。`DialogContent` 右上角的關閉鈕改用 `IconButton`（`sm`、`ghost`，`aria-label="Close"`），不沿用上游的 `Button` 加 `sr-only` 文字。`DialogFooter` 不加上游的 `bg-muted/50` 底色，與內容框同色，只用 `border-t` 分隔。
 
 ### Tier 2 — 自組元件（中～高難度）
 
