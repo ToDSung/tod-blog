@@ -1,6 +1,6 @@
 # Spec: `packages/ui` — 共用 UI Library（@tod-workspace/ui）
 
-Status: Phase 1（腳手架、跨套件接線、主題系統、測試地基、CI、元件規範）已完成並通過審查。Phase 2 進行中：2.a 表單批次已完成，2.b–2.d 只有 `DropdownMenu`、`Separator` 已進場；Tier 2 的 `TextField` 已提前完成。Phase 3 起尚未開始。
+Status: Phase 1（腳手架、跨套件接線、主題系統、測試地基、CI、元件規範）已完成並通過審查。Phase 2 進行中：2.a 表單批次已完成，2.b–2.d 只有 `Dialog`、`AlertDialog`、`Sheet`、`DropdownMenu`、`Separator` 已進場；Tier 2 的 `TextField` 已提前完成。Phase 3 起尚未開始。
 研究依據：[.agents/research/research-ui-stack.md](../../.agents/research/research-ui-stack.md)、[.agents/research/research-ui-tooling.md](../../.agents/research/research-ui-tooling.md)
 執行計畫：[plan.md](plan.md)
 
@@ -120,6 +120,8 @@ Overlay 類：`dialog` `sheet` `popover` `tooltip` `dropdown-menu` `alert-dialog
 `dialog` 收上游全部子元件，但不收 `DialogFooter` 的 `showCloseButton`：footer 要關閉鈕就自己放 `DialogClose`。`DialogContent` 右上角的關閉鈕改用 `IconButton`（`sm`、`ghost`，`aria-label="Close"`），不沿用上游的 `Button` 加 `sr-only` 文字。`DialogFooter` 不加上游的 `bg-muted/50` 底色，與內容框同色，只用 `border-t` 分隔。
 
 `alert-dialog` 收上游 `AlertDialogMedia` 以外的子元件，遮罩、陰影與 footer 同 `dialog`（D16）。`AlertDialogContent` 的 `size` 是寬度，只有 `sm` / `md` 兩階，預設 `md`：`md` 在 `sm` 斷點以上放寬到 `max-w-sm`，`sm` 維持 `max-w-xs` 並把 footer 按鈕排成兩欄；視窗比上限窄時，內容框左右各留 16px。`AlertDialogHeader` 比照 `DialogHeader` 一律靠左，不照上游在手機寬度與 `sm` 尺寸置中。`AlertDialogAction` 與 `AlertDialogCancel` 的 `size` 跟 `Button` 同為 `sm` / `md` / `lg`。
+
+`sheet` 收上游全部子元件，另外比照 `dialog` 匯出 `SheetOverlay` 與 `SheetPortal`。遮罩與陰影同 `dialog`（D16），關閉鈕同 `DialogContent` 改用 `IconButton`，位置也相同（`top-2 right-2`）。內容框的動畫維持上游的 `duration-200`，比其他模態框的 `duration-100` 長，因為滑入的距離比淡入縮放遠。`SheetContent` 的 `side` 決定從哪一邊滑入（`top` / `right` / `bottom` / `left`，預設 `right`）。`SheetFooter` 比照 `DialogFooter` 加 `border-t` 分隔，並保留上游的 `mt-auto` 貼齊底部；按鈕不照上游直排，改成橫排平分寬度，主要動作放最右側。
 
 `table` 暫緩，Phase 2.c 先不做。
 
