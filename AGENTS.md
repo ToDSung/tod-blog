@@ -18,6 +18,7 @@ Load these ONLY when the trigger applies. Do not preload them all.
 | Start a long or ambitious session; or something feels off about these docs | [.agents/docs/letter-to-future-sessions.md](.agents/docs/letter-to-future-sessions.md) |
 | Understand why these rules exist | [.agents/docs/harness-diagnosis.md](.agents/docs/harness-diagnosis.md) |
 | Write or revise any document (`specs/`, `.agents/docs/`, READMEs) | [.agents/docs/writing-standards.md](.agents/docs/writing-standards.md) |
+| Install, update, or edit a skill (`.agents/skills/`, `skills-lock.json`); never edit `.claude/skills/` — it is generated | [.agents/docs/skills.md](.agents/docs/skills.md) |
 
 Prose written in this repo — internal documents and replies to the owner alike — follows that writing standard: Taiwan Traditional Chinese usage, sparing Markdown emphasis, every "done" backed by evidence. It builds on the `iso-24495-skill` plain-language skill; read the standard before writing a document, not after.
 
@@ -27,38 +28,11 @@ Lessons learned live in [.agents/docs/lessons.md](.agents/docs/lessons.md) — a
 
 pnpm workspace monorepo (`packages/*`) — ToD's personal blog and AI-development testbed. The owner primarily develops via AI agents and uses this repo to probe their limits; expect experimental branches and agent-authored code.
 
-- **`packages/tod-blog`** (`tod-blog`) — Next.js 15 App Router site, React 19, Tailwind CSS 4. Statically exported (`output: 'export'` → `out/`), sitemap via `next-sitemap` postbuild. Pages in `app/` (landing, `cv/`, `survey/`), shared UI in `components/`.
-- **`packages/articles`** (`articles`) — Docusaurus 3 site: blog posts (`blog/`) and docs (`docs/`), Markdown/MDX, mostly Chinese.
-- **`packages/leetcode`** (`@tod-workspace/leetcode`) — TypeScript LeetCode solutions. One folder per problem under `src/lib/` named `<number><ProblemName>` (e.g. `0020ValidParentheses`), each with solution + Jest test. Helpers in `src/sort/`, `src/structure/`, `src/utils/`.
-
-TypeScript uses project references: each package's `tsconfig.json` extends `tsconfig.base.json` (strict, composite).
-
 Never read these into context: `pnpm-lock.yaml` (694 KB), `node_modules/`, `out/`, `build/`, `.next/`, `.docusaurus/`. To check a dependency version, Grep the relevant `package.json`.
 
 ## Commands
 
 Use **pnpm** from the repo root; target a package with `-F <name>`.
-
-```sh
-pnpm install                          # install all workspace deps
-
-# tod-blog (Next.js)
-pnpm -F tod-blog dev                  # dev server
-pnpm -F tod-blog build                # static export + sitemap
-pnpm -F tod-blog eslint:fix           # lint & fix this package
-
-# articles (Docusaurus)
-pnpm -F articles start                # dev server
-pnpm -F articles build                # build to build/
-
-# leetcode (Jest — the only package with tests)
-pnpm -F @tod-workspace/leetcode test                                  # all tests
-pnpm -F @tod-workspace/leetcode test src/lib/0020ValidParentheses     # single problem
-pnpm -F @tod-workspace/leetcode test -- -t "test name"                # by test name
-
-# lint everything (flat config at repo root)
-npx eslint .
-```
 
 ## Windows environment gotchas
 
@@ -71,24 +45,8 @@ This machine: Windows 11, Chinese locale (cp950), PowerShell 5.1 primary shell.
 - Paths: repo is `D:\code\tod-blog` (Git Bash: `/d/code/tod-blog`).
 - **pnpm not on agent-shell PATH** (husky hooks need it — commit fails with exit 127 otherwise). Before `git commit` in Git Bash: `export PATH="/c/Users/user/AppData/Roaming/fnm/node-versions/v24.11.1/installation:$PATH"` (version segment changes on Node upgrades — `ls /c/Users/user/AppData/Roaming/fnm/node-versions` for the current one). `gh` is not installed and the remote is SSH: for PRs, push the branch and give the user a prefilled `https://github.com/ToDSung/tod-blog/compare/main...<branch>?quick_pull=1&title=...` link.
 
-## Linting & formatting
-
-- Root `eslint.config.mjs`: type-aware flat config (typescript-eslint + Prettier). Enforced: `import/order` (alphabetized groups, newlines between groups), `sort-imports` (member sorting), `@typescript-eslint/consistent-type-imports` (use `import type`).
-- `packages/leetcode` and `packages/tod-blog` have their own `eslint.config.mjs` extending the root.
-- Prettier config at root (`.prettierrc.json`); lint-staged runs `eslint --fix` + `prettier --write` on staged JS/TS.
-
 ## Git hooks & commits
 
 - **Commit only when the user asks.** Finish the change, verify it, report what you did, and leave the result in the working tree for the user to read; the user decides when it becomes a commit. The same holds for anything that rewrites or publishes history (`commit --amend`, `rebase`, `reset`, `push`). Subagents never commit — say so in the delegation prompt (see [.agents/docs/delegation-templates.md](.agents/docs/delegation-templates.md)).
 - **Conventional Commits required** — enforced by commitlint (husky `commit-msg` hook).
 - `pre-commit` runs lint-staged; if any staged file is under `packages/leetcode/`, it also runs `pnpm -F leetcode test --findRelatedTests` on those files. (`-F leetcode` filters by directory name and is equivalent to `-F @tod-workspace/leetcode` — both are valid; do not "fix" one into the other.) A failing related test blocks the commit. Never bypass hooks (`--no-verify`) without explicit user approval.
-
-## Cross-agent skills
-
-Skills are shared across Claude Code, Codex, and Antigravity:
-
-- **`.agents/skills/` is the single source of truth** (read natively by Codex and Antigravity).
-- **`.claude/skills/` is generated, not edited** — it is gitignored and rebuilt from `.agents/skills/` by `scripts/sync-skills.mjs`. Run `pnpm skills:sync` after any change under `.agents/skills/` and after any `npx skills` install; `pnpm install` runs it too. It deletes each target directory before copying, so a symlink the skills CLI leaves behind is replaced by a real copy.
-- `iso-24495-skill` is a **local skill**, deliberately not in `skills-lock.json`: it was cloned from `git@github.com:danyuchn/iso-24495-skill.git` at commit `113656b` and vendored (nested `.git` removed) rather than installed through the skills CLI, so `npx skills update` will not touch it and must not be expected to. To take upstream changes, re-clone into a temp dir, copy the content over `.agents/skills/iso-24495-skill/`, run `pnpm skills:sync`, and update the commit noted here. It backs [.agents/docs/writing-standards.md](.agents/docs/writing-standards.md).
-- `skills-lock.json` tracks CLI-installed skills. Install with `npx skills@latest add <owner>/<repo> -a claude-code -a codex -a antigravity -y` (one `-s <name>` per skill; comma lists reportedly not parsed — from prior session experience, unverified against current CLI; if a comma list works, update this line); refresh with `npx skills update`.
-- `vercel-react-best-practices`, `vercel-composition-patterns` and `shadcn` (official) are CLI-installed: all three are in `skills-lock.json` and have full copies under `.claude/skills`. They serve the `packages/ui` work (specs/ui-library/).
