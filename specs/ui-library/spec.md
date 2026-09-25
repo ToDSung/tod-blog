@@ -109,6 +109,8 @@ Overlay 類：`dialog` `sheet` `popover` `tooltip` `dropdown-menu` `alert-dialog
 展示類：`card` `badge` `avatar` `alert` `separator` `skeleton` `table` `accordion` `tabs` `progress` `scroll-area`
 回饋/導航：`sonner`（toast）`breadcrumb` `pagination` `command` `spinner`
 
+複合元件的子元件有使用情境才收：出現在該家族的 story 裡、被另一個保留的子元件在內部渲染，或被 `packages/ui` 以外及 `src/composed/` 的元件使用，三者符合其一。上游其餘子元件在出現使用情境前不收。
+
 `IconButton` 不是 CLI 產出，而是 `Button` 的 icon-only 包裝（D14），但它是按鈕面的一部分，所以同樣放 `src/components/`，不進 `composed/`。
 
 `field` 只收 `Field`、`FieldLabel`、`FieldDescription`、`FieldError` 四個；上游其餘子元件（`FieldSet`、`FieldLegend`、`FieldGroup`、`FieldContent`、`FieldTitle`、`FieldSeparator`）與 `responsive` 排列、選項卡片樣式，在出現使用情境前不收。`FieldError` 只吃 `children`，不收上游的 `errors` 陣列。
@@ -116,6 +118,8 @@ Overlay 類：`dialog` `sheet` `popover` `tooltip` `dropdown-menu` `alert-dialog
 `input-group` 不收 `InputGroupTextarea` 與 `block-start`、`block-end` 排列。尺寸由外框 `InputGroup` 的 `size`（`sm` / `md` / `lg`，高度與 Input 相同）決定，框內輸入文字與按鈕跟著縮放；只有圖示的框內按鈕用另加的 `InputGroupIconButton`（`aria-label` 必填）。
 
 `dialog` 收上游全部子元件。`DialogContent` 右上角的關閉鈕改用 `IconButton`（`sm`、`ghost`，`aria-label="Close"`），不沿用上游的 `Button` 加 `sr-only` 文字。`DialogFooter` 不加上游的 `bg-muted/50` 底色，與內容框同色，只用 `border-t` 分隔。
+
+`alert-dialog` 收上游 `AlertDialogMedia` 以外的子元件，遮罩、陰影與 footer 同 `dialog`（D16）。`AlertDialogContent` 的 `size` 是寬度，只有 `sm` / `md` 兩階，預設 `md`：`md` 在 `sm` 斷點以上放寬到 `max-w-sm`，`sm` 維持 `max-w-xs` 並把 footer 按鈕排成兩欄。`AlertDialogAction` 與 `AlertDialogCancel` 的 `size` 跟 `Button` 同為 `sm` / `md` / `lg`。
 
 ### Tier 2 — 自組元件（中～高難度）
 
