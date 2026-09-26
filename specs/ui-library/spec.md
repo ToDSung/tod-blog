@@ -1,6 +1,6 @@
 # Spec: `packages/ui` — 共用 UI Library（@tod-workspace/ui）
 
-Status: Phase 1（腳手架、跨套件接線、主題系統、測試地基、CI、元件規範）已完成並通過審查。Phase 2 進行中：2.a 表單批次已完成，2.b–2.d 只有 `Dialog`、`AlertDialog`、`Sheet`、`Popover`、`DropdownMenu`、`Separator` 已進場；Tier 2 的 `TextField` 已提前完成。Phase 3 起尚未開始。
+Status: Phase 1（腳手架、跨套件接線、主題系統、測試地基、CI、元件規範）已完成並通過審查。Phase 2 進行中：2.a 表單批次已完成，2.b–2.d 只有 `Dialog`、`AlertDialog`、`Sheet`、`Popover`、`Tooltip`、`DropdownMenu`、`Separator` 已進場；Tier 2 的 `TextField` 已提前完成。Phase 3 起尚未開始。
 研究依據：[.agents/research/research-ui-stack.md](../../.agents/research/research-ui-stack.md)、[.agents/research/research-ui-tooling.md](../../.agents/research/research-ui-tooling.md)
 執行計畫：[plan.md](plan.md)
 
@@ -124,6 +124,8 @@ Overlay 類：`dialog` `sheet` `popover` `tooltip` `dropdown-menu` `alert-dialog
 `sheet` 收上游全部子元件，另外比照 `dialog` 匯出 `SheetOverlay` 與 `SheetPortal`。遮罩與陰影同 `dialog`（D16），關閉鈕同 `DialogContent` 改用 `IconButton`，位置也相同（`top-2 right-2`）。內容框的動畫維持上游的 `duration-200`，比其他模態框的 `duration-100` 長，因為滑入的距離比淡入縮放遠。`SheetContent` 的 `side` 決定從哪一邊滑入（`top` / `right` / `bottom` / `left`，預設 `right`）。`SheetFooter` 比照 `DialogFooter` 加 `border-t` 分隔，並保留上游的 `mt-auto` 貼齊底部；按鈕不照上游直排，改成橫排平分寬度，主要動作放最右側。
 
 `popover` 收上游 `PopoverAnchor` 以外的子元件。`PopoverTitle` 照上游渲染 `div`，props 型別跟著改成 `ComponentProps<'div'>`，不沿用上游寫的 `'h2'`；字級比照 `DialogTitle` 加 `text-base`，與 `text-sm` 的 `PopoverDescription` 分出層次。`PopoverContent` 的 `p-2.5`、`gap-2.5` 與固定寬度 `w-72` 照上游：popover 比模態框輕，不對齊模態內容框的 `p-4`、`gap-4`；寬度也不像選單跟著 trigger 走，所以不設 `min-w-*`。對齊維持上游的 `center`，不跟選單的 `start`：popover 寬度固定，常掛在比它窄的圖示按鈕下方。
+
+`tooltip` 收上游全部子元件。`TooltipContent` 拿掉上游為 `Kbd` 元件寫的 `data-[slot=kbd]` 選擇器（本 repo 沒有 `Kbd`），箭頭另加 `data-slot='tooltip-arrow'`。開關動畫比照其他浮出內容框補上 `duration-100`；進場只留 `data-[state=delayed-open]:*`，上游並列的 `data-open:*` 對不上 Radix tooltip 的狀態值（`delayed-open` / `instant-open`），不會生效。圓角維持上游的 `rounded-md`，不跟 Popover 等內容框的 `rounded-lg`：tooltip 只有一行字，大圓角會變成膠囊形。也不加 `ring-1 ring-foreground/10` 與陰影：反色底（`bg-foreground`）上的同色框線看不見，與頁面的對比也已經足夠。
 
 `table` 暫緩，Phase 2.c 先不做。
 
