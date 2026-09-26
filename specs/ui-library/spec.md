@@ -1,6 +1,6 @@
 # Spec: `packages/ui` — 共用 UI Library（@tod-workspace/ui）
 
-Status: Phase 1（腳手架、跨套件接線、主題系統、測試地基、CI、元件規範）已完成並通過審查；Phase 2 起尚未開始。
+Status: Phase 1（腳手架、跨套件接線、主題系統、測試地基、CI、元件規範）已完成並通過審查。Phase 2 進行中：2.a 表單批次已完成，2.b–2.d 只有 `Dialog`、`AlertDialog`、`Sheet`、`DropdownMenu`、`Separator` 已進場；Tier 2 的 `TextField` 已提前完成。Phase 3 起尚未開始。
 研究依據：[.agents/research/research-ui-stack.md](../../.agents/research/research-ui-stack.md)、[.agents/research/research-ui-tooling.md](../../.agents/research/research-ui-tooling.md)
 執行計畫：[plan.md](plan.md)
 
@@ -33,6 +33,7 @@ Status: Phase 1（腳手架、跨套件接線、主題系統、測試地基、CI
 | D13 | **元件檔案佈局與撰寫格式**：一個元件一個 PascalCase 資料夾（`Button/Button.tsx` + `Button.stories.tsx` + `index.ts`）；元件、hook、工具函式一律 arrow function；React API 一條一條具名匯入（禁止 `import * as React` 與 `React.` 前綴）；匯出就地寫，主元件 `export default`、其餘 `export const`，禁止檔尾 `export { … };` 區塊；props 型別用 `interface <元件名>Props` 具名宣告並匯出（不寫行內型別、不用 `type`）；props 一律 a-z 排序、事件處理器（`on` 開頭）排在其後，型別宣告、解構參數、JSX 傳值三處同序；複合元件的子元件也是一元件一資料夾，巢狀在家族主元件資料夾底下（`DropdownMenu/DropdownMenuItem/`），家族主元件的 `index.ts` 兼當該家族的 barrel，子元件的 default 與 props 型別都由它轉出，story 與測試則整族共用主元件資料夾裡的那一份。細則與 shadcn 後處理步驟見 [.agents/docs/ui-conventions.md](../../.agents/docs/ui-conventions.md) | shadcn CLI 產出的是 kebab-case 平鋪檔加宣告式 function，兩者都要後處理，所以規範必須連同後處理步驟一起寫下來，否則 Phase 2 批次會照 CLI 原樣進倉。子元件同樣一檔一元件：一個檔塞十五個元件在 review 與定位上都吃虧 |
 | D14 | **按鈕 API**：`Button` 的 size 收斂為 `sm` / `md` / `lg`，預設 `md`（移除 `xs`）；icon-only 按鈕獨立成 `IconButton`，`size` 同三階、`aria-label` 型別上必填，內部組合 `Button` 並以 `size-*` + `p-0` 覆蓋高度與內距，variant 沿用 `buttonVariants` | `default` 沒說出大小，`xs` 在 8px 級距上沒有實際用途，icon 尺寸與文字尺寸擠在同一個 union 讓型別無法表達「圖示按鈕必須有可及名稱」。`IconButton` 組合 `Button` 而不另開一套 cva，按鈕外觀維持單一來源 |
 | D15 | **RadioGroupItem 的選取樣式不跟 nova preset**：選取時不填底色，用 `data-checked:border-primary` 加一顆 `bg-primary` 圓點；`aria-invalid` 在選取態維持 destructive 邊框，不回 primary | nova 的 radio 是填滿整顆圓再挖一個前景色的洞，跟同一張表單裡的 Checkbox（填滿方塊）在視覺重量上太接近；radio 是使用者靠形狀認出來的控制項，為辨識度偏離 preset 划算 |
+| D16 | **模態 overlay 的層次不跟 nova preset**：遮罩用 `bg-black/50`，不加 `backdrop-blur`；內容框在 `ring-1 ring-foreground/10` 之外加 `shadow-lg`。`Dialog`、`AlertDialog`、`Sheet` 共用這組數值 | nova 的遮罩是 `bg-black/10`、內容框沒有陰影；在 professional 亮色主題下 `--popover` 與 `--background` 的亮度只差 1.6%，框與頁面幾乎分不開。模態元件要讓人一眼看出「現在只能處理這個框」，層次必須明顯 |
 
 ## 3. 技術棧與版本（研究驗證，2026-07-13）
 
@@ -108,12 +109,25 @@ Overlay 類：`dialog` `sheet` `popover` `tooltip` `dropdown-menu` `alert-dialog
 展示類：`card` `badge` `avatar` `alert` `separator` `skeleton` `table` `accordion` `tabs` `progress` `scroll-area`
 回饋/導航：`sonner`（toast）`breadcrumb` `pagination` `command` `spinner`
 
+複合元件的子元件有使用情境才收：出現在該家族的 story 裡、被另一個保留的子元件在內部渲染，或被 `packages/ui` 以外及 `src/composed/` 的元件使用，三者符合其一。上游其餘子元件在出現使用情境前不收。
+
 `IconButton` 不是 CLI 產出，而是 `Button` 的 icon-only 包裝（D14），但它是按鈕面的一部分，所以同樣放 `src/components/`，不進 `composed/`。
+
+`field` 只收 `Field`、`FieldLabel`、`FieldDescription`、`FieldError` 四個；上游其餘子元件（`FieldSet`、`FieldLegend`、`FieldGroup`、`FieldContent`、`FieldTitle`、`FieldSeparator`）與 `responsive` 排列、選項卡片樣式，在出現使用情境前不收。`FieldError` 只吃 `children`，不收上游的 `errors` 陣列。
+
+`input-group` 不收 `InputGroupTextarea` 與 `block-start`、`block-end` 排列。尺寸由外框 `InputGroup` 的 `size`（`sm` / `md` / `lg`，高度與 Input 相同）決定，框內輸入文字與按鈕跟著縮放；只有圖示的框內按鈕用另加的 `InputGroupIconButton`（`aria-label` 必填）。
+
+`dialog` 收上游全部子元件。`DialogContent` 右上角的關閉鈕改用 `IconButton`（`sm`、`ghost`，`aria-label="Close"`），不沿用上游的 `Button` 加 `sr-only` 文字。`DialogFooter` 不加上游的 `bg-muted/50` 底色，與內容框同色，只用 `border-t` 分隔。
+
+`alert-dialog` 收上游 `AlertDialogMedia` 以外的子元件，遮罩、陰影與 footer 同 `dialog`（D16）。`AlertDialogContent` 的 `size` 是寬度，只有 `sm` / `md` 兩階，預設 `md`：`md` 在 `sm` 斷點以上放寬到 `max-w-sm`，`sm` 維持 `max-w-xs` 並把 footer 按鈕排成兩欄。`AlertDialogAction` 與 `AlertDialogCancel` 的 `size` 跟 `Button` 同為 `sm` / `md` / `lg`。
+
+`sheet` 收上游全部子元件，另外比照 `dialog` 匯出 `SheetOverlay` 與 `SheetPortal`。遮罩與陰影同 `dialog`（D16），關閉鈕同 `DialogContent` 改用 `IconButton`。`SheetContent` 的 `side` 決定從哪一邊滑入（`top` / `right` / `bottom` / `left`，預設 `right`）。`SheetFooter` 比照 `DialogFooter` 加 `border-t` 分隔，並保留上游的 `mt-auto` 貼齊底部；按鈕不照上游直排，改成橫排平分寬度，主要動作放最右側。
 
 ### Tier 2 — 自組元件（中～高難度）
 
 | 元件 | 組裝方式 | 難度 |
 | --- | --- | --- |
+| `TextField` | Field + FieldLabel + Input + FieldDescription + FieldError；以 `useId` 自動接上 `htmlFor`、`aria-describedby`、`aria-invalid`，對外只給 `label`、`description`、`error`；`error` 出現時取代 `description`，輸入框下方固定保留一行高度，避免錯誤出現或消失時版面跳動 | 低 |
 | `CopyButton` | Button + `navigator.clipboard` + 成功狀態回饋 | 中 |
 | `CodeBlock` | Shiki（fine-grained）輸出 + CopyButton + 語言標籤 | 高 |
 | `Callout` | Alert 為基底，info/warning/danger/tip variants | 中 |

@@ -4,6 +4,8 @@
 const nextConfig = {
   output: 'export',
 
+  transpilePackages: ['@tod-workspace/ui'],
+
   eslint: {
     ignoreDuringBuilds: true,
   },

@@ -80,3 +80,15 @@ Format and pruning rules are in [maintenance.md](maintenance.md) §3–§4. New 
 - Mistake: Radix 的 `RadioGroup.Indicator` 本身就是一個 `span`，所以 `[&_span]:size-2` 同時套到 Indicator 與圓點，把 Indicator 的盒子縮成 8px 卡在左上角。圓點當時是 `absolute` 加 `-translate-x-1/2 -translate-y-1/2`，位置不受 Indicator 的盒子影響，所以畫面正常、八條 browser 測試也全綠；只有在試著把定位簡化成 flex 置中時，圓點跑成月牙形才露出來。
 - Fix: 給圓點自己的 `data-slot='radio-group-dot'`，選擇器改成 `[&_[data-slot=radio-group-dot]]:size-*`（`Switch` 的 `[&_[data-slot=switch-thumb]]` 已經是這個寫法）。Indicator 盒子正確之後，`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2` 那串整組可刪。抓法是在 browser project 寫一支暫時的測試，用 `page.screenshot({ path })` 把元件放大渲染成 PNG 直接看，看完刪掉。
 - Codified?: proposed（ui-conventions.md §三 加一條：cva 的後代選擇器一律命中 `data-slot`，不要用元素名）
+
+## 2026-09-26 視覺決定只改了當下那個元件，後來的元件又照抄上游
+- Context: 用 `ui-component-review/scripts/class-inventory.mjs` 掃 `packages/ui/src`，比對各元件的 focus ring 寬度。
+- Mistake: owner 在 2026-09-04 說 focus ring 太粗，當時只把 `Button` 從 3px 改成 2px。之後做的 `Checkbox`、`RadioGroupItem`、`Switch`、`Slider` 照抄 shadcn 上游，又是 `ring-3`，掃描結果是 2px 與 3px 各 4 個元件。同一類事 180px 最小寬度也發生過，當時靠 owner 看到再手動補到其他元件。兩次的共同原因是決定沒有寫成規則，下一個元件的實作者與審查者都看不到。
+- Fix: 4 個元件改成 `ring-2`（`sed -i -E 's/(focus-visible|aria-invalid|hover|active):ring-3\b/\1:ring-2/g'`），focus ring 與最小寬度寫成 ui-conventions §六第 4、5 條，審查時用 class-inventory 掃描，同一類 class 出現兩個值就會被列出來。
+- Codified?: written into .agents/docs/ui-conventions.md §六、§七
+
+## 2026-09-26 owner 在對話裡的裁決沒寫進文件，審查者建議改回去
+- Context: 試跑 `ui-component-review` 的設計審查者，對象是 `AlertDialog`，prompt 裡沒提任何已知問題。
+- Mistake: owner 在 2026-09-23 的對話裡判定 `WithMedia` story 無用並刪除，但 spec §5 仍寫「alert-dialog 收上游全部子元件」。審查者只讀得到 spec，於是把沒有 story 的 `AlertDialogMedia` 判為「存在但沒被展示」，建議補回一個 Media story，跟 owner 的裁決正好相反。
+- Fix: spec §5 寫明子元件有使用情境才收，並定義什麼算使用情境；ui-conventions §七規定 owner 的決定當場寫回文件；設計審查的 prompt 不准用「補 story」處理沒有使用者的子元件。
+- Codified?: written into .agents/docs/ui-conventions.md §七、specs/ui-library/spec.md §5、.agents/skills/ui-component-review/references/design-review-prompt.md
