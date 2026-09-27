@@ -110,6 +110,10 @@ Overlay 類：`dialog` `sheet` `popover` `tooltip` `dropdown-menu` `alert-dialog
 
 `IconButton` 不是 CLI 產出，而是 `Button` 的 icon-only 包裝（D14），但它是按鈕面的一部分，所以同樣放 `src/components/`，不進 `composed/`。
 
+`table` 暫緩，Phase 2.c 先不做。
+
+`breadcrumb` 與 `pagination` 暫緩，Phase 2.d 先不做。
+
 ### Tier 2 — 自組元件（中～高難度）
 
 | 元件 | 組裝方式 | 難度 |

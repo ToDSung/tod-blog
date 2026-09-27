@@ -42,8 +42,8 @@
 | --- | --- | --- |
 | 2.a 表單 | button* input label textarea checkbox radio-group select switch slider field input-group | CLI 加入成功；**檔案佈局與匯出形式符合 D13（見 ui-conventions.md §三 後處理步驟）**；每元件 1 個 `<元件名>.test.tsx`（互動元件另測互動行為）與 1 個 `<元件名>.stories.tsx`（至少一個 `Default`）；`pnpm -F @tod-workspace/ui test` 全綠；eslint 乾淨；storybook build 過 |
 | 2.b Overlay | dialog sheet popover tooltip dropdown-menu alert-dialog | 同上 |
-| 2.c 展示 | card badge avatar alert separator skeleton table accordion tabs progress scroll-area | 同上 |
-| 2.d 回饋/導航 | sonner breadcrumb pagination command spinner | 同上 |
+| 2.c 展示 | card badge avatar alert separator skeleton table（暫緩）accordion tabs progress scroll-area | 同上 |
+| 2.d 回饋/導航 | sonner breadcrumb（暫緩）pagination（暫緩）command spinner | 同上 |
 | 2.R | 審查（sonnet，新 context）：抽查 stories 實際渲染與測試涵蓋的行為；**抽 2 元件在對照主題 × dark 下目視/測試檢查 token 覆蓋完整**（新主題最常漏 chart/sidebar 類次要 token） | 附測試輸出 + 主題抽查證據 |
 
 *button 已在 1.2 進場，此處補齊 variant 展示。
