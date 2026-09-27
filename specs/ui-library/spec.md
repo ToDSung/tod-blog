@@ -129,6 +129,8 @@ Overlay 類：`dialog` `sheet` `popover` `tooltip` `dropdown-menu` `alert-dialog
 
 `card` 收上游全部子元件，不收 `size`（沒有需要精簡版卡片的地方），也不收圖片貼齊卡片邊緣的樣式（`has-[>img:first-child]` 那一組）。少了 `size`，上游的 `--card-spacing` 變數只剩一個值，間距直接寫 `4`。`CardFooter` 比照 `DialogFooter` 不加 `bg-muted/50`，只用 `border-t` 分隔，按鈕間距同為 `gap-2`。`CardTitle` 維持上游的 `leading-snug`：卡片標題常換行，`leading-none` 會讓兩行疊在一起。`CardTitle` 拿掉上游的 `cn-font-heading`，本 repo 沒有定義這個 class。
 
+`badge` 只收 `default`、`secondary`、`destructive`、`outline` 四個 variant，不收 `ghost` 與 `link`。badge 不是表單控制項，不收 `aria-invalid` 樣式。圓角維持上游的膠囊形 `rounded-4xl`。
+
 `table` 暫緩，Phase 2.c 先不做。
 
 `breadcrumb` 與 `pagination` 暫緩，Phase 2.d 先不做。
