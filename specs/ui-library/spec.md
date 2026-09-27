@@ -139,6 +139,8 @@ Overlay 類：`dialog` `sheet` `popover` `tooltip` `dropdown-menu` `alert-dialog
 
 `tabs` 收上游全部子元件。`orientation` 交給 Radix 處理，`Tabs` 不自己設 `data-orientation`。`TabsTrigger` 的 focus 樣式比照 `Button`，用 `outline-none`，不加上游的 `focus-visible:outline-1`。`TabsList` 的 `p-[3px]` 與 `TabsTrigger` 選中態的 `shadow-sm` 維持上游，這組數值構成分段控制項的外觀，不對齊選單或按鈕。上游靠 `data-icon` 縮小圖示側內距的 class 不收：本 repo 的元件都不標 `data-icon`。
 
+`scroll-area` 收 `ScrollArea` 與 `ScrollBar`；`ScrollArea` 內建一條垂直捲軸，要水平捲動時在 children 裡另放 `<ScrollBar orientation='horizontal' />`。viewport 沒有邊框，focus 只畫 `ring-2`，不搭 `focus-visible:border-ring`。
+
 `table` 暫緩，Phase 2.c 先不做。
 
 `breadcrumb` 與 `pagination` 暫緩，Phase 2.d 先不做。
