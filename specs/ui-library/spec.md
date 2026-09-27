@@ -141,6 +141,8 @@ Overlay 類：`dialog` `sheet` `popover` `tooltip` `dropdown-menu` `alert-dialog
 
 `scroll-area` 收 `ScrollArea` 與 `ScrollBar`；`ScrollArea` 內建一條垂直捲軸，要水平捲動時在 children 裡另放 `<ScrollBar orientation='horizontal' />`。viewport 沒有邊框，focus 只畫 `ring-2`，不搭 `focus-visible:border-ring`。
 
+`progress` 收上游，軌道比照 Slider 用 `overflow-hidden`。
+
 `table` 暫緩，Phase 2.c 先不做。
 
 `breadcrumb` 與 `pagination` 暫緩，Phase 2.d 先不做。
