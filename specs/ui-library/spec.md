@@ -127,6 +127,8 @@ Overlay 類：`dialog` `sheet` `popover` `tooltip` `dropdown-menu` `alert-dialog
 
 `tooltip` 收上游全部子元件。`TooltipContent` 拿掉上游為 `Kbd` 元件寫的 `data-[slot=kbd]` 選擇器（本 repo 沒有 `Kbd`），箭頭另加 `data-slot='tooltip-arrow'`。開關動畫比照其他浮出內容框補上 `duration-100`；進場只留 `data-[state=delayed-open]:*`，上游並列的 `data-open:*` 對不上 Radix tooltip 的狀態值（`delayed-open` / `instant-open`），不會生效。圓角維持上游的 `rounded-md`，不跟 Popover 等內容框的 `rounded-lg`：tooltip 只有一行字，大圓角會變成膠囊形。也不加 `ring-1 ring-foreground/10` 與陰影：反色底（`bg-foreground`）上的同色框線看不見，與頁面的對比也已經足夠。
 
+`card` 收上游全部子元件，不收 `size`（沒有需要精簡版卡片的地方），也不收圖片貼齊卡片邊緣的樣式（`has-[>img:first-child]` 那一組）。少了 `size`，上游的 `--card-spacing` 變數只剩一個值，間距直接寫 `4`。`CardFooter` 比照 `DialogFooter` 不加 `bg-muted/50`，只用 `border-t` 分隔，按鈕間距同為 `gap-2`。`CardTitle` 維持上游的 `leading-snug`：卡片標題常換行，`leading-none` 會讓兩行疊在一起。`CardTitle` 拿掉上游的 `cn-font-heading`，本 repo 沒有定義這個 class。
+
 `table` 暫緩，Phase 2.c 先不做。
 
 `breadcrumb` 與 `pagination` 暫緩，Phase 2.d 先不做。
