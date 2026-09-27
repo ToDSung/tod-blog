@@ -133,6 +133,8 @@ Overlay 類：`dialog` `sheet` `popover` `tooltip` `dropdown-menu` `alert-dialog
 
 `avatar` 只收 `Avatar`、`AvatarImage`、`AvatarFallback`；`AvatarBadge`、`AvatarGroup`、`AvatarGroupCount` 在出現使用情境前不收。`size` 照第六節改成 `sm` / `md` / `lg`，用 cva 加 `data-size`，與 Checkbox、Switch 相同。`AvatarFallback` 只在 `sm` 縮成 `text-xs`，`lg` 維持 `text-sm`，縮寫字母在 40px 內已經夠大。
 
+`alert` 不收 `AlertAction`。根元素比照 Button、Badge 輸出 `data-variant`。`role='alert'` 可由呼叫端覆寫，不緊急的內容改傳 `role='note'` 之類的值。`AlertTitle` 維持 `text-sm`，不比照其他 Title 放大到 `text-base`；`destructive` 只改文字色，不加底色。Alert 是精簡的行內提示，也是 Callout 的基底，層次交給 Callout 的 variant 處理。圓角 `rounded-lg`、內距 `px-2.5 py-2`、標題到說明 `gap-0.5` 也照上游的精簡尺寸，不比照 Card。標題與說明裡的連結、段落樣式保留給 Callout 用。
+
 `table` 暫緩，Phase 2.c 先不做。
 
 `breadcrumb` 與 `pagination` 暫緩，Phase 2.d 先不做。
