@@ -137,6 +137,8 @@ Overlay 類：`dialog` `sheet` `popover` `tooltip` `dropdown-menu` `alert-dialog
 
 `accordion` 收上游全部子元件，展開圖示用 lucide 的 `ChevronDownIcon` / `ChevronUpIcon`。`AccordionProps` 用 `type` 宣告：Radix Root 的 props 是 single / multiple 聯集，interface 無法 `extends`。`AccordionContent` 的 `className` 落在內層的 div，不在帶 `data-slot` 的外層：外層負責高度動畫，內距加在它身上會讓收合時留下一截。
 
+`tabs` 收上游全部子元件。`orientation` 交給 Radix 處理，`Tabs` 不自己設 `data-orientation`。`TabsTrigger` 的 focus 樣式比照 `Button`，用 `outline-none`，不加上游的 `focus-visible:outline-1`。`TabsList` 的 `p-[3px]` 與 `TabsTrigger` 選中態的 `shadow-sm` 維持上游，這組數值構成分段控制項的外觀，不對齊選單或按鈕。上游靠 `data-icon` 縮小圖示側內距的 class 不收：本 repo 的元件都不標 `data-icon`。
+
 `table` 暫緩，Phase 2.c 先不做。
 
 `breadcrumb` 與 `pagination` 暫緩，Phase 2.d 先不做。
