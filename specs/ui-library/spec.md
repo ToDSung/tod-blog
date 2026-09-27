@@ -135,6 +135,8 @@ Overlay 類：`dialog` `sheet` `popover` `tooltip` `dropdown-menu` `alert-dialog
 
 `alert` 不收 `AlertAction`。根元素比照 Button、Badge 輸出 `data-variant`。`role='alert'` 可由呼叫端覆寫，不緊急的內容改傳 `role='note'` 之類的值。`AlertTitle` 維持 `text-sm`，不比照其他 Title 放大到 `text-base`；`destructive` 只改文字色，不加底色。Alert 是精簡的行內提示，也是 Callout 的基底，層次交給 Callout 的 variant 處理。圓角 `rounded-lg`、內距 `px-2.5 py-2`、標題到說明 `gap-0.5` 也照上游的精簡尺寸，不比照 Card。標題與說明裡的連結、段落樣式保留給 Callout 用。
 
+`accordion` 收上游全部子元件，展開圖示用 lucide 的 `ChevronDownIcon` / `ChevronUpIcon`。`AccordionProps` 用 `type` 宣告：Radix Root 的 props 是 single / multiple 聯集，interface 無法 `extends`。`AccordionContent` 的 `className` 落在內層的 div，不在帶 `data-slot` 的外層：外層負責高度動畫，內距加在它身上會讓收合時留下一截。
+
 `table` 暫緩，Phase 2.c 先不做。
 
 `breadcrumb` 與 `pagination` 暫緩，Phase 2.d 先不做。
