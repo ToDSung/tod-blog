@@ -131,6 +131,8 @@ Overlay 類：`dialog` `sheet` `popover` `tooltip` `dropdown-menu` `alert-dialog
 
 `badge` 只收 `default`、`secondary`、`destructive`、`outline` 四個 variant，不收 `ghost` 與 `link`。badge 不是表單控制項，不收 `aria-invalid` 樣式。圓角維持上游的膠囊形 `rounded-4xl`。
 
+`avatar` 只收 `Avatar`、`AvatarImage`、`AvatarFallback`；`AvatarBadge`、`AvatarGroup`、`AvatarGroupCount` 在出現使用情境前不收。`size` 照第六節改成 `sm` / `md` / `lg`，用 cva 加 `data-size`，與 Checkbox、Switch 相同。`AvatarFallback` 只在 `sm` 縮成 `text-xs`，`lg` 維持 `text-sm`，縮寫字母在 40px 內已經夠大。
+
 `table` 暫緩，Phase 2.c 先不做。
 
 `breadcrumb` 與 `pagination` 暫緩，Phase 2.d 先不做。
