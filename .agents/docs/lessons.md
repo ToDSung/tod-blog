@@ -42,7 +42,7 @@ Format and pruning rules are in [maintenance.md](maintenance.md) §3–§4. New 
 ## 2026-09-04 套件層設定裡的 react-hooks 規則從未生效，Phase 1 全程沒有 hook 防線
 - Context: Phase 1.R 審查用 `npx eslint --print-config packages/ui/src/components/Button/Button.tsx` 從 repo 根目錄核對 D13 規則是否真的擋得住。
 - Mistake: D13 那五類規則確實在 root 設定裡，但 `packages/ui/eslint.config.mjs` 透過 FlatCompat 掛的 `plugin:react/recommended` 與 `plugin:react-hooks/recommended` 在 print-config 輸出裡零命中 — 這是「flat config 只讀 cwd 設定」的第三次踩坑，前兩次分別是規則沒生效與 `--fix` 改壞 19 個檔案。這次的形態是：Phase 1 從頭到尾沒有任何 hook 誤用防線，而唯一會生效的跑法（從套件目錄跑 eslint）正好是 ui-conventions 明令禁止的那條。
-- Fix: 把 react 與 react-hooks 的 recommended 併進 root `eslint.config.mjs` 的 `packages/ui/src/**` 區塊，套件層設定只留 parser 接線；用一支故意寫壞的探針檔（條件式 `useState` + 空依賴陣列）驗證 `npx eslint <probe>` 退出碼為 1、訊息含 `react-hooks/rules-of-hooks` 與 `react-hooks/exhaustive-deps`，確認會咬之後刪掉探針。開啟後唯一的既有違規是 `ThemeProvider` 在 effect 裡同步 setState，改用 `useSyncExternalStore` 讀 localStorage/DOM 屬性後 25 個測試全綠。
+- Fix: 把 react 與 react-hooks 的 recommended 併進 root `eslint.config.mjs` 的 `packages/ui/src/**` 區塊，套件層設定只留 parser 接線；用一支故意寫壞的 probe 檔（條件式 `useState` + 空依賴陣列）驗證 `npx eslint <probe>` 退出碼為 1、訊息含 `react-hooks/rules-of-hooks` 與 `react-hooks/exhaustive-deps`，確認會咬之後刪掉 probe 檔。開啟後唯一的既有違規是 `ThemeProvider` 在 effect 裡同步 setState，改用 `useSyncExternalStore` 讀 localStorage/DOM 屬性後 25 個測試全綠。
 - Codified?: written into .agents/docs/ui-conventions.md §四。往後在套件層 eslint 設定加規則前，一律先用 `npx eslint --print-config <該套件的一個檔案>` 從 repo 根目錄確認解析得到。
 
 ## 2026-09-04 照著審查者的推理改，加了一段沒有東西能證明的快取
@@ -54,7 +54,7 @@ Format and pruning rules are in [maintenance.md](maintenance.md) §3–§4. New 
 ## 2026-09-04 agent 註解重述官方 API 用法，而「只寫 why」的規則只存在 Claude 個人記憶
 - Context: owner 反映 AI 註解過多。盤點 `packages/ui/src/theme/ThemeProvider/ThemeProvider.tsx` 的六段共 16 行註解，以及 `packages/leetcode/src` 的 305 行註解與 7 處沒理由的 `eslint-disable`。
 - Mistake: 六段裡有三段在解釋 `useSyncExternalStore` 第三個參數、`getServerSnapshot` 與 next-themes 的正常用法，官方文件就有。規則只寫在 Claude 的記憶檔 `code-comment-minimalism`，Codex 與 Antigravity 讀不到，repo 內沒有任何文件能讓 `code-review` 的 Standards 軸引用，`ui-conventions.md` 也完全沒提註解。
-- Fix: 規則寫進 `.agents/docs/code-comments.md`（刪除測試、可寫的五種與不能寫的八種、ThemeProvider 逐段判定），AGENTS.md 加路由；調查證據記在 `.agents/research/research-code-comments.md`。lint 防線接進 root `eslint.config.mjs`（disable 要理由、`@ts-expect-error` 描述至少 10 字、擋 `TODO`、ui 套件擋重述型 JSDoc），用探針檔證明七條規則各命中一次後刪掉探針；`code-review` 加 Redundant Comment smell；`.claude/hooks/lint-edited-file.mjs` 在每次 Edit/Write 後對該檔跑 eslint。
+- Fix: 規則寫進 `.agents/docs/code-comments.md`（刪除測試、可寫的五種與不能寫的八種、ThemeProvider 逐段判定），AGENTS.md 加路由；調查證據記在 `.agents/research/research-code-comments.md`。lint 防線接進 root `eslint.config.mjs`（disable 要理由、`@ts-expect-error` 描述至少 10 字、擋 `TODO`、ui 套件擋重述型 JSDoc），用 probe 檔證明七條規則各命中一次後刪掉 probe 檔；`code-review` 加 Redundant Comment smell；`.claude/hooks/lint-edited-file.mjs` 在每次 Edit/Write 後對該檔跑 eslint。
 - Codified?: written into .agents/docs/code-comments.md
 
 ## 2026-09-07 shadcn registry 改用外部 `cn` 套件，本地 wrapper 跟著退場
@@ -65,7 +65,7 @@ Format and pruning rules are in [maintenance.md](maintenance.md) §3–§4. New 
 
 ## 2026-09-07 委派 prompt 指定錯行為，測試就測到原生繼承來的那一份
 - Context: 委派 `Label` 實作時，prompt 寫「點擊 label 會把焦點移到關聯控制項，這是 Radix 相對於原生 `<label>` 多做的事，值得斷言」。
-- Mistake: 前半句對、後半句錯。點擊聚焦是原生 `<label for>` 與 jsdom 本來就有的語意；Radix Label 真正多做的是 `onMouseDown` 在 `event.detail > 1` 時 `preventDefault()`，擋掉雙擊選字（`node_modules/.pnpm/@radix-ui+react-label@2.1.1_*/node_modules/@radix-ui/react-label/dist/index.mjs:14-17`）。實作 agent 照著寫，測試全綠，但把元件換成裸 `<label>` 一樣全綠 —— 測試通過的理由跟這個元件無關。審查 agent 寫了一支裸 `<label>` 的探針實跑才抓到。
+- Mistake: 前半句對、後半句錯。點擊聚焦是原生 `<label for>` 與 jsdom 本來就有的語意；Radix Label 真正多做的是 `onMouseDown` 在 `event.detail > 1` 時 `preventDefault()`，擋掉雙擊選字（`node_modules/.pnpm/@radix-ui+react-label@2.1.1_*/node_modules/@radix-ui/react-label/dist/index.mjs:14-17`）。實作 agent 照著寫，測試全綠，但把元件換成裸 `<label>` 一樣全綠 —— 測試通過的理由跟這個元件無關。審查 agent 寫了一支裸 `<label>` 的 probe 實跑才抓到。
 - Fix: 補一條斷言雙擊被 `preventDefault` 的測試，然後把 `Label.tsx` 暫時降級成裸 `<label>` 跑一次，確認只有這條變紅（`Tests 1 failed | 38 passed`），再還原。往後寫「這是某某 primitive 多做的行為」之前先讀該套件的 dist 原始碼確認；包裝第三方 primitive 的元件，測試至少要有一條在拿掉該 primitive 後會紅。
 - Codified?: no（判斷原則，暫不升級成規則）
 
