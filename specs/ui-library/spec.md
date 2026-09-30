@@ -145,6 +145,8 @@ Overlay 類：`dialog` `sheet` `popover` `tooltip` `dropdown-menu` `alert-dialog
 
 `table` 暫緩，Phase 2.c 先不做。
 
+`sonner` 的元件名與資料夾是 `Toaster`，同一個模組轉出 `sonner` 的 `toast()`：sonner 的 toast 狀態存在模組層，呼叫端自己裝一份 `sonner` 就會和 `Toaster` 訂閱到不同份，toast 不會出現。sonner 自己注入一份不在 layer 裡的樣式表，Tailwind class 蓋不過它，所以外觀只透過它的 CSS 變數調整：底色與文字用 `--popover` 一組，外框 `--normal-border` 設成 `color-mix(in oklab, var(--foreground) 10%, transparent)`，等同其他面板的 `ring-1 ring-foreground/10`，圓角 `var(--radius)` 等同浮出內容框的 `rounded-lg`。description 比照其他 Description 用 `text-muted-foreground`，但 sonner 把它寫死成 `#3f3f3f`（暗色主題 `hsl(0 0% 91%)`），沒有 CSS 變數可改，所以經 `toastOptions.classNames` 加 `text-muted-foreground!`；在 layer 裡的 important 宣告才蓋得過沒進 layer 的一般宣告。陰影、內距、字級與 focus ring 沒有對應的 CSS 變數，沿用 sonner 自己的值，不為了對齊其他面板再加 important class。不收上游的 `cn-toast` class 與 `toaster group` className，本 repo 沒有對應的樣式。
+
 `breadcrumb` 與 `pagination` 暫緩，Phase 2.d 先不做。
 
 ### Tier 2 — 自組元件（中～高難度）
