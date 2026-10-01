@@ -80,3 +80,27 @@ Format and pruning rules are in [maintenance.md](maintenance.md) §3–§4. New 
 - Mistake: Radix 的 `RadioGroup.Indicator` 本身就是一個 `span`，所以 `[&_span]:size-2` 同時套到 Indicator 與圓點，把 Indicator 的盒子縮成 8px 卡在左上角。圓點當時是 `absolute` 加 `-translate-x-1/2 -translate-y-1/2`，位置不受 Indicator 的盒子影響，所以畫面正常、八條 browser 測試也全綠；只有在試著把定位簡化成 flex 置中時，圓點跑成月牙形才露出來。
 - Fix: 給圓點自己的 `data-slot='radio-group-dot'`，選擇器改成 `[&_[data-slot=radio-group-dot]]:size-*`（`Switch` 的 `[&_[data-slot=switch-thumb]]` 已經是這個寫法）。Indicator 盒子正確之後，`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2` 那串整組可刪。抓法是在 browser project 寫一支暫時的測試，用 `page.screenshot({ path })` 把元件放大渲染成 PNG 直接看，看完刪掉。
 - Codified?: proposed（ui-conventions.md §三 加一條：cva 的後代選擇器一律命中 `data-slot`，不要用元素名）
+
+## 2026-09-26 視覺決定只改了當下那個元件，後來的元件又照抄上游
+- Context: 用 `ui-component-review/scripts/class-inventory.mjs` 掃 `packages/ui/src`，比對各元件的 focus ring 寬度。
+- Mistake: owner 在 2026-09-04 說 focus ring 太粗，當時只把 `Button` 從 3px 改成 2px。之後做的 `Checkbox`、`RadioGroupItem`、`Switch`、`Slider` 照抄 shadcn 上游，又是 `ring-3`，掃描結果是 2px 與 3px 各 4 個元件。同一類事 180px 最小寬度也發生過，當時靠 owner 看到再手動補到其他元件。兩次的共同原因是決定沒有寫成規則，下一個元件的實作者與審查者都看不到。
+- Fix: 4 個元件改成 `ring-2`（`sed -i -E 's/(focus-visible|aria-invalid|hover|active):ring-3\b/\1:ring-2/g'`），focus ring 與最小寬度寫成 ui-conventions §六第 4、5 條，審查時用 class-inventory 掃描，同一類 class 出現兩個值就會被列出來。
+- Codified?: written into .agents/docs/ui-conventions.md §六、§七
+
+## 2026-09-26 owner 在對話裡的裁決沒寫進文件，審查者建議改回去
+- Context: 試跑 `ui-component-review` 的設計審查者，對象是 `AlertDialog`，prompt 裡沒提任何已知問題。
+- Mistake: owner 在 2026-09-23 的對話裡判定 `WithMedia` story 無用並刪除，但 spec §5 仍寫「alert-dialog 收上游全部子元件」。審查者只讀得到 spec，於是把沒有 story 的 `AlertDialogMedia` 判為「存在但沒被展示」，建議補回一個 Media story，跟 owner 的裁決正好相反。
+- Fix: spec §5 寫明子元件有使用情境才收，並定義什麼算使用情境；ui-conventions §七規定 owner 的決定當場寫回文件；設計審查的 prompt 不准用「補 story」處理沒有使用者的子元件。
+- Codified?: written into .agents/docs/ui-conventions.md §七、specs/ui-library/spec.md §5、.agents/skills/ui-component-review/references/design-review-prompt.md
+
+## 2026-09-26 一次平行派 18 個審查者，撞到 session 用量上限
+- Context: Phase 2.c 九個元件一起做完，照 `ui-component-review` 每個元件派設計與測試兩個審查者，18 個 sonnet subagent 同時在背景跑。
+- Mistake: skill 寫的是一次審一個元件，這次一口氣全派。約 3 分鐘後 12 個中途停掉，錯誤是 `You've hit your session limit · resets 12:30am`（HTTP 429）；已完成的 6 份報告能用，其餘要等額度重置再重派，多花了一個多小時。中斷的測試審查者正在跑探針，所幸 `probe.sh` 的 `trap` 有把檔案還原，只留下一個被 gitignore 的 `__screenshots__/` 目錄。
+- Fix: 重派前先用 `diff -r <snapshot> <元件資料夾>` 逐一比對，確認沒有探針殘留，再只重派失敗的 12 個。之後批次元件的審查分批派，一批不超過 3 個元件（6 個審查者）。
+- Codified?: no
+
+## 2026-09-23 開著的 Storybook dev server 沒吃到新元件的 class，owner 看到的是沒有樣式的畫面
+- Context: owner 在自己開著的 Storybook（6006）上看剛做好的 `Dialog`，同一天也看 `InputGroup`。
+- Mistake: owner 回報 Dialog「樣式近乎為 0、沒有在畫面中央」、InputGroup「Invalid 沒有樣式、放大鏡很大」，agent 先懷疑元件並開始縮圖示。實測是環境問題：6006 的 CSS 裡缺 `.fixed` 等規則，Dialog 的計算樣式是 `position: static`；另外啟動一台 6010，同一個 story 是 `fixed`、正確置中。vitest browser 測試與 `storybook:build` 的結果也都正常。推測是 dev server 啟動之後新增的元件資料夾沒有被 Tailwind 掃進去，根因沒有查到底。另一個相關的坑：09-25 用 TaskStop 停掉背景的 `pnpm ... storybook`，底下的 `node ... storybook dev -p 6006` 行程還在，6006 一直被佔著。
+- Fix: 新增元件資料夾之後、請 owner 看 Storybook 之前，先重啟 dev server。停的時候要確認 6006 真的釋放：PowerShell 跑 `Get-NetTCPConnection -LocalPort 6006 -State Listen` 找出 `OwningProcess`，用 `Get-CimInstance Win32_Process -Filter "ProcessId=<pid>"` 確認是 Storybook，再 `Stop-Process -Id <pid>`。owner 回報「看起來沒樣式」時，先比對一台新開的 dev server，再動元件。
+- Codified?: written into .agents/skills/ui-component-review/SKILL.md §Report to the owner

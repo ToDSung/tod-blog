@@ -1,6 +1,6 @@
 # Spec: `packages/ui` — 共用 UI Library（@tod-workspace/ui）
 
-Status: Phase 1（腳手架、跨套件接線、主題系統、測試地基、CI、元件規範）已完成並通過審查；Phase 2 起尚未開始。
+Status: Phase 1（腳手架、跨套件接線、主題系統、測試地基、CI、元件規範）已完成並通過審查。Phase 2 進行中：2.a 表單批次已完成，2.b–2.d 只有 `Dialog`、`AlertDialog`、`Sheet`、`Popover`、`Tooltip`、`DropdownMenu`、`Separator` 已進場；Tier 2 的 `TextField` 已提前完成。Phase 3 起尚未開始。
 研究依據：[.agents/research/research-ui-stack.md](../../.agents/research/research-ui-stack.md)、[.agents/research/research-ui-tooling.md](../../.agents/research/research-ui-tooling.md)
 執行計畫：[plan.md](plan.md)
 
@@ -33,6 +33,7 @@ Status: Phase 1（腳手架、跨套件接線、主題系統、測試地基、CI
 | D13 | **元件檔案佈局與撰寫格式**：一個元件一個 PascalCase 資料夾（`Button/Button.tsx` + `Button.stories.tsx` + `index.ts`）；元件、hook、工具函式一律 arrow function；React API 一條一條具名匯入（禁止 `import * as React` 與 `React.` 前綴）；匯出就地寫，主元件 `export default`、其餘 `export const`，禁止檔尾 `export { … };` 區塊；props 型別用 `interface <元件名>Props` 具名宣告並匯出（不寫行內型別、不用 `type`）；props 一律 a-z 排序、事件處理器（`on` 開頭）排在其後，型別宣告、解構參數、JSX 傳值三處同序；複合元件的子元件也是一元件一資料夾，巢狀在家族主元件資料夾底下（`DropdownMenu/DropdownMenuItem/`），家族主元件的 `index.ts` 兼當該家族的 barrel，子元件的 default 與 props 型別都由它轉出，story 與測試則整族共用主元件資料夾裡的那一份。細則與 shadcn 後處理步驟見 [.agents/docs/ui-conventions.md](../../.agents/docs/ui-conventions.md) | shadcn CLI 產出的是 kebab-case 平鋪檔加宣告式 function，兩者都要後處理，所以規範必須連同後處理步驟一起寫下來，否則 Phase 2 批次會照 CLI 原樣進倉。子元件同樣一檔一元件：一個檔塞十五個元件在 review 與定位上都吃虧 |
 | D14 | **按鈕 API**：`Button` 的 size 收斂為 `sm` / `md` / `lg`，預設 `md`（移除 `xs`）；icon-only 按鈕獨立成 `IconButton`，`size` 同三階、`aria-label` 型別上必填，內部組合 `Button` 並以 `size-*` + `p-0` 覆蓋高度與內距，variant 沿用 `buttonVariants` | `default` 沒說出大小，`xs` 在 8px 級距上沒有實際用途，icon 尺寸與文字尺寸擠在同一個 union 讓型別無法表達「圖示按鈕必須有可及名稱」。`IconButton` 組合 `Button` 而不另開一套 cva，按鈕外觀維持單一來源 |
 | D15 | **RadioGroupItem 的選取樣式不跟 nova preset**：選取時不填底色，用 `data-checked:border-primary` 加一顆 `bg-primary` 圓點；`aria-invalid` 在選取態維持 destructive 邊框，不回 primary | nova 的 radio 是填滿整顆圓再挖一個前景色的洞，跟同一張表單裡的 Checkbox（填滿方塊）在視覺重量上太接近；radio 是使用者靠形狀認出來的控制項，為辨識度偏離 preset 划算 |
+| D16 | **模態 overlay 的層次不跟 nova preset**：遮罩用 `bg-black/50`，不加 `backdrop-blur`；內容框在 `ring-1 ring-foreground/10` 之外加 `shadow-lg`。`Dialog`、`AlertDialog`、`Sheet` 共用這組數值 | nova 的遮罩是 `bg-black/10`、內容框沒有陰影；在 professional 亮色主題下 `--popover` 與 `--background` 的亮度只差 1.6%，框與頁面幾乎分不開。模態元件要讓人一眼看出「現在只能處理這個框」，層次必須明顯 |
 
 ## 3. 技術棧與版本（研究驗證，2026-07-13）
 
@@ -108,18 +109,57 @@ Overlay 類：`dialog` `sheet` `popover` `tooltip` `dropdown-menu` `alert-dialog
 展示類：`card` `badge` `avatar` `alert` `separator` `skeleton` `table` `accordion` `tabs` `progress` `scroll-area`
 回饋/導航：`sonner`（toast）`breadcrumb` `pagination` `command` `spinner`
 
+複合元件的子元件有使用情境才收：出現在該家族的 story 裡、被另一個保留的子元件在內部渲染，或被 `packages/ui` 以外及 `src/composed/` 的元件使用，三者符合其一。上游其餘子元件在出現使用情境前不收。
+
 `IconButton` 不是 CLI 產出，而是 `Button` 的 icon-only 包裝（D14），但它是按鈕面的一部分，所以同樣放 `src/components/`，不進 `composed/`。
+
+`field` 只收 `Field`、`FieldLabel`、`FieldDescription`、`FieldError` 四個；上游其餘子元件（`FieldSet`、`FieldLegend`、`FieldGroup`、`FieldContent`、`FieldTitle`、`FieldSeparator`）與 `responsive` 排列、選項卡片樣式，在出現使用情境前不收。`FieldError` 只吃 `children`，不收上游的 `errors` 陣列。
+
+`input-group` 不收 `InputGroupTextarea`、`InputGroupText` 與 `block-start`、`block-end` 排列；框內的文字直接放進 `InputGroupAddon`。尺寸由外框 `InputGroup` 的 `size`（`sm` / `md` / `lg`，高度與 Input 相同）決定，框內輸入文字與按鈕跟著縮放；只有圖示的框內按鈕用另加的 `InputGroupIconButton`（`aria-label` 必填）。focus、無效、停用、唯讀四種狀態都畫在外框上，樣子和單獨的 Input 相同。
+
+`dialog` 收上游全部子元件，但不收 `DialogFooter` 的 `showCloseButton`：footer 要關閉鈕就自己放 `DialogClose`。`DialogContent` 右上角的關閉鈕改用 `IconButton`（`sm`、`ghost`，`aria-label="Close"`），不沿用上游的 `Button` 加 `sr-only` 文字。`DialogFooter` 不加上游的 `bg-muted/50` 底色，與內容框同色，只用 `border-t` 分隔。
+
+`alert-dialog` 收上游 `AlertDialogMedia` 以外的子元件，遮罩、陰影與 footer 同 `dialog`（D16）。`AlertDialogContent` 的 `size` 是寬度，只有 `sm` / `md` 兩階，預設 `md`：`md` 在 `sm` 斷點以上放寬到 `max-w-sm`，`sm` 維持 `max-w-xs` 並把 footer 按鈕排成兩欄；視窗比上限窄時，內容框左右各留 16px。`AlertDialogHeader` 比照 `DialogHeader` 一律靠左，不照上游在手機寬度與 `sm` 尺寸置中。`AlertDialogAction` 與 `AlertDialogCancel` 的 `size` 跟 `Button` 同為 `sm` / `md` / `lg`。
+
+`sheet` 收上游全部子元件，另外比照 `dialog` 匯出 `SheetOverlay` 與 `SheetPortal`。遮罩與陰影同 `dialog`（D16），關閉鈕同 `DialogContent` 改用 `IconButton`，位置也相同（`top-2 right-2`）。內容框的動畫維持上游的 `duration-200`，比其他模態框的 `duration-100` 長，因為滑入的距離比淡入縮放遠。`SheetContent` 的 `side` 決定從哪一邊滑入（`top` / `right` / `bottom` / `left`，預設 `right`）。`SheetFooter` 比照 `DialogFooter` 加 `border-t` 分隔，並保留上游的 `mt-auto` 貼齊底部；按鈕不照上游直排，改成橫排平分寬度，主要動作放最右側。
+
+`popover` 收上游 `PopoverAnchor` 以外的子元件。`PopoverTitle` 照上游渲染 `div`，props 型別跟著改成 `ComponentProps<'div'>`，不沿用上游寫的 `'h2'`；字級比照 `DialogTitle` 加 `text-base`，與 `text-sm` 的 `PopoverDescription` 分出層次。`PopoverContent` 的 `p-2.5`、`gap-2.5` 與固定寬度 `w-72` 照上游：popover 比模態框輕，不對齊模態內容框的 `p-4`、`gap-4`；寬度也不像選單跟著 trigger 走，所以不設 `min-w-*`。對齊維持上游的 `center`，不跟選單的 `start`：popover 寬度固定，常掛在比它窄的圖示按鈕下方。
+
+`tooltip` 收上游全部子元件。`TooltipContent` 拿掉上游為 `Kbd` 元件寫的 `data-[slot=kbd]` 選擇器（本 repo 沒有 `Kbd`），箭頭另加 `data-slot='tooltip-arrow'`。開關動畫比照其他浮出內容框補上 `duration-100`；進場只留 `data-[state=delayed-open]:*`，上游並列的 `data-open:*` 對不上 Radix tooltip 的狀態值（`delayed-open` / `instant-open`），不會生效。圓角維持上游的 `rounded-md`，不跟 Popover 等內容框的 `rounded-lg`：tooltip 只有一行字，大圓角會變成膠囊形。也不加 `ring-1 ring-foreground/10` 與陰影：反色底（`bg-foreground`）上的同色框線看不見，與頁面的對比也已經足夠。
+
+`card` 收上游全部子元件，不收 `size`（沒有需要精簡版卡片的地方），也不收圖片貼齊卡片邊緣的樣式（`has-[>img:first-child]` 那一組）。少了 `size`，上游的 `--card-spacing` 變數只剩一個值，間距直接寫 `4`。`CardFooter` 比照 `DialogFooter` 不加 `bg-muted/50`，只用 `border-t` 分隔，按鈕間距同為 `gap-2`。`CardTitle` 維持上游的 `leading-snug`：卡片標題常換行，`leading-none` 會讓兩行疊在一起。`CardTitle` 拿掉上游的 `cn-font-heading`，本 repo 沒有定義這個 class。
+
+`badge` 只收 `default`、`secondary`、`destructive`、`outline` 四個 variant，不收 `ghost` 與 `link`。badge 不是表單控制項，不收 `aria-invalid` 樣式。圓角維持上游的膠囊形 `rounded-4xl`。
+
+`avatar` 只收 `Avatar`、`AvatarImage`、`AvatarFallback`；`AvatarBadge`、`AvatarGroup`、`AvatarGroupCount` 在出現使用情境前不收。`size` 照第六節改成 `sm` / `md` / `lg`，用 cva 加 `data-size`，與 Checkbox、Switch 相同。`AvatarFallback` 只在 `sm` 縮成 `text-xs`，`lg` 維持 `text-sm`，縮寫字母在 40px 內已經夠大。
+
+`alert` 不收 `AlertAction`。根元素比照 Button、Badge 輸出 `data-variant`。`role='alert'` 可由呼叫端覆寫，不緊急的內容改傳 `role='note'` 之類的值。`AlertTitle` 維持 `text-sm`，不比照其他 Title 放大到 `text-base`；`destructive` 只改文字色，不加底色。Alert 是精簡的行內提示，也是 Callout 的基底，層次交給 Callout 的 variant 處理。圓角 `rounded-lg`、內距 `px-2.5 py-2`、標題到說明 `gap-0.5` 也照上游的精簡尺寸，不比照 Card。標題與說明裡的連結、段落樣式保留給 Callout 用。
+
+`accordion` 收上游全部子元件，展開圖示用 lucide 的 `ChevronDownIcon` / `ChevronUpIcon`。`AccordionProps` 用 `type` 宣告：Radix Root 的 props 是 single / multiple 聯集，interface 無法 `extends`。`AccordionContent` 的 `className` 落在內層的 div，不在帶 `data-slot` 的外層：外層負責高度動畫，內距加在它身上會讓收合時留下一截。
+
+`tabs` 收上游全部子元件。`orientation` 交給 Radix 處理，`Tabs` 不自己設 `data-orientation`。`TabsTrigger` 的 focus 樣式比照 `Button`，用 `outline-none`，不加上游的 `focus-visible:outline-1`。`TabsList` 的 `p-[3px]` 與 `TabsTrigger` 選中態的 `shadow-sm` 維持上游，這組數值構成分段控制項的外觀，不對齊選單或按鈕。上游靠 `data-icon` 縮小圖示側內距的 class 不收：本 repo 的元件都不標 `data-icon`。
+
+`scroll-area` 收 `ScrollArea` 與 `ScrollBar`；`ScrollArea` 內建一條垂直捲軸，要水平捲動時在 children 裡另放 `<ScrollBar orientation='horizontal' />`。viewport 沒有邊框，focus 只畫 `ring-2`，不搭 `focus-visible:border-ring`。
+
+`progress` 收上游，軌道比照 Slider 用 `overflow-hidden`。`skeleton` 收上游，圓角 `rounded-md`。
+
+`table` 暫緩，Phase 2.c 先不做。
+
+`sonner` 的元件名與資料夾是 `Toaster`，同一個模組轉出 `sonner` 的 `toast()`：sonner 的 toast 狀態存在模組層，呼叫端自己裝一份 `sonner` 就會和 `Toaster` 訂閱到不同份，toast 不會出現。sonner 自己注入一份不在 layer 裡的樣式表，Tailwind class 蓋不過它，所以外觀只透過它的 CSS 變數調整：底色與文字用 `--popover` 一組，外框 `--normal-border` 設成 `color-mix(in oklab, var(--foreground) 10%, transparent)`，等同其他面板的 `ring-1 ring-foreground/10`，圓角 `var(--radius)` 等同浮出內容框的 `rounded-lg`。description 比照其他 Description 用 `text-muted-foreground`，但 sonner 把它寫死成 `#3f3f3f`（暗色主題 `hsl(0 0% 91%)`），沒有 CSS 變數可改，所以經 `toastOptions.classNames` 加 `text-muted-foreground!`；在 layer 裡的 important 宣告才蓋得過沒進 layer 的一般宣告。陰影、內距、字級與 focus ring 沒有對應的 CSS 變數，沿用 sonner 自己的值，不為了對齊其他面板再加 important class。不收上游的 `cn-toast` class 與 `toaster group` className，本 repo 沒有對應的樣式。
+
+`breadcrumb` 與 `pagination` 暫緩，Phase 2.d 先不做。
 
 ### Tier 2 — 自組元件（中～高難度）
 
 | 元件 | 組裝方式 | 難度 |
 | --- | --- | --- |
+| `TextField` | Field + FieldLabel + Input + FieldDescription + FieldError；以 `useId` 自動接上 `htmlFor`、`aria-describedby`、`aria-invalid`，對外只給 `label`、`description`、`error`；`error` 出現時取代 `description`，輸入框下方固定保留一行高度，避免錯誤出現或消失時版面跳動 | 低 |
 | `CopyButton` | Button + `navigator.clipboard` + 成功狀態回饋 | 中 |
 | `CodeBlock` | Shiki（fine-grained）輸出 + CopyButton + 語言標籤 | 高 |
 | `Callout` | Alert 為基底，info/warning/danger/tip variants | 中 |
 | `MarkdownRenderer` | `MarkdownHooks` + remark-gfm + rehype-slug/autolink + `@shikijs/rehype` + prose 樣式 + 元件映射（code→CodeBlock、blockquote→Callout 語法擴充） | **高（本專案核心）** |
 | `ThemeProvider` | next-themes 薄包裝（attribute=`data-theme` + class=`.dark` 雙軌設定收斂於此） | 中 |
-| `ThemeToggle` | DropdownMenu/Switch 組合：切 theme 與 light/dark/system | 中 |
+| `ThemeToggle` | DropdownMenu 裡兩組 RadioItem：切 theme 與 light/dark/system | 中 |
 
 （Auth 相關元件 — PasswordInput / LoginForm / RegisterForm / OtpForm / AuthCard — 依 D8 取消，見 §9。）
 
